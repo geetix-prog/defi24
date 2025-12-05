@@ -1,0 +1,64 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+    <div>
+        <div id="login-title">
+            <h1>Connexion</h1>
+        </div>
+    </div>
+
+    <form id="loginForm">
+        <input type="email" name="email" id="email" required placeholder="Votre adresse e-mail"/>
+        <input type="password" name="password" id="password" required placeholder="Votre mot de passe"/>
+        <button type="submit">Se connecter</button>
+    </form>
+    
+    <div id="message"></div>
+</Layout>
+
+<script>
+    const form = document.getElementById('loginForm') as HTMLFormElement;
+    const messageDiv = document.getElementById('message') as HTMLDivElement;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const emailInput = document.getElementById('email') as HTMLInputElement;
+        const passwordInput = document.getElementById('password') as HTMLInputElement;
+        
+        const email = emailInput.value;
+        const password = passwordInput.value;
+
+        try {
+            const response = await fetch('/apis/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                
+                messageDiv.textContent = 'Connexion réussie !';
+                messageDiv.style.color = 'green';
+                
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
+            } else {
+                messageDiv.textContent = data.error || 'Erreur de connexion';
+                messageDiv.style.color = 'red';
+            }
+        } catch (error) {
+            messageDiv.textContent = 'Erreur de connexion au serveur';
+            messageDiv.style.color = 'red';
+        }
+    });
+</script>

@@ -1,0 +1,49 @@
+---
+import { addUser } from "../../backend/backend.mjs";
+import Layout from "../layouts/Layout.astro";
+
+let error = "";
+let success = "";
+
+if (Astro.request.method === "POST") {
+    const formData = await Astro.request.formData();
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const nom = formData.get("nom");
+    const prenom = formData.get("prenom");
+    const avatar = formData.get("avatar");
+
+    try {
+        await addUser({ email, password, prenom, nom, avatar });
+        success =
+            "Inscription réussie ! Vous pouvez maintenant vous connecter.";
+    } catch (err) {
+        error = err.message || "Erreur lors de l'inscription.";
+    }
+
+}
+---
+
+<Layout>
+    <div>
+        <div>
+            <h1>S'inscrire</h1>
+        </div>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data">
+        <input type="email" name="email" required placeholder="Votre adresse e-mail"/>
+        <input type="password" name="password" required placeholder="Votre mot de passe"/>
+        <input type="text" name="nom" required placeholder="Votre nom"/>
+        <input type="text" name="prenom" required placeholder="Votre prénom"/>
+        <input type="file" name="avatar" accept="image/*"/>
+
+        <button type="submit">S'inscrire</button>
+    </form>
+    <div>
+        {success && <p>{success}</p>}
+        {error && <p>{error}</p>}
+    </div>
+</Layout>
+
+

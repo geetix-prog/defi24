@@ -11,6 +11,8 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.17",
     "astro": "^5.16.1",
+    "pocketbase": "^0.26.5",
+    "pocketbase-types": "^3.0.0",
     "tailwindcss": "^4.1.17"
   }
 }
