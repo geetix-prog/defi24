@@ -1,0 +1,68 @@
+---
+
+---
+
+<div class="container">
+  <h1>Temps restant avant le Défi 24h</h1>
+  <div id="compteur">Chargement en cours...</div>
+</div>
+
+<script>
+  var duree: number;
+
+  function t() {
+    var compteur = document.getElementById("compteur");
+    if (!compteur) return;
+
+    var s: number | string = duree;
+    var m: number | string = 0,
+      h: number | string = 0,
+      j: number | string = 0;
+
+    if (duree < 0) {
+      compteur.innerHTML = "C'est le Jour J !";
+      return;
+    } else {
+      if (s > 59) {
+        m = Math.floor(s / 60);
+        s = s - m * 60;
+      }
+      if (m > 59) {
+        h = Math.floor(m / 60);
+        m = m - h * 60;
+      }
+      if (h > 23) {
+        j = Math.floor(h / 24);
+        h = h - j * 24;
+      }
+      if (s < 10) {
+        s = "0" + s;
+      }
+      if (m < 10) {
+        m = "0" + m;
+      }
+      if (h < 10) {
+        h = "0" + h;
+      }
+      compteur.innerHTML =
+        "Il reste " +
+        j +
+        " jours " +
+        h +
+        " heures " +
+        m +
+        " minutes et " +
+        s +
+        " secondes.";
+    }
+    duree = duree - 1;
+    window.setTimeout(t, 1000);
+  }
+
+  var dateButoir = new Date(2026, 2, 15, 10, 30, 0);
+  var maintenant = new Date();
+
+  duree = Math.floor((dateButoir.getTime() - maintenant.getTime()) / 1000);
+
+  t();
+</script>
