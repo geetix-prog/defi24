@@ -1,22 +1,23 @@
 ---
 import Button from "../components/Button.astro"
+import Heures from "../assets/heures.svg"
 ---
 
-<header class="bg-white w-1/2 rounded-full border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] px-8 py-4">
+<header class="bg-white lg:w-3/5 rounded-full border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] px-8 py-4">
     <div class="flex items-center justify-between">
-        <a href="/" class="font-oi text-2xl flex flex-col text-center leading-none">
-            <span>24</span>
-            <span class="uppercase">heures</span>
+        <a href="/" class="font-oi flex flex-col -space-y-1 text-center leading-none">
+            <span class="text-4xl">24</span>
+            <img src={Heures.src} alt="" class="w-full" />
         </a>
         <nav>
-            <ul class="capitalize flex gap-8">
-                <li><a href="/equipes">équipes</a></li>
-                <li><a href="/classement">classement</a></li>
-                <li><a href="/programme">programme</a></li>
-                <li><a href="/creations">créations</a></li>
-                <li><a href="/galerie">galerie</a></li>
+            <ul class="capitalize flex gap-8 font-nohemi text-lg font-bold">
+                <li class="hover:scale-105 transition hover:text-primary ease-in"><a href="/equipes">équipes</a></li>
+                <li class="hover:scale-105 transition hover:text-primary ease-in"><a href="/classement">classement</a></li>
+                <li class="hover:scale-105 transition hover:text-primary ease-in"><a href="/programme">programme</a></li>
+                <li class="hover:scale-105 transition hover:text-primary ease-in"><a href="/creations">créations</a></li>
+                <li class="hover:scale-105 transition hover:text-primary ease-in"><a href="/galerie">galerie</a></li>
             </ul>
         </nav>
-        <Button bg="tertiary" color="white" text="Connexion" />
+        <Button bgClass="bg-tertiary" colorClass="text-white" text="Connexion" />
     </div>
 </header>
