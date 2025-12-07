@@ -1,0 +1,15 @@
+---
+interface Props {
+    bgClass: string;
+    colorClass: string;
+    text: string;
+}
+
+const { bgClass, colorClass, text } = Astro.props;
+---
+
+<div
+    class={`inline-block ${bgClass} ${colorClass} px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-2xl font-nohemi font-black text-base sm:text-lg lg:text-3xl shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] text-center`}
+>
+    {text}
+</div>

@@ -1,19 +1,36 @@
 ---
 import Layout from "../layouts/Layout.astro"
 import Decompte from "../components/decompte.astro"
+import Tag from "../components/Tag.astro"
+import Button from "../components/Button.astro"
+import Marquee from "../components/Banniere.astro"
 ---
 
 <Layout>
-	<h1 class="text-white font-oi">Le défi 24h <br>C'est bientôt !</h1>
-	<div id="userInfo"></div>
-	<p>Participez à notre défi de 24 heures en résolvant des énigmes passionnantes et en relevant des défis stimulants. Inscrivez-vous ou connectez-vous pour commencer votre aventure !</p>
-	<Decompte />
+	<div class="flex flex-col space-y-15 justify-center items-center mt-25 px-4">
+		<h1 class="text-white font-oi text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight sm:leading-tight md:leading-normal tracking-wide">Le défi 24h <br>C'est bientôt !
+		</h1>
+		<div class="flex flex-col space-y-7">
+			<Tag bgClass="bg-tertiary" colorClass="text-white" text="17 JANVIER 2026" />
+			<div class="text-center px-10">
+				<Button bgClass="bg-white" colorClass="text-primary" text="Inscription" page="inscription" />
+			</div>
+		</div>
+	</div>
+	<div class="mt-25">
+		<Marquee />
+	</div>
+	<div class="flex flex-col items-center mt-25">
+		<div class="inline-block bg-white/80 w-8/10 px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-2xl
+			font-nohemi font-black text-base sm:text-lg lg:text-3xl shadow-[0_0_0_2px_black,3px_3px_0px_1px_black]
+			sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] text-center">
+		</div>
+	</div>
 </Layout>
 
 <script>
-	const userInfo = document.getElementById('userInfo');
 	const userDataString = localStorage.getItem('user');
-	
+
 	if (userDataString) {
 		try {
 			const userData = JSON.parse(userDataString);

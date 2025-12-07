@@ -15,7 +15,7 @@ import Heures from "../assets/heures.astro"
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                 <span class="block w-7 rounded-full sm:w-8 h-0.75 bg-black mb-1.5 sm:mb-2 transition-all duration-300"
                     id="line1"></span>
-                <span class="block w-7 rounded-full sm:w-8 h-0.75 bg-black mb-1.5 sm:mb-2 transition-all duration-300"
+                <span class="block w-7 rounded-full sm:w-8 h-0.75 bg-black mb-1.5 sm:mb-2"
                     id="line2"></span>
                 <span class="block w-7 rounded-full sm:w-8 h-0.75 bg-black transition-all duration-300" id="line3"></span>
             </div>
@@ -38,7 +38,7 @@ import Heures from "../assets/heures.astro"
         </nav>
 
         <div class="hidden lg:block shrink-0">
-            <Button bgClass="bg-tertiary" colorClass="text-white" text="Connexion" />
+            <Button bgClass="bg-tertiary" colorClass="text-white" text="Connexion" page="connexion" />
         </div>
     </div>
 
@@ -55,8 +55,8 @@ import Heures from "../assets/heures.astro"
         </ul>
 
         <div class="flex flex-col gap-3 sm:gap-4 w-full px-4 sm:w-3/4 md:w-2/3 max-w-sm">
-            <Button bgClass="bg-lightprimary" colorClass="text-white" text="Guide de Style" />
-            <Button bgClass="bg-tertiary" colorClass="text-white" text="Mon Compte" />
+            <Button bgClass="bg-lightprimary" colorClass="text-white" text="Guide de Style" page="guide-de-style"/>
+            <Button bgClass="bg-tertiary" colorClass="text-white" text="Mon Compte" page="mon-compte"/>
         </div>
     </nav>
 </header>
