@@ -1,6 +1,6 @@
 import pb from "../src/utils/pb.ts";
 
-export async function addUser({ email, password, nom, prenom, avatar }) {
+export async function addUser({ email, password, nom, prenom, promo, avatar }) {
     try {
         const userData = {
             email,
@@ -8,6 +8,7 @@ export async function addUser({ email, password, nom, prenom, avatar }) {
             passwordConfirm: password,
             nom,
             prenom,
+            promo
         };
         if (avatar) {
             userData.avatar = avatar;
@@ -15,7 +16,7 @@ export async function addUser({ email, password, nom, prenom, avatar }) {
         const record = await pb.collection('users').create(userData);
         return record;
     } catch (error) {
-        console.error('Erreur lors de l’ajout du user :', error);
+        console.error('Erreur lors de l\'ajout du user :', error);
         throw error;
     }
 }
