@@ -41,7 +41,9 @@ export async function createEquipe(nom, userId, logo) {
     try {
         const equipeData = {
             nom: nom,
-            users: [userId]
+            users: [userId],
+            chef: userId,
+            membre: [userId]
         };
         
         if (logo) {
@@ -49,6 +51,11 @@ export async function createEquipe(nom, userId, logo) {
         }
         
         const record = await pb.collection('Equipe').create(equipeData);
+        
+        // Mettre à jour l'utilisateur avec l'ID de l'équipe
+        await pb.collection('users').update(userId, {
+            equipe: record.id
+        });
         
         return record;
     } catch (error) {
@@ -68,8 +75,17 @@ export async function joinEquipe(equipeId, userId) {
         const users = equipe.users || [];
         users.push(userId);
         
+        const membres = equipe.membre || [];
+        membres.push(userId);
+        
         const record = await pb.collection('Equipe').update(equipeId, {
-            users: users
+            users: users,
+            membre: membres
+        });
+        
+        // Mettre à jour l'utilisateur avec l'ID de l'équipe
+        await pb.collection('users').update(userId, {
+            equipe: equipeId
         });
         
         return record;

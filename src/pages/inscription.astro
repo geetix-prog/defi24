@@ -4,20 +4,16 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout>
     <div class="flex flex-col items-center justify-center min-h-screen px-4 py-10">
-        <!-- Titre -->
         <h1 class="text-white font-oi text-center text-5xl sm:text-6xl md:text-7xl lg:text-8xl mb-6 uppercase">
             Inscription
         </h1>
         
-        <!-- Description -->
         <p class="text-white font-nohemi text-center text-base sm:text-lg max-w-lg mb-10">
             Rejoins l'aventure du Défi 24h ! Crée ton compte pour t'inscrire, former ton équipe et participer au challenge.
         </p>
         
-        <!-- Formulaire -->
         <div class="bg-white/90 w-full max-w-xl p-8 sm:p-10 rounded-3xl shadow-[0_0_0_3px_black,6px_6px_0px_2px_black]">
             <form id="registerForm" class="space-y-5">
-                <!-- Prénom et Nom sur la même ligne -->
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label for="prenom" class="block font-nohemi text-black font-bold mb-2">Prénom</label>
@@ -43,7 +39,6 @@ import Layout from "../layouts/Layout.astro";
                     </div>
                 </div>
 
-                <!-- Champ Email -->
                 <div>
                     <label for="email" class="block font-nohemi text-black font-bold mb-2">Adresse email</label>
                     <input 
@@ -56,7 +51,6 @@ import Layout from "../layouts/Layout.astro";
                     />
                 </div>
 
-                <!-- Champ Promo -->
                 <div>
                     <label for="promo" class="block font-nohemi text-black font-bold mb-2">Promo</label>
                     <select 
@@ -73,7 +67,6 @@ import Layout from "../layouts/Layout.astro";
                     </select>
                 </div>
 
-                <!-- Champ Avatar -->
                 <div>
                     <label for="avatar" class="block font-nohemi text-black font-bold mb-2">Photo de profil (optionnel)</label>
                     <input 
@@ -85,7 +78,6 @@ import Layout from "../layouts/Layout.astro";
                     />
                 </div>
                 
-                <!-- Champ Mot de passe -->
                 <div>
                     <label for="password" class="block font-nohemi text-black font-bold mb-2">Mot de passe</label>
                     <div class="relative">
@@ -110,7 +102,6 @@ import Layout from "../layouts/Layout.astro";
                     </div>
                 </div>
                 
-                <!-- Champ Confirmation du mot de passe -->
                 <div>
                     <label for="passwordConfirm" class="block font-nohemi text-black font-bold mb-2">Confirmer le mot de passe</label>
                     <div class="relative">
@@ -125,7 +116,6 @@ import Layout from "../layouts/Layout.astro";
                     </div>
                 </div>
                 
-                <!-- Bouton d'inscription -->
                 <button 
                     type="submit"
                     class="inline-block w-full bg-tertiary text-white px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center"
@@ -133,15 +123,12 @@ import Layout from "../layouts/Layout.astro";
                     Créer mon compte
                 </button>
                 
-                <!-- Message d'erreur/succès -->
                 <div id="message" class="text-center font-nohemi font-bold mt-4"></div>
                 
-                <!-- Séparateur -->
                 <div class="text-center mt-6 mb-4">
                     <span class="text-gray-600 font-nohemi text-sm uppercase">Déjà un compte ?</span>
                 </div>
                 
-                <!-- Bouton se connecter -->
                 <a 
                     href="/connexion"
                     class="inline-block w-full bg-white text-tertiary px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center"
@@ -161,7 +148,6 @@ import Layout from "../layouts/Layout.astro";
     const passwordInput = document.getElementById('password') as HTMLInputElement;
     const passwordConfirmInput = document.getElementById('passwordConfirm') as HTMLInputElement;
 
-    // Toggle password visibility
     togglePasswordBtn?.addEventListener('click', () => {
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
@@ -170,7 +156,6 @@ import Layout from "../layouts/Layout.astro";
         }
     });
 
-    // Toggle password confirm visibility
     togglePasswordConfirmBtn?.addEventListener('click', () => {
         if (passwordConfirmInput.type === 'password') {
             passwordConfirmInput.type = 'text';
@@ -195,10 +180,8 @@ import Layout from "../layouts/Layout.astro";
         const password = passwordInput.value;
         const passwordConfirm = passwordConfirmInput.value;
 
-        // Reset message
         messageDiv.textContent = '';
 
-        // Vérifier que les mots de passe correspondent
         if (password !== passwordConfirm) {
             messageDiv.textContent = 'Les mots de passe ne correspondent pas.';
             messageDiv.style.color = 'red';
@@ -214,7 +197,6 @@ import Layout from "../layouts/Layout.astro";
             formData.append('prenom', prenom);
             formData.append('promo', promo);
 
-            // Ajouter l'avatar s'il est fourni
             if (avatarInput.files && avatarInput.files[0]) {
                 formData.append('avatar', avatarInput.files[0]);
             }
