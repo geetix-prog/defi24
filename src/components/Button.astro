@@ -1,0 +1,17 @@
+---
+interface Props {
+    bg: string;
+    color: string;
+    text: string;
+}
+
+const { bg, color, text } = Astro.props;
+---
+
+<a 
+    href="/connexion" 
+    class="inline-block px-10 py-3 rounded-full font-[Nohemi,sans-serif] text-lg shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 transition-transform duration-200"
+    style={`background-color: var(--color-${bg}); color: var(--color-${color});`}
+>
+    {text}
+</a>

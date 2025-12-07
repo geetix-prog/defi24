@@ -1,15 +1,30 @@
+---
+import "../styles/global.css";
+import Header from '../components/Header.astro';
+import Shape from '../assets/top_shape.svg';
+---
+
 <!doctype html>
 <html lang="fr">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Defi 24h</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width" />
+	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	<meta name="generator" content={Astro.generator} />
+	<title>Defi 24h</title>
+</head>
+
+<body>
+	<img src={Shape.src} class="absolute top-0 left-0 z-0" alt="">
+	<div class="relative w-full z-10">
+		<div class="flex mt-10 justify-center">
+			<Header/>
+		</div>
+		<slot/>
+	</div>
+</body>
+
 </html>
 
 <style>
@@ -18,5 +33,10 @@
 		margin: 0;
 		width: 100%;
 		height: 100%;
+		background:
+			linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+			linear-gradient(180deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+			var(--color-primary);
+		background-size: 50px 50px, 50px 50px, auto;
 	}
 </style>

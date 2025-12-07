@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Oi&display=swap');
+@import "tailwindcss";
+
+@font-face {
+    font-family: 'Nohemi';
+    src: url('/fonts/Nohemi-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@theme {
+    --color-primary: #5C30FF;
+    --color-secondary: #FB7DA8;
+    --color-tertiary: #FD5A46;
+    --color-yellow: #FFD166;
+    --color-green: #00995E;
+    --color-lightprimary: #A78BFA;
+    
+
+    --font-nohemi: 'Nohemi', sans-serif;
+    --font-oi:'Oi', sans-serif;
+}

@@ -3,18 +3,12 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-    <div>
-        <div id="login-title">
-            <h1>Connexion</h1>
-        </div>
-    </div>
-
+    <h1>Connexion</h1>
     <form id="loginForm">
-        <input type="email" name="email" id="email" required placeholder="Votre adresse e-mail"/>
-        <input type="password" name="password" id="password" required placeholder="Votre mot de passe"/>
+        <input type="email" name="email" id="email" required placeholder="Email"/>
+        <input type="password" name="password" id="password" required placeholder="Mot de passe"/>
         <button type="submit">Se connecter</button>
     </form>
-    
     <div id="message"></div>
 </Layout>
 
@@ -45,20 +39,16 @@ import Layout from "../layouts/Layout.astro";
             if (response.ok) {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
-                
                 messageDiv.textContent = 'Connexion réussie !';
-                messageDiv.style.color = 'green';
-                
                 setTimeout(() => {
                     window.location.href = '/';
                 }, 1000);
             } else {
                 messageDiv.textContent = data.error || 'Erreur de connexion';
-                messageDiv.style.color = 'red';
             }
         } catch (error) {
             messageDiv.textContent = 'Erreur de connexion au serveur';
-            messageDiv.style.color = 'red';
         }
     });
 </script>
+</Layout>

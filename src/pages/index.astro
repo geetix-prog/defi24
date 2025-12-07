@@ -4,5 +4,26 @@ import Decompte from "../components/decompte.astro"
 ---
 
 <Layout>
+	<h1 class="text-white font-oi">Le défi 24h <br>C'est bientôt !</h1>
+	<div id="userInfo"></div>
+	<p>Participez à notre défi de 24 heures en résolvant des énigmes passionnantes et en relevant des défis stimulants. Inscrivez-vous ou connectez-vous pour commencer votre aventure !</p>
 	<Decompte />
 </Layout>
+
+<script>
+	const userInfo = document.getElementById('userInfo');
+	const userDataString = localStorage.getItem('user');
+	
+	if (userDataString) {
+		try {
+			const userData = JSON.parse(userDataString);
+			if (userData.email) {
+				const avatarImg = document.createElement("img");
+				avatarImg.src = userData.avatar;
+				avatarImg.alt = "Avatar";
+			}
+		} catch (error) {
+			console.error('Erreur lors de la lecture des données utilisateur', error);
+		}
+	}
+</script>
