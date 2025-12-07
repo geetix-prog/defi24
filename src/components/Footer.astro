@@ -2,17 +2,17 @@
 import Heures from "../assets/heures.astro"
 ---
 
-<footer class="bg-primary w-full border-t-4 space-y-10">
-    <div class="flex items-center mx-auto mt-10 justify-center">
+<footer class="bg-primary w-full border-t-4 space-y-6 md:space-y-10 py-8 md:py-10">
+    <div class="flex items-center mx-auto justify-center">
         <a href="/" id="logo"
             class="font-oi flex flex-col -space-y-1 text-center leading-none z-50 shrink-0 transition-all hover:scale-110 duration-300 text-white">
             <span class="text-xl xs:text-2xl sm:text-3xl md:text-4xl">24</span>
             <Heures colorClass="text-white" />
         </a>
     </div>
-    <nav class="=flex mx-8">
+    <nav class="px-4 md:px-8">
         <ul
-            class="capitalize flex justify-center gap-6 xl:gap-8 2xl:gap-12 font-nohemi text-sm text-white xl:text-base 2xl:text-lg font-bold">
+            class="capitalize flex flex-wrap justify-center gap-4 md:gap-6 xl:gap-8 2xl:gap-12 font-nohemi text-xs sm:text-sm text-white md:text-base xl:text-base 2xl:text-lg font-bold">
             <li class="hover:scale-105 transition hover:text-tertiary ease-in whitespace-nowrap"><a
                     href="/equipes">équipes</a></li>
             <li class="hover:scale-105 transition hover:text-tertiary ease-in whitespace-nowrap"><a
@@ -25,15 +25,15 @@ import Heures from "../assets/heures.astro"
                     href="/galerie">galerie</a></li>
         </ul>
     </nav>
-    <hr class="h-1 w-8/10 mx-auto text-lightprimary/30">
-    <p class="text-center font-nohemi text-white text-sm">Ce site Web est réalisé dans le cadre d'un projet collectif au
+    <hr class="h-1 w-9/10 md:w-8/10 mx-auto text-lightprimary/30">
+    <p class="text-center font-nohemi text-white text-xs sm:text-sm px-4">Ce site Web est réalisé dans le cadre d'un projet collectif au
         <a href="https://www.google.com/search?q=département+MMi+Montbéliard" target="_blank" rel="noopener noreferrer"
             class="font-black underline hover:text-tertiary transition">département MMi de Montbéliard</a></p>
-    <hr class="h-1 w-8/10 mx-auto text-lightprimary/30">
-    <div class="flex flex-col md:flex-row items-center justify-center md:justify-between w-8/10 mx-auto mt-4 mb-4 gap-4">
-        <p class="font-nohemi text-white text-sm">© 2025 Défi 24h. Tous droits réservés.</p>
+    <hr class="h-1 w-9/10 md:w-8/10 mx-auto text-lightprimary/30">
+    <div class="flex flex-col md:flex-row items-center justify-center md:justify-between w-9/10 md:w-8/10 mx-auto gap-3 md:gap-4 px-4">
+        <p class="font-nohemi text-white text-xs sm:text-sm text-center md:text-left">© 2025 Défi 24h. Tous droits réservés.</p>
         <nav>
-            <ul class="font-nohemi text-white text-sm flex gap-4">
+            <ul class="font-nohemi text-white text-xs sm:text-sm flex flex-col sm:flex-row gap-2 sm:gap-4 text-center">
                 <li><a href="/politique-de-confidentialite" class="hover:text-tertiary transition">Politique de confidentialité</a></li>
                 <li><a href="/mentions-legales" class="hover:text-tertiary transition">Mentions légales</a></li>
                 <li><a href="/cgu" class="hover:text-tertiary transition">CGU</a></li>
