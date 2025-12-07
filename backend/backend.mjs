@@ -35,3 +35,45 @@ export async function getallPartenaires() {
         throw error;
     }
 }
+
+export async function createEquipe(nom, userId, logo) {
+    try {
+        const equipeData = {
+            nom: nom,
+            users: [userId]
+        };
+        
+        if (logo) {
+            equipeData.logo = logo;
+        }
+        
+        const record = await pb.collection('Equipe').create(equipeData);
+        
+        return record;
+    } catch (error) {
+        console.error('Erreur lors de la création de l\'équipe :', error);
+        throw error;
+    }
+}
+
+export async function joinEquipe(equipeId, userId) {
+    try {
+        const equipe = await pb.collection('Equipe').getOne(equipeId);
+        
+        if (equipe.users && equipe.users.length >= 5) {
+            throw new Error('Cette équipe est complète (maximum 5 membres)');
+        }
+        
+        const users = equipe.users || [];
+        users.push(userId);
+        
+        const record = await pb.collection('Equipe').update(equipeId, {
+            users: users
+        });
+        
+        return record;
+    } catch (error) {
+        console.error('Erreur lors de la jonction à l\'équipe :', error);
+        throw error;
+    }
+}

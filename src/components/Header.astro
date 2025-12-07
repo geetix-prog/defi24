@@ -37,7 +37,7 @@ import Heures from "../assets/heures.astro"
             </ul>
         </nav>
 
-        <div class="hidden lg:block shrink-0">
+        <div class="hidden lg:block shrink-0" id="auth-button-desktop">
             <Button bgClass="bg-tertiary" colorClass="text-white" text="Connexion" page="connexion" />
         </div>
     </div>
@@ -54,9 +54,9 @@ import Heures from "../assets/heures.astro"
             <li><a href="/contact" class="hover:scale-105 transition inline-block">Contact</a></li>
         </ul>
 
-        <div class="flex flex-col gap-3 sm:gap-4 w-full px-4 sm:w-3/4 md:w-2/3 max-w-sm">
+        <div class="flex flex-col gap-3 sm:gap-4 w-full px-4 sm:w-3/4 md:w-2/3 max-w-sm" id="auth-button-mobile">
             <Button bgClass="bg-lightprimary" colorClass="text-white" text="Guide de Style" page="guide-de-style"/>
-            <Button bgClass="bg-tertiary" colorClass="text-white" text="Mon Compte" page="mon-compte"/>
+            <Button bgClass="bg-tertiary" colorClass="text-white" text="Connexion" page="connexion"/>
         </div>
     </nav>
 </header>
@@ -95,4 +95,45 @@ import Heures from "../assets/heures.astro"
             line3?.classList.remove('-rotate-45', '-translate-y-[9px]', 'sm:-translate-y-[10px]');
         });
     });
+
+    // Vérifier si l'utilisateur est connecté et afficher le bon bouton
+    const authButtonDesktop = document.getElementById('auth-button-desktop');
+    const authButtonMobile = document.getElementById('auth-button-mobile');
+    
+    const userDataString = localStorage.getItem('user');
+    
+    if (userDataString && authButtonDesktop && authButtonMobile) {
+        try {
+            const userData = JSON.parse(userDataString);
+            if (userData.email) {
+                // Créer le bouton de déconnexion pour desktop
+                authButtonDesktop.innerHTML = `
+                    <a 
+                        href="/deconnexion" 
+                        class="inline-block bg-tertiary text-white px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center"
+                    >
+                        Déconnexion
+                    </a>
+                `;
+                
+                // Créer le bouton de déconnexion pour mobile
+                authButtonMobile.innerHTML = `
+                    <a 
+                        href="/guide-de-style" 
+                        class="inline-block bg-lightprimary text-white px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center"
+                    >
+                        Guide de Style
+                    </a>
+                    <a 
+                        href="/deconnexion" 
+                        class="inline-block bg-tertiary text-white px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center"
+                    >
+                        Déconnexion
+                    </a>
+                `;
+            }
+        } catch (error) {
+            console.error('Erreur lors de la lecture des données utilisateur', error);
+        }
+    }
 </script>

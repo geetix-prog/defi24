@@ -1,0 +1,89 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button.astro";
+---
+
+<Layout>
+    <div class="flex flex-col items-center justify-center min-h-[60vh] px-4">
+        <div class="bg-white/80 w-full max-w-md p-8 rounded-2xl shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]">
+            <h1 class="font-oi text-primary text-4xl md:text-5xl text-center mb-6">Rejoindre une équipe</h1>
+            
+            <form id="joinForm" class="space-y-4">
+                <div>
+                    <label for="equipeId" class="block font-nohemi text-black mb-2">ID de l'équipe</label>
+                    <input 
+                        type="text" 
+                        id="equipeId" 
+                        name="equipeId" 
+                        required 
+                        placeholder="Entrez l'ID de l'équipe"
+                        class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                </div>
+                
+                <button 
+                    type="submit"
+                    class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-lg font-bold hover:scale-105 active:scale-95 transition-transform"
+                >
+                    Rejoindre l'équipe
+                </button>
+            </form>
+            
+            <div id="message" class="mt-4 text-center font-nohemi"></div>
+        </div>
+    </div>
+</Layout>
+
+<script>
+    const form = document.getElementById('joinForm') as HTMLFormElement;
+    const messageDiv = document.getElementById('message') as HTMLDivElement;
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const equipeIdInput = document.getElementById('equipeId') as HTMLInputElement;
+        const equipeId = equipeIdInput.value.trim();
+        
+        // Récupérer l'ID utilisateur depuis localStorage
+        const userDataString = localStorage.getItem('user');
+        if (!userDataString) {
+            messageDiv.textContent = 'Vous devez être connecté pour rejoindre une équipe.';
+            messageDiv.style.color = 'red';
+            setTimeout(() => {
+                window.location.href = '/connexion';
+            }, 2000);
+            return;
+        }
+        
+        const userData = JSON.parse(userDataString);
+        const userId = userData.id;
+
+        try {
+            const response = await fetch('/apis/join-equipe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ equipeId, userId })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                messageDiv.textContent = data.message;
+                messageDiv.style.color = 'green';
+                
+                // Redirection après succès
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 2000);
+            } else {
+                messageDiv.textContent = data.error || 'Erreur lors de la jonction à l\'équipe';
+                messageDiv.style.color = 'red';
+            }
+        } catch (error) {
+            messageDiv.textContent = 'Erreur de connexion au serveur';
+            messageDiv.style.color = 'red';
+        }
+    });
+</script>
