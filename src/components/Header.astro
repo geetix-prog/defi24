@@ -96,7 +96,6 @@ import Heures from "../assets/heures.astro"
         });
     });
 
-    // Vérifier si l'utilisateur est connecté et afficher le bon bouton
     const authButtonDesktop = document.getElementById('auth-button-desktop');
     const authButtonMobile = document.getElementById('auth-button-mobile');
     
@@ -106,17 +105,15 @@ import Heures from "../assets/heures.astro"
         try {
             const userData = JSON.parse(userDataString);
             if (userData.email) {
-                // Créer le bouton de déconnexion pour desktop
                 authButtonDesktop.innerHTML = `
                     <a 
-                        href="/deconnexion" 
+                        href="/profile" 
                         class="inline-block bg-tertiary text-white px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center"
                     >
-                        Déconnexion
+                        Mon Profil
                     </a>
                 `;
                 
-                // Créer le bouton de déconnexion pour mobile
                 authButtonMobile.innerHTML = `
                     <a 
                         href="/guide-de-style" 
@@ -125,10 +122,10 @@ import Heures from "../assets/heures.astro"
                         Guide de Style
                     </a>
                     <a 
-                        href="/deconnexion" 
+                        href="/profile" 
                         class="inline-block bg-tertiary text-white px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center"
                     >
-                        Déconnexion
+                        Mon Profil
                     </a>
                 `;
             }

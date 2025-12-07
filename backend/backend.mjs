@@ -41,7 +41,6 @@ export async function createEquipe(nom, userId, logo) {
     try {
         const equipeData = {
             nom: nom,
-            users: [userId],
             chef: userId,
             membre: [userId]
         };
@@ -52,7 +51,6 @@ export async function createEquipe(nom, userId, logo) {
         
         const record = await pb.collection('Equipe').create(equipeData);
         
-        // Mettre à jour l'utilisateur avec l'ID de l'équipe
         await pb.collection('users').update(userId, {
             equipe: record.id
         });
@@ -68,22 +66,22 @@ export async function joinEquipe(equipeId, userId) {
     try {
         const equipe = await pb.collection('Equipe').getOne(equipeId);
         
-        if (equipe.users && equipe.users.length >= 5) {
+        const currentMembres = Array.isArray(equipe.membre) ? equipe.membre : [];
+        
+        if (currentMembres.length >= 5) {
             throw new Error('Cette équipe est complète (maximum 5 membres)');
         }
         
-        const users = equipe.users || [];
-        users.push(userId);
+        if (currentMembres.includes(userId)) {
+            throw new Error('Vous êtes déjà membre de cette équipe');
+        }
         
-        const membres = equipe.membre || [];
-        membres.push(userId);
+        const nouveauxMembres = [...currentMembres, userId];
         
         const record = await pb.collection('Equipe').update(equipeId, {
-            users: users,
-            membre: membres
+            membre: nouveauxMembres
         });
         
-        // Mettre à jour l'utilisateur avec l'ID de l'équipe
         await pb.collection('users').update(userId, {
             equipe: equipeId
         });
