@@ -1,23 +1,98 @@
 ---
 import Button from "../components/Button.astro"
-import Heures from "../assets/heures.svg"
+import Heures from "../assets/heures.astro"
 ---
-
-<header class="bg-white lg:w-3/5 rounded-full border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] px-8 py-4">
+<header
+    class="bg-white w-4/5 md:w-[90%] lg:w-4/5 xl:w-3/5 rounded-full border-2 md:border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] px-4 sm:px-6 md:px-8 py-3 sm:py-4">
     <div class="flex items-center justify-between">
-        <a href="/" class="font-oi flex flex-col -space-y-1 text-center leading-none">
-            <span class="text-4xl">24</span>
-            <img src={Heures.src} alt="" class="w-full" />
+        <a href="/" id="logo" class="font-oi flex flex-col -space-y-1 text-center leading-none z-50 shrink-0 transition-all hover:scale-110 duration-300 text-black">
+            <span class="text-xl xs:text-2xl sm:text-3xl md:text-4xl">24</span>
+            <Heures />
         </a>
-        <nav>
-            <ul class="capitalize flex gap-8 font-nohemi text-lg font-bold">
-                <li class="hover:scale-105 transition hover:text-primary ease-in"><a href="/equipes">équipes</a></li>
-                <li class="hover:scale-105 transition hover:text-primary ease-in"><a href="/classement">classement</a></li>
-                <li class="hover:scale-105 transition hover:text-primary ease-in"><a href="/programme">programme</a></li>
-                <li class="hover:scale-105 transition hover:text-primary ease-in"><a href="/creations">créations</a></li>
-                <li class="hover:scale-105 transition hover:text-primary ease-in"><a href="/galerie">galerie</a></li>
+
+        <button id="menu-btn" class="lg:hidden z-50 w-9 h-9 sm:w-10 sm:h-10 relative focus:outline-none shrink-0"
+            aria-label="Toggle menu">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <span class="block w-7 rounded-full sm:w-8 h-0.75 bg-black mb-1.5 sm:mb-2 transition-all duration-300"
+                    id="line1"></span>
+                <span class="block w-7 rounded-full sm:w-8 h-0.75 bg-black mb-1.5 sm:mb-2 transition-all duration-300"
+                    id="line2"></span>
+                <span class="block w-7 rounded-full sm:w-8 h-0.75 bg-black transition-all duration-300" id="line3"></span>
+            </div>
+        </button>
+
+        <nav class="hidden lg:block flex-1 mx-8">
+            <ul
+                class="capitalize flex justify-center gap-4 xl:gap-6 2xl:gap-8 font-nohemi text-sm xl:text-base 2xl:text-lg font-bold">
+                <li class="hover:scale-105 transition hover:text-primary ease-in whitespace-nowrap"><a
+                        href="/equipes">équipes</a></li>
+                <li class="hover:scale-105 transition hover:text-primary ease-in whitespace-nowrap"><a
+                        href="/classement">classement</a></li>
+                <li class="hover:scale-105 transition hover:text-primary ease-in whitespace-nowrap"><a
+                        href="/programme">programme</a></li>
+                <li class="hover:scale-105 transition hover:text-primary ease-in whitespace-nowrap"><a
+                        href="/creations">créations</a></li>
+                <li class="hover:scale-105 transition hover:text-primary ease-in whitespace-nowrap"><a
+                        href="/galerie">galerie</a></li>
             </ul>
         </nav>
-        <Button bgClass="bg-tertiary" colorClass="text-white" text="Connexion" />
+
+        <div class="hidden lg:block shrink-0">
+            <Button bgClass="bg-tertiary" colorClass="text-white" text="Connexion" />
+        </div>
     </div>
+
+    <nav id="mobile-menu"
+        class="fixed inset-0 bg-primary z-40 flex flex-col items-center justify-center gap-8 sm:gap-10 lg:hidden translate-x-full transition-transform duration-300 px-6 sm:px-8">
+        <ul
+            class="capitalize flex flex-col gap-5 sm:gap-7 md:gap-8 font-nohemi text-2xl xs:text-3xl sm:text-3xl md:text-4xl font-bold text-white text-center">
+            <li><a href="/equipes" class="hover:scale-105 transition inline-block">Équipes</a></li>
+            <li><a href="/classement" class="hover:scale-105 transition inline-block">Classement</a></li>
+            <li><a href="/programme" class="hover:scale-105 transition inline-block">Programme</a></li>
+            <li><a href="/creations" class="hover:scale-105 transition inline-block">Créations</a></li>
+            <li><a href="/galerie" class="hover:scale-105 transition inline-block">Galerie</a></li>
+            <li><a href="/contact" class="hover:scale-105 transition inline-block">Contact</a></li>
+        </ul>
+
+        <div class="flex flex-col gap-3 sm:gap-4 w-full px-4 sm:w-3/4 md:w-2/3 max-w-sm">
+            <Button bgClass="bg-lightprimary" colorClass="text-white" text="Guide de Style" />
+            <Button bgClass="bg-tertiary" colorClass="text-white" text="Mon Compte" />
+        </div>
+    </nav>
 </header>
+
+<script>
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const line1 = document.getElementById('line1');
+    const line2 = document.getElementById('line2');
+    const line3 = document.getElementById('line3');
+    const logo = document.getElementById('logo');
+
+    menuBtn?.addEventListener('click', () => {
+        logo?.classList.toggle('text-white');
+        mobileMenu?.classList.toggle('translate-x-full');
+
+        line1?.classList.toggle('rotate-45');
+        line1?.classList.toggle('translate-y-[9px]');
+        line1?.classList.toggle('sm:translate-y-[11px]');
+        line1?.classList.toggle('bg-white');
+
+        line2?.classList.toggle('opacity-0');
+
+        line3?.classList.toggle('-rotate-45');
+        line3?.classList.toggle('-translate-y-[9px]');
+        line3?.classList.toggle('sm:-translate-y-[11px]');
+        line3?.classList.toggle('bg-white');
+    });
+
+    const mobileLinks = document.querySelectorAll('#mobile-menu a');
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu?.classList.add('translate-x-full');
+            line1?.classList.remove('rotate-45', 'translate-y-[9px]', 'sm:translate-y-[10px]');
+            line2?.classList.remove('opacity-0');
+            line3?.classList.remove('-rotate-45', '-translate-y-[9px]', 'sm:-translate-y-[10px]');
+        });
+    });
+</script>
