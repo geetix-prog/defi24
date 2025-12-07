@@ -1,0 +1,43 @@
+---
+import Heures from "../assets/heures.astro"
+---
+
+<footer class="bg-primary w-full border-t-4 space-y-10">
+    <div class="flex items-center mx-auto mt-10 justify-center">
+        <a href="/" id="logo"
+            class="font-oi flex flex-col -space-y-1 text-center leading-none z-50 shrink-0 transition-all hover:scale-110 duration-300 text-white">
+            <span class="text-xl xs:text-2xl sm:text-3xl md:text-4xl">24</span>
+            <Heures colorClass="text-white" />
+        </a>
+    </div>
+    <nav class="=flex mx-8">
+        <ul
+            class="capitalize flex justify-center gap-6 xl:gap-8 2xl:gap-12 font-nohemi text-sm text-white xl:text-base 2xl:text-lg font-bold">
+            <li class="hover:scale-105 transition hover:text-tertiary ease-in whitespace-nowrap"><a
+                    href="/equipes">équipes</a></li>
+            <li class="hover:scale-105 transition hover:text-tertiary ease-in whitespace-nowrap"><a
+                    href="/classement">classement</a></li>
+            <li class="hover:scale-105 transition hover:text-tertiary ease-in whitespace-nowrap"><a
+                    href="/programme">programme</a></li>
+            <li class="hover:scale-105 transition hover:text-tertiary ease-in whitespace-nowrap"><a
+                    href="/creations">créations</a></li>
+            <li class="hover:scale-105 transition hover:text-tertiary ease-in whitespace-nowrap"><a
+                    href="/galerie">galerie</a></li>
+        </ul>
+    </nav>
+    <hr class="h-1 w-8/10 mx-auto text-lightprimary/30">
+    <p class="text-center font-nohemi text-white text-sm">Ce site Web est réalisé dans le cadre d'un projet collectif au
+        <a href="https://www.google.com/search?q=département+MMi+Montbéliard" target="_blank" rel="noopener noreferrer"
+            class="font-black underline hover:text-tertiary transition">département MMi de Montbéliard</a></p>
+    <hr class="h-1 w-8/10 mx-auto text-lightprimary/30">
+    <div class="flex flex-col md:flex-row items-center justify-center md:justify-between w-8/10 mx-auto mt-4 mb-4 gap-4">
+        <p class="font-nohemi text-white text-sm">© 2025 Défi 24h. Tous droits réservés.</p>
+        <nav>
+            <ul class="font-nohemi text-white text-sm flex gap-4">
+                <li><a href="/politique-de-confidentialite" class="hover:text-tertiary transition">Politique de confidentialité</a></li>
+                <li><a href="/mentions-legales" class="hover:text-tertiary transition">Mentions légales</a></li>
+                <li><a href="/cgu" class="hover:text-tertiary transition">CGU</a></li>
+            </ul>
+        </nav>
+    </div>
+</footer>

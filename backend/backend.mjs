@@ -19,3 +19,19 @@ export async function addUser({ email, password, nom, prenom, avatar }) {
         throw error;
     }
 }
+
+export async function getallPartenaires() {
+    try {
+        let records = await pb.collection('Partenaire').getFullList({
+            sort: 'nom'
+        });
+        records = records.map((partenaire) => {
+            partenaire.img = pb.files.getURL(partenaire, partenaire.logo);
+            return partenaire;
+        });
+        return records;
+    } catch (error) {
+        console.error('Erreur lors de la récupération des partenaires :', error);
+        throw error;
+    }
+}
