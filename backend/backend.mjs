@@ -106,3 +106,65 @@ export async function allEquipes() {
     });
     return records;
 }
+
+export async function getallUsersInfos() {
+    let records = await pb.collection("users").getFullList();
+    records = records.map((row) => {
+        if (row.avatar) {
+            row.avatar_url = pb.files.getURL(row, row.avatar);
+        }
+        return row;
+    });
+    return records;
+}
+
+export async function getUserProfile(userId) {
+    try {
+        const user = await pb.collection('users').getOne(userId);
+        
+        if (user.avatar) {
+            user.avatar_url = pb.files.getURL(user, user.avatar);
+        }
+        
+        let equipe = null;
+        if (user.equipe) {
+            const fullEquipeRecords = await pb.collection('Full_equipe').getFullList({
+                filter: `id = "${user.equipe}"`
+            });
+            
+            if (fullEquipeRecords.length > 0) {
+                const equipeNom = fullEquipeRecords[0].equipe_nom;
+                const equipeId = fullEquipeRecords[0].id;
+                const equipeLogo = fullEquipeRecords[0].equipe_logo;
+                
+                const membres = fullEquipeRecords.map((row) => ({
+                    id: row.user_id || row.id,
+                    nom: row.user_nom,
+                    prenom: row.user_prenom,
+                    email: row.user_email,
+                    avatar: row.user_avatar,
+                    avatar_url: row.user_avatar ? pb.files.getURL(row, row.user_avatar) : null
+                })).filter((m) => m.nom);
+                
+                const equipeRecord = await pb.collection('Equipe').getOne(user.equipe);
+                
+                equipe = {
+                    id: equipeId,
+                    nom: equipeNom,
+                    logo: equipeLogo,
+                    logo_url: equipeLogo ? pb.files.getURL(equipeRecord, equipeLogo) : null,
+                    chef: equipeRecord.chef,
+                    usersDetails: membres
+                };
+            }
+        }
+        
+        return {
+            user,
+            equipe
+        };
+    } catch (error) {
+        console.error('Erreur lors de la récupération du profil :', error);
+        throw error;
+    }
+}

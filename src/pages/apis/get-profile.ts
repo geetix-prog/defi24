@@ -14,35 +14,39 @@ export const GET: APIRoute = async ({ request }) => {
 
         const user = await pb.collection('users').getOne(userId);
         
+        if (user.avatar) {
+            user.avatar_url = pb.files.getURL(user, user.avatar);
+        }
+        
         let equipeData = null;
         if (user.equipe) {
             const fullEquipeRecords = await pb.collection('Full_equipe').getFullList({
-                filter: `id = "${user.equipe}"`
+                filter: `equipe_id = "${user.equipe}"`
             });
             
             if (fullEquipeRecords.length === 0) {
                 console.warn('Aucune équipe trouvée dans Full_equipe');
             } else {
                 const equipeNom = fullEquipeRecords[0].equipe_nom;
-                const equipeId = fullEquipeRecords[0].id;
+                const equipeId = fullEquipeRecords[0].equipe_id;
                 const equipeLogo = fullEquipeRecords[0].equipe_logo;
+                const equipeChef = fullEquipeRecords[0].equipe_chef;
                 
                 const membres = fullEquipeRecords.map((row: any) => ({
-                    id: row.user_id || row.id,
+                    id: row.user_id,
                     nom: row.user_nom,
                     prenom: row.user_prenom,
                     email: row.user_email,
                     avatar: row.user_avatar,
-                    avatar_url: row.user_avatar ? pb.files.getURL(row, row.user_avatar) : null
+                    avatar_url: row.user_avatar ? `http://127.0.0.1:8090/api/files/_pb_users_auth_/${row.user_id}/${row.user_avatar}` : null
                 })).filter((m: any) => m.nom);
-                
-                const equipeRecord = await pb.collection('Equipe').getOne(user.equipe);
                 
                 equipeData = {
                     id: equipeId,
                     nom: equipeNom,
                     logo: equipeLogo,
-                    chef: equipeRecord.chef,
+                    logo_url: equipeLogo ? `http://127.0.0.1:8090/api/files/Equipe/${equipeId}/${equipeLogo}` : null,
+                    chef: equipeChef,
                     usersDetails: membres
                 };
             }
