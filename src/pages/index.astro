@@ -197,7 +197,6 @@ const partenaires = await getallPartenaires();
 		createForm?.reset();
 	});
 
-	// Fermer la modale en cliquant sur le fond
 	createModal?.addEventListener('click', (e) => {
 		if (e.target === createModal) {
 			createModal.classList.add('hidden');
@@ -206,7 +205,6 @@ const partenaires = await getallPartenaires();
 		}
 	});
 
-	// Gestion de la modale de jonction d'équipe
 	const openJoinModalBtn = document.getElementById('openJoinModal');
 	const closeModalBtn = document.getElementById('closeModal');
 	const joinModal = document.getElementById('joinModal');

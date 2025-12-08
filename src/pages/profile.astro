@@ -1,9 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
----
 
-const user = userData?.user;
-const equipe = userData?.equipe;
 ---
 
 <Layout>
@@ -97,6 +94,7 @@ const equipe = userData?.equipe;
                         placeholder="Aucune équipe"
                         class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 sm:border-3 border-black rounded-xl sm:rounded-2xl font-nohemi text-sm sm:text-base bg-gray-100 cursor-not-allowed"
                     />
+                    <p id="equipeId" class="font-mono text-gray-500 text-xs mt-1 px-1"></p>
                 </div>
 
                 <div>
@@ -236,13 +234,22 @@ const equipe = userData?.equipe;
             }
 
             (document.getElementById('equipe') as HTMLInputElement).value = equipe?.nom || 'Aucune équipe';
+            
+            const equipeIdElement = document.getElementById('equipeId');
+            if (equipeIdElement) {
+                if (equipe?.equipe_id) {
+                    equipeIdElement.textContent = `ID: ${equipe.equipe_id}`;
+                } else {
+                    equipeIdElement.textContent = '';
+                }
+            }
 
             if (equipe) {
                 const teamSection = document.getElementById('teamSection');
                 if (teamSection) {
                     teamSection.classList.remove('hidden');
                     document.getElementById('teamName')!.textContent = equipe.nom;
-                    document.getElementById('teamId')!.textContent = `ID: ${equipe.id}`;
+                    document.getElementById('teamId')!.textContent = `ID: ${equipe.equipe_id}`;
                     document.getElementById('teamMemberCount')!.textContent = `${equipe.usersDetails.length} membre${equipe.usersDetails.length > 1 ? 's' : ''}`;
 
                     const teamLogoContainer = document.getElementById('teamLogoContainer');
@@ -297,6 +304,72 @@ const equipe = userData?.equipe;
             console.error('Erreur:', error);
         }
     }
+
+    const profileForm = document.getElementById('profileForm') as HTMLFormElement;
+    const messageDiv = document.getElementById('message') as HTMLDivElement;
+
+    profileForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const prenomInput = document.getElementById('prenom') as HTMLInputElement;
+        const nomInput = document.getElementById('nom') as HTMLInputElement;
+        const emailInput = document.getElementById('email') as HTMLInputElement;
+        const promoInput = document.getElementById('promo') as HTMLSelectElement;
+        const confirmPasswordInput = document.getElementById('confirmPassword') as HTMLInputElement;
+        
+        messageDiv.textContent = '';
+
+        try {
+            const userData = JSON.parse(localStorage.getItem('user') || '{}');
+            
+            const formData = new FormData();
+            formData.append('userId', userData.id);
+            formData.append('prenom', prenomInput.value);
+            formData.append('nom', nomInput.value);
+            formData.append('email', emailInput.value);
+            formData.append('promo', promoInput.value);
+            formData.append('confirmPassword', confirmPasswordInput.value);
+
+            const response = await fetch('/apis/update-profile', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                localStorage.setItem('user', JSON.stringify(data.user));
+                
+                messageDiv.textContent = data.message;
+                messageDiv.style.color = 'green';
+                
+                confirmPasswordInput.value = '';
+                
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            } else {
+                messageDiv.textContent = data.error || 'Erreur lors de la mise à jour';
+                messageDiv.style.color = 'red';
+            }
+
+        } catch (error) {
+            messageDiv.textContent = 'Erreur de connexion au serveur';
+            messageDiv.style.color = 'red';
+            console.error(error);
+        }
+    });
+
+    const toggleConfirmPasswordBtn = document.getElementById('toggleConfirmPassword');
+    const confirmPasswordInput = document.getElementById('confirmPassword') as HTMLInputElement;
+
+    toggleConfirmPasswordBtn?.addEventListener('click', () => {
+        if (confirmPasswordInput.type === 'password') {
+            confirmPasswordInput.type = 'text';
+        } else {
+            confirmPasswordInput.type = 'password';
+        }
+    });
 
     const logoutBtn = document.getElementById('logoutBtn');
     

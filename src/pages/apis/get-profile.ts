@@ -20,35 +20,35 @@ export const GET: APIRoute = async ({ request }) => {
         
         let equipeData = null;
         if (user.equipe) {
-            const fullEquipeRecords = await pb.collection('Full_equipe').getFullList({
-                filter: `equipe_id = "${user.equipe}"`
-            });
-            
-            if (fullEquipeRecords.length === 0) {
-                console.warn('Aucune équipe trouvée dans Full_equipe');
-            } else {
-                const equipeNom = fullEquipeRecords[0].equipe_nom;
-                const equipeId = fullEquipeRecords[0].equipe_id;
-                const equipeLogo = fullEquipeRecords[0].equipe_logo;
-                const equipeChef = fullEquipeRecords[0].equipe_chef;
+            try {
+                // Récupérer les informations de l'équipe
+                const equipe = await pb.collection('Equipe').getOne(user.equipe);
                 
-                const membres = fullEquipeRecords.map((row: any) => ({
-                    id: row.user_id,
-                    nom: row.user_nom,
-                    prenom: row.user_prenom,
-                    email: row.user_email,
-                    avatar: row.user_avatar,
-                    avatar_url: row.user_avatar ? `http://127.0.0.1:8090/api/files/_pb_users_auth_/${row.user_id}/${row.user_avatar}` : null
-                })).filter((m: any) => m.nom);
+                // Récupérer tous les utilisateurs de cette équipe
+                const membresUsers = await pb.collection('users').getFullList({
+                    filter: `equipe = "${user.equipe}"`
+                });
+                
+                const membres = membresUsers.map((membre: any) => ({
+                    id: membre.id,
+                    nom: membre.nom,
+                    prenom: membre.prenom,
+                    email: membre.email,
+                    avatar: membre.avatar,
+                    avatar_url: membre.avatar ? `http://127.0.0.1:8090/api/files/_pb_users_auth_/${membre.id}/${membre.avatar}` : null
+                }));
                 
                 equipeData = {
-                    id: equipeId,
-                    nom: equipeNom,
-                    logo: equipeLogo,
-                    logo_url: equipeLogo ? `http://127.0.0.1:8090/api/files/Equipe/${equipeId}/${equipeLogo}` : null,
-                    chef: equipeChef,
+                    id: equipe.id,
+                    equipe_id: equipe.id,
+                    nom: equipe.nom,
+                    logo: equipe.logo,
+                    logo_url: equipe.logo ? `http://127.0.0.1:8090/api/files/Equipe/${equipe.id}/${equipe.logo}` : null,
+                    chef: equipe.chef,
                     usersDetails: membres
                 };
+            } catch (err) {
+                console.error('Erreur lors de la récupération de l\'équipe:', err);
             }
         }
 
