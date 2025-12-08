@@ -1,0 +1,224 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+    <div class="flex flex-col items-center space-y-10">
+        <div
+            class="flex flex-col mb-15 sm:space-y-10 md:space-y-15 justify-center items-center mt-16 sm:mt-20 md:mt-25 px-4 sm:px-6">
+            <h1
+                class="text-white font-oi text-center text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight tracking-wide">
+                Conditions Général d’Utilisation
+            </h1>
+        </div>
+        <div
+            class="space-y-6 lg:space-y-8 bg-white/80 w-8/10 lg:w-7/10 px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl font-nohemi shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]">
+            <div>
+                <section class="space-y-10">
+                    <div class="flex flex-col">
+                        <h2 class="text-lg sm:text-xl md:text-2xl font-black mb-3">1. Objet</h2>
+                        <div class="space-y-2">
+                            <p class="text-sm sm:text-base">
+                                Les présentes Conditions Générales d'Utilisation (CGU) régissent l'accès et l'utilisation du site Défi 24h, édité par le Département MMi de l'IUT Nord Franche-Comté.
+                            </p>
+                            <p class="text-sm sm:text-base">
+                                En utilisant ce site, vous acceptez sans réserve les présentes CGU. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser le site.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <h2 class="text-lg sm:text-xl md:text-2xl font-black mb-3">
+                            2. Éditeur du site
+                        </h2>
+                        <ul class="flex flex-col space-y-2">
+                            <li class="text-[#1C1C1C] font-light text-sm sm:text-base">
+                                Le site est édité par : ...
+                            </li>
+                            <li class="text-[#1C1C1C] font-light text-sm sm:text-base">
+                                Département MMi de l'IUT Nord Franche-Comté
+                            </li>
+                            <li class="text-[#1C1C1C] font-light text-sm sm:text-base">
+                                Adresse : 4 Place Lucien Tharradin, 25200 Montbéliard.
+                            </li>
+                            <li class="text-[#1C1C1C] font-light text-sm sm:text-base">
+                                <div class="flex items-center gap-2">
+                                    <p class="text-sm sm:text-base">Contact : </p>
+                                    <button id="copyEmail1"
+                                        class="copy-email-btn font-light transition-colors cursor-pointer text-left text-sm sm:text-base"
+                                        style="color: #FB7DA8;" onmouseover="this.style.color='#af476a'"
+                                        onmouseout="this.style.color='#FB7DA8'">
+                                        but-mmi-montbeliard@univ-fcomte.fr
+                                    </button>
+                                    <span id="copiedMessage1" class="copied-message font-light text-sm hidden"
+                                        style="color: #00995E;">
+                                        ✓ Copié !
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="flex flex-col">
+                        <h2 class="text-lg sm:text-xl md:text-2xl font-black mb-3">3. Accès au site</h2>
+                        <div class="space-y-2">
+                            <p class="text-sm sm:text-base">
+                                Le site est destiné exclusivement à un public français et est inaccessible aux mineurs.
+                            </p>
+                            <p class="text-sm sm:text-base">
+                                L'accès à certaines fonctionnalités, notamment l'inscription à l'événement, nécessite la fourniture d'informations personnelles obligatoires : nom, prénom, adresse e-mail.
+                            </p>
+                            <p class="text-sm sm:text-base">
+                                L'éditeur se réserve le droit de modifier, suspendre ou interrompre l'accès au site sans préavis, notamment pour des raisons de maintenance.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <h2 class="text-lg sm:text-xl md:text-2xl font-black mb-3">4. Inscription et participation</h2>
+                        <div class="space-y-2">
+                            <p class="text-sm sm:text-base">L'inscription à l'événement Défi 24h est obligatoire pour participer.</p>
+                            <p class="text-sm sm:text-base">Les frais d'inscription sont les suivants :</p>
+                            <ul class="space-y-2 pl-6 md:pl-10">
+                                <li class="text-[#1C1C1C] font-light text-sm sm:text-base">
+                                    Inscription classique : 2 €.
+                                </li>
+                                <li class="text-[#1C1C1C] font-light text-sm sm:text-base">
+                                    Inscription avec repas : 12 €.
+                                </li>
+                            </ul>
+                            <p class="text-sm sm:text-base">Les participants doivent obligatoirement faire partie d'une équipe.</p>
+                            <p class="text-sm sm:text-base">Toute inscription implique l'acceptation des présentes CGU ainsi que des règles spécifiques à l'événement.</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <h2 class="text-lg sm:text-xl md:text-2xl font-black mb-3">5. Contenus publiés par les utilisateurs</h2>
+                        <div class="space-y-2">
+                            <p class="text-sm sm:text-base">Les utilisateurs peuvent soumettre des contenus (photos, vidéos) dans le cadre de l'événement.</p>
+                            <p class="text-sm sm:text-base">Il est interdit de publier :</p>
+                            <ul class="space-y-2 pl-6 md:pl-10">
+                                <li class="text-[#1C1C1C] font-light text-sm sm:text-base">
+                                    Des contenus illicites, diffamatoires, ou portant atteinte aux droits d'autrui.
+                                </li>
+                                <li class="text-[#1C1C1C] font-light text-sm sm:text-base">
+                                    Du spam ou tout contenu promotionnel non autorisé.
+                                </li>
+                            </ul>
+                            <p class="text-sm sm:text-base">En publiant un contenu, l'utilisateur accorde au site une licence non exclusive et gratuite pour l'utilisation de ce contenu dans le cadre de la promotion de l'événement.</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <h2 class="text-lg sm:text-xl md:text-2xl font-black mb-3">6. Responsabilités</h2>
+                        <div class="space-y-2">
+                            <p class="text-sm sm:text-base">Responsabilité de l'utilisateur :</p>
+                            <ul class="space-y-2 pl-6 md:pl-10">
+                                <li class="text-[#1C1C1C] font-light text-sm sm:text-base">
+                                    Les utilisateurs sont responsables de l'exactitude des informations qu'ils fournissent lors de leur inscription.
+                                </li>
+                                <li class="text-[#1C1C1C] font-light text-sm sm:text-base">
+                                    Ils doivent s'assurer que leurs équipements informatiques sont protégés contre les virus et autres menaces.
+                                </li>
+                            </ul>
+                            <p class="text-sm sm:text-base">Responsabilité de l'éditeur :</p>
+                            <ul class="space-y-2 pl-6 md:pl-10">
+                                <li class="text-[#1C1C1C] font-light text-sm sm:text-base">
+                                    Le Département MMi ne peut être tenu responsable des dommages directs ou indirects liés à l'utilisation du site.
+                                </li>
+                                <li class="text-[#1C1C1C] font-light text-sm sm:text-base">
+                                    L'éditeur décline toute responsabilité concernant les contenus publiés par les utilisateurs.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <h2 class="text-lg sm:text-xl md:text-2xl font-black mb-3">7. Gestion des violations</h2>
+                        <div class="space-y-2">
+                            <p class="text-sm sm:text-base">En cas de non-respect des présentes CGU, l'éditeur se réserve le droit de :</p>
+                            <ul class="space-y-2 pl-6 md:pl-10">
+                                <li class="text-[#1C1C1C] font-light text-sm sm:text-base">
+                                    Supprimer les contenus litigieux.
+                                </li>
+                                <li class="text-[#1C1C1C] font-light text-sm sm:text-base">
+                                    Suspendre ou bannir l'accès de l'utilisateur au site.
+                                </li>
+                                <li class="text-[#1C1C1C] font-light text-sm sm:text-base">
+                                    Exclure définitivement le participant de l'événement.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <h2 class="text-lg sm:text-xl md:text-2xl font-black mb-3">8. Propriété intellectuelle</h2>
+                        <p class="text-sm sm:text-base">Tous les éléments du site (textes, images, vidéos, logos, etc.) sont protégés par les lois sur la propriété intellectuelle.</p>
+                        <p class="text-sm sm:text-base">Toute reproduction, modification ou diffusion non autorisée est strictement interdite.</p>
+                    </div>
+                    <div class="flex flex-col">
+                        <h2 class="text-lg sm:text-xl md:text-2xl font-black mb-3">9. Liens vers des sites tiers</h2>
+                        <div class="space-y-2">
+                            <p class="text-sm sm:text-base">Le site peut contenir des liens vers des sites externes. L'éditeur ne peut être tenu responsable du contenu ou des pratiques de ces sites tiers.</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <h2 class="text-lg sm:text-xl md:text-2xl font-black mb-3">10. Modification des CGU</h2>
+                        <div class="space-y-2">
+                            <p class="text-sm sm:text-base">Le Département MMi se réserve le droit de modifier les présentes CGU à tout moment. Les utilisateurs seront informés des changements via le site.</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <h2 class="text-lg sm:text-xl md:text-2xl font-black mb-3">11. Droit applicable et juridiction</h2>
+                        <div class="space-y-2">
+                            <p class="text-sm sm:text-base">Les présentes CGU sont régies par le droit français. En cas de litige, les tribunaux compétents seront ceux du ressort de l'IUT Nord Franche-Comté.</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <h2 class="text-lg sm:text-xl md:text-2xl font-black mb-3">
+                            12. Contact
+                        </h2>
+                        <p class="text-sm sm:text-base">Pour toute question ou demande concernant les présentes CGU, veuillez nous contacter à :</p>
+                        <ul class="flex flex-col space-y-2">
+                            <li class="text-[#1C1C1C] font-light text-sm sm:text-base">
+                                <div class="flex items-center gap-2">
+                                    <p class="text-sm sm:text-base">E-mail : </p>
+                                    <button id="copyEmail2"
+                                        class="copy-email-btn font-light transition-colors cursor-pointer text-left text-sm sm:text-base"
+                                        style="color: #FB7DA8;" onmouseover="this.style.color='#af476a'"
+                                        onmouseout="this.style.color='#FB7DA8'">
+                                        but-mmi-montbeliard@univ-fcomte.fr
+                                    </button>
+                                    <span id="copiedMessage2" class="copied-message font-light text-sm hidden"
+                                        style="color: #00995E;">
+                                        ✓ Copié !
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const copyButtons = document.querySelectorAll('.copy-email-btn');
+
+        copyButtons.forEach((button) => {
+            button.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(
+                        'but-mmi-montbeliard@univ-fcomte.fr');
+
+                    const copiedMessage = button.nextElementSibling;
+
+                    if (copiedMessage && copiedMessage.classList.contains(
+                            'copied-message')) {
+                        copiedMessage.classList.remove('hidden');
+                        setTimeout(() => {
+                            copiedMessage.classList.add('hidden');
+                        }, 2000);
+                    }
+                } catch (err) {
+                    console.error('Erreur lors de la copie:', err);
+                }
+            });
+        });
+    });
+</script>
