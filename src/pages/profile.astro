@@ -158,6 +158,7 @@ import Layout from "../layouts/Layout.astro";
                         <div class="min-w-0 flex-1">
                             <h4 id="teamName" class="font-oi text-black text-lg sm:text-xl truncate">La team rose</h4>
                             <p id="teamMemberCount" class="font-nohemi text-gray-600 text-xs sm:text-sm">5 membres</p>
+                            <p id="teamId" class="font-mono text-gray-500 text-xs truncate mt-1"></p>
                         </div>
                     </div>
 
@@ -192,21 +193,44 @@ import Layout from "../layouts/Layout.astro";
 
     async function loadProfile(userId: string) {
         try {
-            const response = await fetch(`/apis/get-profile?userId=${userId}`);
-            const data = await response.json();
+            const userResponse = await fetch(`http://127.0.0.1:8090/api/collections/users/records/${userId}`);
+            const user = await userResponse.json();
 
-            console.log('=== DEBUG PROFIL ===');
-            console.log('Data reçue:', data);
-            console.log('Equipe:', data.equipe);
-            console.log('UsersDetails:', data.equipe?.usersDetails);
-            console.log('Nombre de membres:', data.equipe?.usersDetails?.length);
-
-            if (!response.ok) {
-                throw new Error(data.error || 'Erreur lors du chargement du profil');
+            if (!userResponse.ok) {
+                throw new Error('Erreur lors du chargement du profil');
             }
 
-            const user = data.user;
-            const equipe = data.equipe;
+            let equipe = null;
+            if (user.equipe) {
+                const equipeResponse = await fetch(`http://127.0.0.1:8090/api/collections/Full_equipe/records?filter=(id='${user.equipe}')`);
+                const equipeData = await equipeResponse.json();
+                
+                if (equipeData.items && equipeData.items.length > 0) {
+                    const equipeNom = equipeData.items[0].equipe_nom;
+                    const equipeId = equipeData.items[0].id;
+                    const equipeLogo = equipeData.items[0].equipe_logo;
+                    
+                    const membres = equipeData.items.map((row: any) => ({
+                        id: row.user_id || row.id,
+                        nom: row.user_nom,
+                        prenom: row.user_prenom,
+                        email: row.user_email,
+                        avatar: row.user_avatar,
+                        avatar_url: row.user_avatar ? `http://127.0.0.1:8090/api/files/users/${row.user_id}/${row.user_avatar}` : null
+                    })).filter((m: any) => m.nom);
+                    
+                    const equipeRecordResponse = await fetch(`http://127.0.0.1:8090/api/collections/Equipe/records/${user.equipe}`);
+                    const equipeRecord = await equipeRecordResponse.json();
+                    
+                    equipe = {
+                        id: equipeId,
+                        nom: equipeNom,
+                        logo: equipeLogo,
+                        chef: equipeRecord.chef,
+                        usersDetails: membres
+                    };
+                }
+            }
 
             const prenomInput = document.getElementById('prenom') as HTMLInputElement;
             const nomInput = document.getElementById('nom') as HTMLInputElement;

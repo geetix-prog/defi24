@@ -16,38 +16,36 @@ export const GET: APIRoute = async ({ request }) => {
         
         let equipeData = null;
         if (user.equipe) {
-            const equipe = await pb.collection('Equipe').getOne(user.equipe);
+            const fullEquipeRecords = await pb.collection('Full_equipe').getFullList({
+                filter: `id = "${user.equipe}"`
+            });
             
-            console.log('Équipe récupérée:', equipe);
-            console.log('Membres de l\'équipe:', equipe.membre);
-            
-            const membreIds = Array.isArray(equipe.membre) ? equipe.membre : [];
-            
-            if (membreIds.length === 0) {
-                console.warn('Aucun membre dans l\'équipe');
+            if (fullEquipeRecords.length === 0) {
+                console.warn('Aucune équipe trouvée dans Full_equipe');
+            } else {
+                const equipeNom = fullEquipeRecords[0].equipe_nom;
+                const equipeId = fullEquipeRecords[0].id;
+                const equipeLogo = fullEquipeRecords[0].equipe_logo;
+                
+                const membres = fullEquipeRecords.map((row: any) => ({
+                    id: row.user_id || row.id,
+                    nom: row.user_nom,
+                    prenom: row.user_prenom,
+                    email: row.user_email,
+                    avatar: row.user_avatar,
+                    avatar_url: row.user_avatar ? pb.files.getURL(row, row.user_avatar) : null
+                })).filter((m: any) => m.nom);
+                
+                const equipeRecord = await pb.collection('Equipe').getOne(user.equipe);
+                
+                equipeData = {
+                    id: equipeId,
+                    nom: equipeNom,
+                    logo: equipeLogo,
+                    chef: equipeRecord.chef,
+                    usersDetails: membres
+                };
             }
-            
-            const usersDetails = await Promise.all(
-                membreIds.map(async (memberId: string) => {
-                    try {
-                        const memberUser = await pb.collection('users').getOne(memberId);
-                        console.log('Membre récupéré:', memberUser);
-                        return memberUser;
-                    } catch (error) {
-                        console.error(`Erreur récupération utilisateur ${memberId}:`, error);
-                        return null;
-                    }
-                })
-            );
-            
-            const validUsers = usersDetails.filter((u: any) => u !== null);
-            
-            console.log(`${validUsers.length} membres valides récupérés`);
-            
-            equipeData = {
-                ...equipe,
-                usersDetails: validUsers
-            };
         }
 
         return new Response(

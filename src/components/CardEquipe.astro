@@ -1,0 +1,93 @@
+---
+const { equipe_nom, equipe_logo_url, membres } = Astro.props;
+
+const teamColors = [
+    'bg-indigo-500',
+    'bg-purple-500',
+    'bg-pink-500',
+    'bg-green-500',
+    'bg-amber-500',
+    'bg-red-500',
+    'bg-cyan-500',
+    'bg-teal-500'
+];
+const randomColor = teamColors[Math.floor(Math.random() * teamColors.length)];
+---
+
+<div class="bg-white rounded-3xl overflow-hidden border-3 border-black shadow-[0_0_0_3px_black,8px_8px_0px_2px_black] max-w-md hover:translate-y-[-4px] transition-transform duration-200">
+    {equipe_logo_url && (
+        <div class="w-full h-48 sm:h-52 overflow-hidden border-b-3 border-black">
+            <img 
+                src={equipe_logo_url} 
+                alt={equipe_nom} 
+                class="w-full h-full object-cover"
+            />
+        </div>
+    )}
+    
+    <!-- Contenu -->
+    <div class="p-5 sm:p-6">
+        <!-- Badge nom équipe -->
+        <div class="mb-6">
+            <span class={`inline-block ${randomColor} text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-nohemi font-black text-sm sm:text-base border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]`}>
+                {equipe_nom}
+            </span>
+        </div>
+
+        <!-- Chef d'équipe label -->
+        {membres && membres.length > 0 && (
+            <p class="text-gray-600 text-sm font-nohemi font-medium mb-4">
+                Chef d'équipe
+            </p>
+        )}
+
+        <!-- Liste des membres -->
+        <div class="flex flex-col gap-3 mb-4">
+            {membres && membres.map((membre, index) => (
+                <div class="flex items-center gap-3 sm:gap-3.5">
+                    <div class="relative flex-shrink-0">
+                        {membre.user_avatar_url ? (
+                            <img 
+                                src={membre.user_avatar_url} 
+                                alt={membre.user_prenom}
+                                class="w-11 h-11 sm:w-12 sm:h-12 rounded-full object-cover border-3 border-black"
+                            />
+                        ) : (
+                            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 border-3 border-black flex items-center justify-center text-white font-oi text-base sm:text-lg font-bold">
+                                {`${membre.user_prenom?.charAt(0) || ''}${membre.user_nom?.charAt(0) || ''}`.toUpperCase()}
+                            </div>
+                        )}
+                        
+                        <!-- Badge chef (premier membre) -->
+                        {index === 0 && (
+                            <span class="absolute -top-1 -right-1 w-5 h-5 bg-yellow-400 rounded-full border-2 border-black flex items-center justify-center text-xs">
+                                ⭐
+                            </span>
+                        )}
+                    </div>
+
+                    <!-- Infos membre -->
+                    <div class="flex flex-col gap-0.5 min-w-0 flex-1">
+                        <span class="font-nohemi font-bold text-gray-900 text-sm sm:text-base truncate">
+                            {membre.user_prenom} {membre.user_nom}
+                        </span>
+                        {membre.user_email && (
+                            <span class="font-nohemi text-gray-500 text-xs sm:text-sm truncate">
+                                {membre.user_email}
+                            </span>
+                        )}
+                    </div>
+                </div>
+            ))}
+        </div>
+
+        <!-- Footer -->
+        {membres && membres.length > 0 && (
+            <div class="pt-4 mt-4 border-t-2 border-gray-200">
+                <p class="text-center text-gray-500 text-sm font-nohemi font-medium">
+                    {membres.length} membre{membres.length > 1 ? 's' : ''}
+                </p>
+            </div>
+        )}
+    </div>
+</div>

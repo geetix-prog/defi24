@@ -1,0 +1,32 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CardEquipe from '../components/CardEquipe.astro';
+import { allEquipes } from '../../backend/backend.mjs';
+
+const equipesData = await allEquipes();
+
+const equipesGrouped = equipesData.reduce((acc, row) => {
+    if (!acc[row.equipe_nom]) {
+        acc[row.equipe_nom] = {
+            equipe_nom: row.equipe_nom,
+            equipe_logo_url: row.equipe_logo_url,
+            membres: []
+        };
+    }
+    acc[row.equipe_nom].membres.push({
+        user_nom: row.user_nom,
+        user_prenom: row.user_prenom,
+        user_avatar_url: row.user_avatar_url,
+        user_email: row.user_email
+    });
+    return acc;
+}, {});
+
+const equipes = Object.values(equipesGrouped);
+---
+
+<Layout>
+    {equipes.map(equipe => (
+        <CardEquipe {...equipe} />
+    ))}
+</Layout>

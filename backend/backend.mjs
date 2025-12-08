@@ -92,3 +92,17 @@ export async function joinEquipe(equipeId, userId) {
         throw error;
     }
 }
+
+export async function allEquipes() {
+    let records = await pb.collection("Full_equipe").getFullList();
+    records = records.map((row) => {
+        if (row.equipe_logo) {
+            row.equipe_logo_url = pb.files.getURL(row, row.equipe_logo);
+        }
+        if (row.user_avatar) {
+            row.user_avatar_url = pb.files.getURL(row, row.user_avatar);
+        }
+        return row;
+    });
+    return records;
+}
