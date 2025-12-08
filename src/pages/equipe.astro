@@ -30,7 +30,7 @@ const equipes = Object.values(equipesGrouped);
         <h1 class="text-white font-oi text-center text-5xl sm:text-6xl md:text-7xl lg:text-8xl uppercase">
             Les équipes
         </h1>
-        <div class="w-5/10">
+        <div class="w-8/10 lg:w-5/10">
             <p class="text-white font-nohemi text-center text-base sm:text-lg mb-4">
                 Juste en dessous, découvre la liste des équipes déjà créées et leurs membres.
             </p>
@@ -90,7 +90,6 @@ const equipes = Object.values(equipesGrouped);
         </div>
     </div>
 
-    <!-- Modale pour rejoindre une équipe -->
     <div id="joinModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
         <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] relative">
             <button id="closeModal" class="absolute top-4 right-4 text-2xl hover:text-primary transition">✕</button>
@@ -122,9 +121,11 @@ const equipes = Object.values(equipesGrouped);
         </div>
     </div>
 
+    <div class="flex flex-col lg:grid lg:grid-cols-3 w-9/10 mx-auto mt-25 gap-10">
     {equipes.map(equipe => (
         <CardEquipe {...equipe} />
     ))}
+    </div>
 </Layout>
 
 <script>
