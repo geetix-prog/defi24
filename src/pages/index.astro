@@ -37,21 +37,21 @@ const partenaires = await getallPartenaires();
 			<div class="w-8/10 flex flex-col lg:flex-row gap-5 lg:items-stretch">
 				<div
 					class="space-y-2 lg:space-y-5 w-full bg-white/80 px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]">
-					<p class="font-nohemi text-black text-[16px] lg:text-lg font-normal">
-						Le Défi 24H, c'est l'événement incontournable du cursus MMI : 24 heures non-stop pour créer,
-						imaginer et repousser vos limites sur un thème surprise. Que vous soyez fan de design, de
-						montage,
-						de développement ou juste là pour l'ambiance (et les pizzas), tout le monde a sa place !</p>
+				<p class="font-nohemi text-black text-sm sm:text-base md:text-lg font-normal">
+					Le Défi 24H, c'est l'événement incontournable du cursus MMI : 24 heures non-stop pour créer,
+					imaginer et repousser vos limites sur un thème surprise. Que vous soyez fan de design, de
+					montage,
+					de développement ou juste là pour l'ambiance (et les pizzas), tout le monde a sa place !</p>
 				</div>
 				<div
 					class="space-y-2 lg:space-y-5 w-full bg-gradient-to-b from-[#FFC567] to-[#FD5A46] px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex justify-center items-center">
-					<p class="font-nohemi text-white md:text-xl lg:text-2xl xl:text-3xl">Prêt a relever le challenge ?
+					<p class="font-nohemi text-white text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">Prêt a relever le challenge ?
 					</p>
 				</div>
 			</div>
 			<div
 				class="inline-block space-y-2 lg:space-y-5 bg-white/80 w-8/10 px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl font-nohemi shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]">
-				<p class="font-nohemi text-black text-[16px] lg:text-lg font-normal">
+				<p class="font-nohemi text-black text-sm sm:text-base md:text-lg font-normal">
 					Au Défi 24H, on joue en équipe ! Regroupe 4 ou 5 génies créatifs (ou juste tes potes, ça marche
 					aussi),
 					et prépare-toi à vivre une aventure intense. Chacun apporte ses talents, que ce soit pour le design,
@@ -60,7 +60,7 @@ const partenaires = await getallPartenaires();
 				</p>
 			</div>
 		</div>
-		<div class="flex space-x-10">
+		<div class="flex mx-10 lg:mx-0 space-x-5 lg:space-x-10">
 			<button id="openCreateModal" class="inline-block bg-primary text-white px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center cursor-pointer">
 				Créer mon équipe
 			</button>
@@ -70,7 +70,6 @@ const partenaires = await getallPartenaires();
 		</div>
 	</div>
 
-	<!-- Modale pour créer une équipe -->
 	<div id="createModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
 		<div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] relative">
 			<button id="closeCreateModal" class="absolute top-4 right-4 text-2xl hover:text-primary transition">✕</button>
@@ -79,19 +78,19 @@ const partenaires = await getallPartenaires();
 			
 			<form id="createForm" class="space-y-4" enctype="multipart/form-data">
 				<div>
-					<label for="equipeName" class="block font-nohemi text-black mb-2">Nom de l'équipe</label>
+					<label for="equipeName" class="block font-nohemi text-black text-sm sm:text-base mb-2">Nom de l'équipe</label>
 					<input 
 						type="text" 
 						id="equipeName" 
 						name="equipeName" 
 						required 
 						placeholder="Entrez le nom de votre équipe"
-						class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary"
+						class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-primary"
 					/>
 				</div>
 				
 				<div>
-					<label for="equipeLogo" class="block font-nohemi text-black mb-2">Logo de l'équipe (optionnel)</label>
+					<label for="equipeLogo" class="block font-nohemi text-black text-sm sm:text-base mb-2">Logo de l'équipe (optionnel)</label>
 					<input 
 						type="file" 
 						id="equipeLogo" 
@@ -103,17 +102,16 @@ const partenaires = await getallPartenaires();
 				
 				<button 
 					type="submit"
-					class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-lg font-bold hover:scale-105 active:scale-95 transition-transform"
+					class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-base sm:text-lg font-bold hover:scale-105 active:scale-95 transition-transform"
 				>
 					Créer l'équipe
 				</button>
 			</form>
 			
-			<div id="createMessage" class="mt-4 text-center font-nohemi"></div>
+			<div id="createMessage" class="mt-4 text-center font-nohemi text-sm sm:text-base"></div>
 		</div>
 	</div>
 
-	<!-- Modale pour rejoindre une équipe -->
 	<div id="joinModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
 		<div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] relative">
 			<button id="closeModal" class="absolute top-4 right-4 text-2xl hover:text-primary transition">✕</button>
@@ -122,42 +120,42 @@ const partenaires = await getallPartenaires();
 			
 			<form id="joinForm" class="space-y-4">
 				<div>
-					<label for="equipeId" class="block font-nohemi text-black mb-2">ID de l'équipe</label>
+					<label for="equipeId" class="block font-nohemi text-black text-sm sm:text-base mb-2">ID de l'équipe</label>
 					<input 
 						type="text" 
 						id="equipeId" 
 						name="equipeId" 
 						required 
 						placeholder="Entrez l'ID de l'équipe"
-						class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary"
+						class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-primary"
 					/>
 				</div>
 				
 				<button 
 					type="submit"
-					class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-lg font-bold hover:scale-105 active:scale-95 transition-transform"
+					class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-base sm:text-lg font-bold hover:scale-105 active:scale-95 transition-transform"
 				>
 					Rejoindre l'équipe
 				</button>
 			</form>
 			
-			<div id="message" class="mt-4 text-center font-nohemi"></div>
+			<div id="message" class="mt-4 text-center font-nohemi text-sm sm:text-base"></div>
 		</div>
 	</div>
-	<div class="mt-25 flex flex-col mx-auto w-8/10 space-y-10">
+	<div class="mt-25 flex flex-col mx-auto w-8/10 space-y-5 lg:space-y-10">
 		<div
 			class="inline-block space-y-2 lg:space-y-5 bg-lightprimary w-full px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl font-nohemi shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]">
-			<h2 class="font-oi uppercase text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">Nos<br>partenaires</h2>
+			<h2 class="font-oi uppercase text-white text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">Nos<br>partenaires</h2>
 		</div>
-		<div class="grid grid-cols-4 gap-5 w-full">
+		<div class="flex flex-col lg:grid lg:grid-cols-4 gap-5 w-full">
 			{partenaires.map((partenaire) => (
-			<div class="inline-block space-y-2 lg:space-y-5 bg-white w-full px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl font-nohemi shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]">
+			<div class="inline-block space-y-2 lg:space-y-5 bg-white w-full px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl font-nohemi shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex justify-center items-center">
 				<img src={partenaire.img} alt={partenaire.nom} class="max-h-16 object-contain" />
 			</div>
 			))}
 		</div>
 	</div>
-	<div class="space-y-2 lg:space-y-5 bg-white/80 w-5/10 px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl font-nohemi shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center mx-auto mt-25">
+	<div class="space-y-2 lg:space-y-5 bg-white/80 w-8/10 lg:w-5/10 px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl font-nohemi shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center mx-auto mt-25">
 		<p class="font-nohemi text-primary text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">Une question ? Besoin d'infos ?</p>
 		<h2 class="font-oi uppercase text-tertiary text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-center">Contactez-nous !</h2>
 		<Button bgClass="bg-primary" colorClass="text-white" text="Envoyer un message" page="contact" />
