@@ -1,5 +1,9 @@
-[[redirects]]
-  from = "/api/*"
-  to = "http://defi24.mathis-guellati.fr:8091/:splat"
-  status = 200
-  force = true
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "img-src 'self' http://defi24.mathis-guellati.fr:8091 data: https:; default-src 'self' http://defi24.mathis-guellati.fr:8091 https:; connect-src 'self' http://defi24.mathis-guellati.fr:8091 https:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
