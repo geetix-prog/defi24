@@ -28,6 +28,8 @@ export async function getallPartenaires() {
         });
         records = records.map((partenaire) => {
             partenaire.img = pb.files.getUrl(partenaire, partenaire.logo);
+            console.log('URL générée:', partenaire.img);
+            console.log('Base URL PocketBase:', pb.baseUrl);
             return partenaire;
         });
         return records;
