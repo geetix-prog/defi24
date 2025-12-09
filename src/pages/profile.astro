@@ -1,6 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-
 ---
 
 <Layout>
@@ -23,7 +22,8 @@ import Layout from "../layouts/Layout.astro";
                 </div>
                 <div class="min-w-0 flex-1">
                     <h2 id="userName" class="font-oi text-black text-xl sm:text-2xl md:text-3xl mb-1 truncate">Chargement...</h2>
-                    <p id="userEmail" class="font-nohemi text-gray-600 text-xs sm:text-sm truncate">email@example.com</p>
+                    <p id="userEmail" class="font-nohemi text-gray-600 text-xs sm:text-sm truncate mb-2">email@example.com</p>
+                    <span id="userRole" style="display: none;" class="px-3 py-1 rounded-full text-xs font-nohemi font-bold border-2 border-black"></span>
                 </div>
             </div>
 
@@ -94,7 +94,7 @@ import Layout from "../layouts/Layout.astro";
                         placeholder="Aucune équipe"
                         class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 sm:border-3 border-black rounded-xl sm:rounded-2xl font-nohemi text-sm sm:text-base bg-gray-100 cursor-not-allowed"
                     />
-                    <p id="equipeId" class="font-mono text-gray-500 text-xs mt-1 px-1"></p>
+                    <p id="equipeId" class="font-mono text-primary text-xs mt-1 px-1"></p>
                 </div>
 
                 <div>
@@ -155,7 +155,7 @@ import Layout from "../layouts/Layout.astro";
                         <div class="min-w-0 flex-1">
                             <h4 id="teamName" class="font-oi text-black text-lg sm:text-xl truncate">La team rose</h4>
                             <p id="teamMemberCount" class="font-nohemi text-gray-600 text-xs sm:text-sm">5 membres</p>
-                            <p id="teamId" class="font-mono text-gray-500 text-xs truncate mt-1"></p>
+                            <p id="teamId" class="font-nohemi text-gray-500 text-xs truncate mt-1"></p>
                         </div>
                     </div>
 
@@ -238,10 +238,23 @@ import Layout from "../layouts/Layout.astro";
             const equipeIdElement = document.getElementById('equipeId');
             if (equipeIdElement) {
                 if (equipe?.equipe_id) {
-                    equipeIdElement.textContent = `ID: ${equipe.equipe_id}`;
+                    equipeIdElement.textContent = `Code: ${equipe.equipe_id}`;
                 } else {
                     equipeIdElement.textContent = '';
                 }
+            }
+
+            // Afficher le badge de rôle
+            const userRoleElement = document.getElementById('userRole');
+            if (userRoleElement && equipe) {
+                if (equipe.chef === userId) {
+                    userRoleElement.textContent = '👑 Chef d\'équipe';
+                    userRoleElement.className = 'inline-block px-3 py-1 rounded-full text-xs font-nohemi font-bold border-2 border-black bg-primary text-white';
+                } else {
+                    userRoleElement.textContent = '👤 Membre';
+                    userRoleElement.className = 'inline-block px-3 py-1 rounded-full text-xs font-nohemi font-bold border-2 border-black bg-tertiary text-white';
+                }
+                userRoleElement.style.display = 'inline-block';
             }
 
             if (equipe) {
@@ -249,7 +262,7 @@ import Layout from "../layouts/Layout.astro";
                 if (teamSection) {
                     teamSection.classList.remove('hidden');
                     document.getElementById('teamName')!.textContent = equipe.nom;
-                    document.getElementById('teamId')!.textContent = `ID: ${equipe.equipe_id}`;
+                    document.getElementById('teamId')!.textContent = `Code: ${equipe.equipe_id}`;
                     document.getElementById('teamMemberCount')!.textContent = `${equipe.usersDetails.length} membre${equipe.usersDetails.length > 1 ? 's' : ''}`;
 
                     const teamLogoContainer = document.getElementById('teamLogoContainer');

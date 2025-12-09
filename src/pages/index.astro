@@ -120,23 +120,24 @@ const partenaires = await getallPartenaires();
 			
 			<form id="joinForm" class="space-y-4">
 				<div>
-					<label for="equipeId" class="block font-nohemi text-black text-sm sm:text-base mb-2">ID de l'équipe</label>
+					<label for="equipeId" class="block font-nohemi text-black text-sm sm:text-base mb-2">Code de l'équipe</label>
 					<input 
 						type="text" 
 						id="equipeId" 
 						name="equipeId" 
 						required 
-						placeholder="Entrez l'ID de l'équipe"
+						placeholder="Entrez l'Code de l'équipe"
 						class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-primary"
 					/>
 				</div>
 				
 				<button 
-					type="submit"
-					class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-base sm:text-lg font-bold hover:scale-105 active:scale-95 transition-transform"
+				type="submit"
+				class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-base sm:text-lg font-bold hover:scale-105 active:scale-95 transition-transform"
 				>
-					Rejoindre l'équipe
-				</button>
+				Rejoindre l'équipe
+			</button>
+			<p class="font-nohemi text-center text-primary mt-5">Le code se trouve dans le profile des membres de l'équipe</p>
 			</form>
 			
 			<div id="message" class="mt-4 text-center font-nohemi text-sm sm:text-base"></div>
