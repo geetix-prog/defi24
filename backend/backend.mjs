@@ -27,7 +27,7 @@ export async function getallPartenaires() {
             sort: 'nom'
         });
         records = records.map((partenaire) => {
-            partenaire.img = pb.files.getURL(partenaire, partenaire.logo);
+            partenaire.img = pb.files.getUrl(partenaire, partenaire.logo);
             return partenaire;
         });
         return records;
@@ -36,6 +36,7 @@ export async function getallPartenaires() {
         throw error;
     }
 }
+
 
 export async function createEquipe(nom, userId, logo) {
     try {

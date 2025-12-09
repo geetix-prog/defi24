@@ -51,7 +51,9 @@ export const GET: APIRoute = async ({ request }) => {
                 const membres = await Promise.all(membresProfiles.map(async (membre: any) => {
                     let membreAvatarUrl = null;
                     if (membre.avatar) {
-                        membreAvatarUrl = `${pb.baseUrl}/api/files/Profile/${membre.id}/${membre.avatar}`;
+                        // Récupérer le record user pour chaque membre
+                        const membreRecord = await pb.collection('users').getOne(membre.id);
+                        membreAvatarUrl = pb.files.getURL(membreRecord, membre.avatar);
                     }
                     return {
                         id: membre.id,
@@ -65,7 +67,9 @@ export const GET: APIRoute = async ({ request }) => {
 
                 let logo_url = null;
                 if (profile.equipe_logo) {
-                    logo_url = `${pb.baseUrl}/api/files/Equipe/${profile.equipe_id}/${profile.equipe_logo}`;
+                    // Récupérer le record de l'équipe pour le logo
+                    const equipeRecord = await pb.collection('Equipe').getOne(profile.equipe_id);
+                    logo_url = pb.files.getURL(equipeRecord, profile.equipe_logo);
                 }
 
                 equipeData = {
