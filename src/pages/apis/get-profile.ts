@@ -1,30 +1,33 @@
-import type { APIRoute } from 'astro';
-import pb from '../../../src/utils/pb.ts';
+import type {
+    APIRoute
+} from 'astro';
+import pb from '../../../src/utils/pb';
 
-export const GET: APIRoute = async ({ request }) => {
+export const GET: APIRoute = async ({
+    request
+}) => {
     try {
         const url = new URL(request.url);
         const userId = url.searchParams.get('userId');
 
-        console.log('=== GET PROFILE DEBUG ===');
-        console.log('User ID:', userId);
-        console.log('PocketBase URL:', pb.baseUrl);
-
         if (!userId) {
-            return new Response(JSON.stringify({ error: 'ID utilisateur requis.' }), {
-                status: 400
+            return new Response(JSON.stringify({
+                error: "ID utilisateur requis."
+            }), {
+                status: 400,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
         }
 
+        // Profil complet (vue ou collection)
         const profile = await pb.collection('Profile').getOne(userId);
-        console.log('Profile récupéré:', profile);
-        console.log('Avatar field:', profile.avatar);
 
-        // Construire l'URL complète de l'avatar
-        let avatar_url = null;
+        // avatar
+        let avatar_url: string | null = null;
         if (profile.avatar) {
             avatar_url = `${pb.baseUrl}/api/files/Profile/${profile.id}/${profile.avatar}`;
-            console.log('Avatar URL construite:', avatar_url);
         }
 
         const user = {
@@ -34,26 +37,31 @@ export const GET: APIRoute = async ({ request }) => {
             prenom: profile.prenom,
             promo: profile.promo,
             avatar: profile.avatar,
-            avatar_url: avatar_url,
+            avatar_url,
             verified: profile.verified,
             emailVisibility: profile.emailVisibility
         };
 
-        console.log('User object:', user);
-
+        // récupération des infos d'équipe
         let equipeData = null;
-        if (profile.equipe_id) {
-            try {
-                const membresProfiles = await pb.collection('Profile').getFullList({
-                    filter: `equipe_id = "${profile.equipe_id}"`
-                });
 
-                const membres = await Promise.all(membresProfiles.map(async (membre: any) => {
-                    let membreAvatarUrl = null;
+        // on accepte plusieurs noms possibles pour l'id d'équipe
+        const equipeId =
+            profile.equipe_id || profile.equipe || profile.equipeId || null;
+
+        if (equipeId) {
+            // tous les profils ayant la même équipe
+            const membresProfiles = await pb.collection('Profile').getFullList({
+                filter: `equipe_id = "${equipeId}"`
+            });
+
+            const membres = await Promise.all(
+                membresProfiles.map(async (membre: any) => {
+                    let membreAvatarUrl: string | null = null;
                     if (membre.avatar) {
-                        // Récupérer le record user pour chaque membre
-                        const membreRecord = await pb.collection('users').getOne(membre.id);
-                        membreAvatarUrl = pb.files.getURL(membreRecord, membre.avatar);
+                        // ici on se contente de reconstruire l’URL comme pour user
+                        membreAvatarUrl =
+                            `${pb.baseUrl}/api/files/Profile/${membre.id}/${membre.avatar}`;
                     }
                     return {
                         id: membre.id,
@@ -63,57 +71,48 @@ export const GET: APIRoute = async ({ request }) => {
                         avatar: membre.avatar,
                         avatar_url: membreAvatarUrl
                     };
-                }));
+                })
+            );
 
-                let logo_url = null;
-                if (profile.equipe_logo) {
-                    // Récupérer le record de l'équipe pour le logo
-                    const equipeRecord = await pb.collection('Equipe').getOne(profile.equipe_id);
-                    logo_url = pb.files.getURL(equipeRecord, profile.equipe_logo);
-                }
+            // record d’équipe pour logo et chef
+            const equipeRecord = await pb.collection('Equipe').getOne(equipeId);
 
-                equipeData = {
-                    id: profile.equipe_id,
-                    equipe_id: profile.equipe_id,
-                    nom: profile.equipe_nom,
-                    logo: profile.equipe_logo,
-                    logo_url: logo_url,
-                    chef: profile.equipe_chef,
-                    points: profile.equipe_points,
-                    created: profile.equipe_created,
-                    usersDetails: membres
-                };
-            } catch (err) {
-                console.error('Erreur lors de la récupération des membres de l\'équipe:', err);
+            let logo_url: string | null = null;
+            if (equipeRecord.logo) {
+                logo_url = pb.files.getURL(equipeRecord, equipeRecord.logo);
             }
+
+            equipeData = {
+                id: equipeId,
+                equipe_id: equipeId,
+                nom: profile.equipe_nom || equipeRecord.nom,
+                logo: equipeRecord.logo,
+                logo_url,
+                chef: equipeRecord.chef,
+                points: equipeRecord.points ? ? 0,
+                created: equipeRecord.created,
+                usersDetails: membres
+            };
         }
 
-        const response = {
+        const responseBody = {
             success: true,
-            user: user,
+            user,
             equipe: equipeData
         };
 
-        console.log('=== RESPONSE FINALE ===');
-        console.log(JSON.stringify(response, null, 2));
-
-        return new Response(
-            JSON.stringify(response),
-            { 
-                status: 200,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+        return new Response(JSON.stringify(responseBody), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json'
             }
-        );
-    } catch (err) {
-        const error = err as Error;
-        console.error('Erreur API get-profile:', error);
+        });
+    } catch (err: any) {
+        console.error('Erreur API get-profile:', err);
         return new Response(
-            JSON.stringify({ 
-                error: error.message || 'Erreur lors de la récupération du profil.' 
-            }),
-            { 
+            JSON.stringify({
+                error: err ? .message || "Erreur lors de la récupération du profil."
+            }), {
                 status: 500,
                 headers: {
                     'Content-Type': 'application/json'

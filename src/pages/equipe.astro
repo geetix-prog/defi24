@@ -6,20 +6,20 @@ import { allEquipes } from '../../backend/backend.mjs';
 const equipesData = await allEquipes();
 
 const equipesGrouped = equipesData.reduce((acc, row) => {
-    if (!acc[row.equipe_nom]) {
-        acc[row.equipe_nom] = {
-            equipe_nom: row.equipe_nom,
-            equipe_logo_url: row.equipe_logo_url,
-            membres: []
-        };
-    }
-    acc[row.equipe_nom].membres.push({
-        user_nom: row.user_nom,
-        user_prenom: row.user_prenom,
-        user_avatar_url: row.user_avatar_url,
-        user_email: row.user_email
-    });
-    return acc;
+if (!acc[row.equipe_nom]) {
+acc[row.equipe_nom] = {
+equipe_nom: row.equipe_nom,
+equipe_logo_url: row.equipe_logo_url,
+membres: []
+};
+}
+acc[row.equipe_nom].membres.push({
+user_nom: row.user_nom,
+user_prenom: row.user_prenom,
+user_avatar_url: row.user_avatar_url,
+user_email: row.user_email
+});
+return acc;
 }, {});
 
 const equipes = Object.values(equipesGrouped);
@@ -27,8 +27,8 @@ const equipes = Object.values(equipesGrouped);
 
 <Layout>
     <div class="flex flex-col space-y-15 justify-center items-center mt-25 px-4">
-		<h1
-			class="text-white font-oi text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight sm:leading-tight md:leading-normal tracking-wide">
+        <h1
+            class="text-white font-oi text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight sm:leading-tight md:leading-normal tracking-wide">
             Les équipes
         </h1>
         <div class="w-8/10 lg:w-5/10">
@@ -36,14 +36,17 @@ const equipes = Object.values(equipesGrouped);
                 Juste en dessous, découvre la liste des équipes déjà créées et leurs membres.
             </p>
             <p class="text-white font-nohemi text-center text-base sm:text-lg mb-6">
-                Tu peux choisir de créer ta propre équipe en cliquant sur "Créer mon équipe". Tu deviendras alors automatiquement chef d'équipe.
+                Tu peux choisir de créer ta propre équipe en cliquant sur "Créer mon équipe". Tu deviendras alors
+                automatiquement chef d'équipe.
             </p>
         </div>
         <div class="flex space-x-6">
-            <button id="openCreateModal" class="inline-block bg-primary text-white px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center cursor-pointer">
+            <button id="openCreateModal"
+                class="inline-block bg-primary text-white px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center cursor-pointer">
                 Créer mon équipe
             </button>
-            <button id="openJoinModal" class="inline-block bg-white text-primary px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center cursor-pointer">
+            <button id="openJoinModal"
+                class="inline-block bg-white text-primary px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center cursor-pointer">
                 Intégrer une équipe
             </button>
         </div>
@@ -51,42 +54,32 @@ const equipes = Object.values(equipesGrouped);
 
     <div id="createModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
         <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] relative">
-            <button id="closeCreateModal" class="absolute top-4 right-4 text-2xl hover:text-primary transition">✕</button>
-            
+            <button id="closeCreateModal"
+                class="absolute top-4 right-4 text-2xl hover:text-primary transition">✕</button>
+
             <h2 class="font-oi text-primary text-3xl md:text-4xl text-center mb-6">Créer une équipe</h2>
-            
+
             <form id="createForm" class="space-y-4" enctype="multipart/form-data">
                 <div>
                     <label for="equipeName" class="block font-nohemi text-black mb-2">Nom de l'équipe</label>
-                    <input 
-                        type="text" 
-                        id="equipeName" 
-                        name="equipeName" 
-                        required 
+                    <input type="text" id="equipeName" name="equipeName" required
                         placeholder="Entrez le nom de votre équipe"
-                        class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
+                        class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary" />
                 </div>
-                
+
                 <div>
-                    <label for="equipeLogo" class="block font-nohemi text-black mb-2">Logo de l'équipe (optionnel)</label>
-                    <input 
-                        type="file" 
-                        id="equipeLogo" 
-                        name="equipeLogo" 
-                        accept="image/*"
-                        class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-opacity-90"
-                    />
+                    <label for="equipeLogo" class="block font-nohemi text-black mb-2">Logo de l'équipe
+                        (optionnel)</label>
+                    <input type="file" id="equipeLogo" name="equipeLogo" accept="image/*"
+                        class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-opacity-90" />
                 </div>
-                
-                <button 
-                    type="submit"
-                    class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-lg font-bold hover:scale-105 active:scale-95 transition-transform"
-                >
+
+                <button type="submit"
+                    class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-lg font-bold hover:scale-105 active:scale-95 transition-transform">
                     Créer l'équipe
                 </button>
             </form>
-            
+
             <div id="createMessage" class="mt-4 text-center font-nohemi"></div>
         </div>
     </div>
@@ -94,99 +87,194 @@ const equipes = Object.values(equipesGrouped);
     <div id="joinModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
         <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] relative">
             <button id="closeModal" class="absolute top-4 right-4 text-2xl hover:text-primary transition">✕</button>
-            
+
             <h2 class="font-oi text-primary text-3xl md:text-4xl text-center mb-6">Rejoindre une équipe</h2>
-            
+
             <form id="joinForm" class="space-y-4">
                 <div>
                     <label for="equipeId" class="block font-nohemi text-black mb-2">ID de l'équipe</label>
-                    <input 
-                        type="text" 
-                        id="equipeId" 
-                        name="equipeId" 
-                        required 
-                        placeholder="Entrez l'ID de l'équipe"
-                        class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
+                    <input type="text" id="equipeId" name="equipeId" required placeholder="Entrez l'ID de l'équipe"
+                        class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary" />
                 </div>
-                
-                <button 
-                    type="submit"
-                    class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-lg font-bold hover:scale-105 active:scale-95 transition-transform"
-                >
+
+                <button type="submit"
+                    class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-lg font-bold hover:scale-105 active:scale-95 transition-transform">
                     Rejoindre l'équipe
                 </button>
             </form>
-            
+
             <div id="message" class="mt-4 text-center font-nohemi"></div>
         </div>
     </div>
 
     <div class="flex flex-col lg:grid lg:grid-cols-3 w-9/10 mx-auto mt-25 gap-10">
-    {equipes.map(equipe => (
+        {equipes.map(equipe => (
         <CardEquipe {...equipe} />
-    ))}
+        ))}
     </div>
 </Layout>
 
 <script>
-    // Gestion de la modale de création d'équipe
-    const openCreateModalBtn = document.getElementById('openCreateModal');
-    const closeCreateModalBtn = document.getElementById('closeCreateModal');
-    const createModal = document.getElementById('createModal');
-    const createForm = document.getElementById('createForm') as HTMLFormElement;
-    const createMessageDiv = document.getElementById('createMessage') as HTMLDivElement;
+    const userDataString = localStorage.getItem('user');
+    if (!userDataString) {
+        window.location.href = '/connexion';
+    } else {
+        const userData = JSON.parse(userDataString);
+        loadProfile(userData.id);
+    }
 
-    openCreateModalBtn?.addEventListener('click', () => {
-        createModal?.classList.remove('hidden');
-    });
+    async function loadProfile(userId) {
+        try {
+            const response = await fetch(`/apis/get-profile?userId=${userId}`);
+            const data = await response.json();
 
-    closeCreateModalBtn?.addEventListener('click', () => {
-        createModal?.classList.add('hidden');
-        createMessageDiv.textContent = '';
-        createForm?.reset();
-    });
+            if (!response.ok) {
+                throw new Error(data.error || 'Erreur lors du chargement du profil');
+            }
 
-    createModal?.addEventListener('click', (e) => {
-        if (e.target === createModal) {
-            createModal.classList.add('hidden');
-            createMessageDiv.textContent = '';
-            createForm?.reset();
+            const user = data.user;
+            const equipe = data.equipe;
+
+            // infos user
+            document.getElementById('userName').textContent = `${user.prenom} ${user.nom}`;
+            document.getElementById('userEmail').textContent = user.email;
+            document.getElementById('prenom').value = user.prenom || '';
+            document.getElementById('nom').value = user.nom || '';
+            document.getElementById('email').value = user.email || '';
+            document.getElementById('promo').value = user.promo || '';
+
+            // avatar
+            const avatarContainer = document.querySelector('.relative.shrink-0');
+            if (avatarContainer) {
+                if (user.avatar_url) {
+                    avatarContainer.innerHTML = `
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 sm:border-3 border-black shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] overflow-hidden">
+              <img src="${user.avatar_url}" alt="Avatar" class="w-full h-full object-cover" />
+            </div>
+          `;
+                } else {
+                    const initials = `${user.prenom?.charAt(0) || ''}${user.nom?.charAt(0) || ''}`.toUpperCase();
+                    avatarContainer.innerHTML = `
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-primary to-tertiary flex items-center justify-center text-white font-oi text-3xl sm:text-4xl border-2 sm:border-3 border-black shadow-[0_0_0_2px_black,3px_3px_0px_1px_black]">
+              ${initials}
+            </div>
+          `;
+                }
+
+                if (equipe) {
+                    if (equipe.chef === userId) {
+                        avatarContainer.innerHTML += `
+              <button class="absolute -bottom-1 -right-1 sm:-bottom-2 sm:-right-2 bg-primary text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-nohemi font-bold border-2 border-black">
+                Chef
+              </button>
+            `;
+                    } else {
+                        avatarContainer.innerHTML += `
+              <button class="absolute -bottom-1 -right-1 sm:-bottom-2 sm:-right-2 bg-tertiary text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-nohemi font-bold border-2 border-black">
+                Membre
+              </button>
+            `;
+                    }
+                }
+            }
+
+            // champ équipe
+            document.getElementById('equipe').value = equipe ? .nom || 'Aucune équipe';
+            const equipeIdElement = document.getElementById('equipeId');
+            if (equipeIdElement) {
+                equipeIdElement.textContent = equipe ? `Code: ${equipe.equipe_id}` : '';
+            }
+
+            // badge rôle
+            const userRoleElement = document.getElementById('userRole');
+            if (userRoleElement && equipe) {
+                if (equipe.chef === userId) {
+                    userRoleElement.textContent = "👑 Chef d'équipe";
+                    userRoleElement.className =
+                        'inline-block px-3 py-1 rounded-full text-xs font-nohemi font-bold border-2 border-black bg-primary text-white';
+                } else {
+                    userRoleElement.textContent = '👤 Membre';
+                    userRoleElement.className =
+                        'inline-block px-3 py-1 rounded-full text-xs font-nohemi font-bold border-2 border-black bg-tertiary text-white';
+                }
+                userRoleElement.style.display = 'inline-block';
+            }
+
+            // section équipe
+            if (equipe) {
+                const teamSection = document.getElementById('teamSection');
+                if (teamSection) {
+                    teamSection.classList.remove('hidden');
+                    document.getElementById('teamName').textContent = equipe.nom;
+                    document.getElementById('teamId').textContent = `Code: ${equipe.equipe_id}`;
+                    document.getElementById('teamMemberCount').textContent =
+                        `${equipe.usersDetails.length} membre${equipe.usersDetails.length > 1 ? 's' : ''}`;
+
+                    const teamLogoContainer = document.getElementById('teamLogoContainer');
+                    if (teamLogoContainer) {
+                        if (equipe.logo_url) {
+                            teamLogoContainer.innerHTML =
+                                `<img src="${equipe.logo_url}" alt="Logo" class="w-full h-full object-cover rounded-full">`;
+                        } else {
+                            const initials = equipe.nom.split(' ').map(w => w.charAt(0)).join('').toUpperCase()
+                                .slice(0, 2);
+                            teamLogoContainer.textContent = initials;
+                        }
+                    }
+
+                    const chefUser = equipe.usersDetails.find(u => u.id === equipe.chef);
+                    if (chefUser) {
+                        document.getElementById('chefName').textContent = `${chefUser.prenom} ${chefUser.nom}`;
+                    }
+
+                    const teamMembers = document.getElementById('teamMembers');
+                    if (teamMembers) {
+                        teamMembers.innerHTML = '';
+                        equipe.usersDetails.forEach(membre => {
+                            const isChef = membre.id === equipe.chef;
+                            const memberDiv = document.createElement('div');
+                            memberDiv.className =
+                                'flex items-center justify-between p-2.5 sm:p-3 bg-white rounded-xl border-2 border-black';
+
+                            let avatarHtml = '';
+                            if (membre.avatar_url) {
+                                avatarHtml =
+                                    `<img src="${membre.avatar_url}" alt="Avatar" class="w-full h-full object-cover rounded-full">`;
+                            } else {
+                                const initials =
+                                    `${membre.prenom?.charAt(0) || ''}${membre.nom?.charAt(0) || ''}`
+                                    .toUpperCase();
+                                avatarHtml = initials;
+                            }
+
+                            memberDiv.innerHTML = `
+                <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                  <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-primary to-tertiary flex items-center justify-center text-white font-oi text-xs sm:text-sm border-2 border-black shrink-0">
+                    ${avatarHtml}
+                  </div>
+                  <div class="font-nohemi text-black text-sm sm:text-base truncate">
+                    ${membre.prenom} ${membre.nom}
+                  </div>
+                </div>
+                ${isChef ? '<span class="bg-tertiary text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-nohemi font-bold shrink-0">Chef</span>' : ''}
+              `;
+                            teamMembers.appendChild(memberDiv);
+                        });
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Erreur:', error);
         }
-    });
+    }
 
-    const openJoinModalBtn = document.getElementById('openJoinModal');
-    const closeModalBtn = document.getElementById('closeModal');
-    const joinModal = document.getElementById('joinModal');
-    const joinForm = document.getElementById('joinForm') as HTMLFormElement;
-    const messageDiv = document.getElementById('message') as HTMLDivElement;
-
-    openJoinModalBtn?.addEventListener('click', () => {
-        joinModal?.classList.remove('hidden');
-    });
-
-    closeModalBtn?.addEventListener('click', () => {
-        joinModal?.classList.add('hidden');
-        messageDiv.textContent = '';
-        joinForm?.reset();
-    });
-
-    // Fermer la modale en cliquant sur le fond
-    joinModal?.addEventListener('click', (e) => {
-        if (e.target === joinModal) {
-            joinModal.classList.add('hidden');
-            messageDiv.textContent = '';
-            joinForm?.reset();
-        }
-    });
-
-    createForm?.addEventListener('submit', async (e) => {
+    createForm ? .addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const equipeNameInput = document.getElementById('equipeName') as HTMLInputElement;
         const equipeLogoInput = document.getElementById('equipeLogo') as HTMLInputElement;
         const equipeName = equipeNameInput.value.trim();
-        
+
         const userDataString = localStorage.getItem('user');
         if (!userDataString) {
             createMessageDiv.textContent = 'Vous devez être connecté pour créer une équipe.';
@@ -196,7 +284,7 @@ const equipes = Object.values(equipesGrouped);
             }, 2000);
             return;
         }
-        
+
         const userData = JSON.parse(userDataString);
         const userId = userData.id;
 
@@ -204,7 +292,7 @@ const equipes = Object.values(equipesGrouped);
             const formData = new FormData();
             formData.append('nom', equipeName);
             formData.append('userId', userId);
-            
+
             if (equipeLogoInput.files && equipeLogoInput.files[0]) {
                 formData.append('logo', equipeLogoInput.files[0]);
             }
@@ -219,9 +307,9 @@ const equipes = Object.values(equipesGrouped);
             if (response.ok) {
                 createMessageDiv.textContent = `${data.message} ID: ${data.equipe.id}`;
                 createMessageDiv.style.color = 'green';
-                
+
                 setTimeout(() => {
-                    createModal?.classList.add('hidden');
+                    createModal ? .classList.add('hidden');
                     window.location.reload();
                 }, 2000);
             } else {
@@ -235,12 +323,12 @@ const equipes = Object.values(equipesGrouped);
     });
 
     // Soumission du formulaire de jonction d'équipe
-    joinForm?.addEventListener('submit', async (e) => {
+    joinForm ? .addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const equipeIdInput = document.getElementById('equipeId') as HTMLInputElement;
         const equipeId = equipeIdInput.value.trim();
-        
+
         // Récupérer l'ID utilisateur depuis localStorage
         const userDataString = localStorage.getItem('user');
         if (!userDataString) {
@@ -251,7 +339,7 @@ const equipes = Object.values(equipesGrouped);
             }, 2000);
             return;
         }
-        
+
         const userData = JSON.parse(userDataString);
         const userId = userData.id;
 
@@ -261,7 +349,10 @@ const equipes = Object.values(equipesGrouped);
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ equipeId, userId })
+                body: JSON.stringify({
+                    equipeId,
+                    userId
+                })
             });
 
             const data = await response.json();
@@ -269,10 +360,10 @@ const equipes = Object.values(equipesGrouped);
             if (response.ok) {
                 messageDiv.textContent = data.message;
                 messageDiv.style.color = 'green';
-                
+
                 // Fermer la modale et rafraîchir après succès
                 setTimeout(() => {
-                    joinModal?.classList.add('hidden');
+                    joinModal ? .classList.add('hidden');
                     window.location.reload();
                 }, 2000);
             } else {
