@@ -86,15 +86,26 @@ import Layout from "../layouts/Layout.astro";
 
                 <div>
                     <label for="equipe" class="block font-nohemi text-black font-bold mb-2 text-sm sm:text-base">Équipe</label>
-                    <input 
-                        type="text" 
-                        name="equipe" 
-                        id="equipe" 
-                        readonly
-                        placeholder="Aucune équipe"
-                        class="w-full px-3 sm:px-4 py-2.5 sm:py-3 border-2 sm:border-3 border-black rounded-xl sm:rounded-2xl font-nohemi text-sm sm:text-base bg-gray-100 cursor-not-allowed"
-                    />
+                    <div class="flex gap-2">
+                        <input 
+                            type="text" 
+                            name="equipe" 
+                            id="equipe" 
+                            readonly
+                            placeholder="Aucune équipe"
+                            class="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 border-2 sm:border-3 border-black rounded-xl sm:rounded-2xl font-nohemi text-sm sm:text-base bg-gray-100 cursor-not-allowed"
+                        />
+                        <button
+                            type="button"
+                            id="editEquipeBtn"
+                            style="display: none;"
+                            class="px-3 sm:px-4 py-2.5 sm:py-3 border-2 sm:border-3 border-black rounded-xl sm:rounded-2xl bg-primary text-white font-nohemi font-bold text-sm hover:scale-105 active:scale-95 transition-transform"
+                        >
+                            ✏️
+                        </button>
+                    </div>
                     <p id="equipeId" class="font-mono text-primary text-xs mt-1 px-1"></p>
+                    <p id="equipeMessage" class="text-xs mt-1 px-1 font-nohemi font-bold"></p>
                 </div>
 
                 <div>
@@ -233,7 +244,10 @@ import Layout from "../layouts/Layout.astro";
                 }
             }
 
-            (document.getElementById('equipe') as HTMLInputElement).value = equipe?.nom || 'Aucune équipe';
+            const equipeInput = document.getElementById('equipe') as HTMLInputElement;
+            const editEquipeBtn = document.getElementById('editEquipeBtn');
+            
+            equipeInput.value = equipe?.nom || 'Aucune équipe';
             
             const equipeIdElement = document.getElementById('equipeId');
             if (equipeIdElement) {
@@ -241,6 +255,87 @@ import Layout from "../layouts/Layout.astro";
                     equipeIdElement.textContent = `Code: ${equipe.equipe_id}`;
                 } else {
                     equipeIdElement.textContent = '';
+                }
+            }
+
+            // Si l'utilisateur est chef, permettre l'édition du nom de l'équipe
+            if (equipe && equipe.chef === userId) {
+                if (editEquipeBtn) {
+                    editEquipeBtn.style.display = 'block';
+                    
+                    let isEditing = false;
+                    editEquipeBtn.addEventListener('click', async () => {
+                        if (!isEditing) {
+                            // Mode édition
+                            isEditing = true;
+                            equipeInput.readOnly = false;
+                            equipeInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
+                            equipeInput.classList.add('bg-white');
+                            equipeInput.focus();
+                            editEquipeBtn.textContent = '💾';
+                            editEquipeBtn.classList.remove('bg-primary');
+                            editEquipeBtn.classList.add('bg-green-500');
+                        } else {
+                            // Sauvegarder
+                            const nouveauNom = equipeInput.value.trim();
+                            if (!nouveauNom) {
+                                const equipeMessage = document.getElementById('equipeMessage');
+                                if (equipeMessage) {
+                                    equipeMessage.textContent = 'Le nom ne peut pas être vide';
+                                    equipeMessage.style.color = 'red';
+                                    setTimeout(() => equipeMessage.textContent = '', 3000);
+                                }
+                                return;
+                            }
+
+                            try {
+                                const formData = new FormData();
+                                formData.append('userId', userId);
+                                formData.append('equipeId', equipe.equipe_id);
+                                formData.append('nom', nouveauNom);
+
+                                const response = await fetch('/apis/update-equipe', {
+                                    method: 'POST',
+                                    body: formData
+                                });
+
+                                const data = await response.json();
+
+                                const equipeMessage = document.getElementById('equipeMessage');
+                                if (response.ok) {
+                                    if (equipeMessage) {
+                                        equipeMessage.textContent = '✓ Nom mis à jour avec succès';
+                                        equipeMessage.style.color = 'green';
+                                        setTimeout(() => equipeMessage.textContent = '', 3000);
+                                    }
+                                    
+                                    isEditing = false;
+                                    equipeInput.readOnly = true;
+                                    equipeInput.classList.add('bg-gray-100', 'cursor-not-allowed');
+                                    equipeInput.classList.remove('bg-white');
+                                    editEquipeBtn.textContent = '✏️';
+                                    editEquipeBtn.classList.add('bg-primary');
+                                    editEquipeBtn.classList.remove('bg-green-500');
+                                    
+                                    // Recharger pour mettre à jour toute la page
+                                    setTimeout(() => window.location.reload(), 1500);
+                                } else {
+                                    if (equipeMessage) {
+                                        equipeMessage.textContent = data.error || 'Erreur lors de la mise à jour';
+                                        equipeMessage.style.color = 'red';
+                                        setTimeout(() => equipeMessage.textContent = '', 3000);
+                                    }
+                                }
+                            } catch (error) {
+                                const equipeMessage = document.getElementById('equipeMessage');
+                                if (equipeMessage) {
+                                    equipeMessage.textContent = 'Erreur de connexion';
+                                    equipeMessage.style.color = 'red';
+                                    setTimeout(() => equipeMessage.textContent = '', 3000);
+                                }
+                            }
+                        }
+                    });
                 }
             }
 

@@ -5,7 +5,7 @@ import { allEquipes } from '../../backend/backend.mjs';
 
 const equipesData = await allEquipes();
 
-const equipesGrouped = equipesData.reduce((acc, row) => {
+const equipesGrouped = equipesData.reduce((acc: any, row: any) => {
 if (!acc[row.equipe_nom]) {
 acc[row.equipe_nom] = {
 equipe_nom: row.equipe_nom,
@@ -22,7 +22,7 @@ user_email: row.user_email
 return acc;
 }, {});
 
-const equipes = Object.values(equipesGrouped);
+const equipes = Object.values(equipesGrouped) as any[];
 ---
 
 <Layout>
@@ -123,7 +123,7 @@ const equipes = Object.values(equipesGrouped);
         loadProfile(userData.id);
     }
 
-    async function loadProfile(userId) {
+    async function loadProfile(userId: string) {
         try {
             const response = await fetch(`/apis/get-profile?userId=${userId}`);
             const data = await response.json();
@@ -136,12 +136,12 @@ const equipes = Object.values(equipesGrouped);
             const equipe = data.equipe;
 
             // infos user
-            document.getElementById('userName').textContent = `${user.prenom} ${user.nom}`;
-            document.getElementById('userEmail').textContent = user.email;
-            document.getElementById('prenom').value = user.prenom || '';
-            document.getElementById('nom').value = user.nom || '';
-            document.getElementById('email').value = user.email || '';
-            document.getElementById('promo').value = user.promo || '';
+            document.getElementById('userName')!.textContent = `${user.prenom} ${user.nom}`;
+            document.getElementById('userEmail')!.textContent = user.email;
+            (document.getElementById('prenom') as HTMLInputElement).value = user.prenom || '';
+            (document.getElementById('nom') as HTMLInputElement).value = user.nom || '';
+            (document.getElementById('email') as HTMLInputElement).value = user.email || '';
+            (document.getElementById('promo') as HTMLInputElement).value = user.promo || '';
 
             // avatar
             const avatarContainer = document.querySelector('.relative.shrink-0');
@@ -179,7 +179,7 @@ const equipes = Object.values(equipesGrouped);
             }
 
             // champ équipe
-            document.getElementById('equipe').value = equipe ? .nom || 'Aucune équipe';
+            (document.getElementById('equipe') as HTMLInputElement).value = equipe?.nom || 'Aucune équipe';
             const equipeIdElement = document.getElementById('equipeId');
             if (equipeIdElement) {
                 equipeIdElement.textContent = equipe ? `Code: ${equipe.equipe_id}` : '';
@@ -205,9 +205,9 @@ const equipes = Object.values(equipesGrouped);
                 const teamSection = document.getElementById('teamSection');
                 if (teamSection) {
                     teamSection.classList.remove('hidden');
-                    document.getElementById('teamName').textContent = equipe.nom;
-                    document.getElementById('teamId').textContent = `Code: ${equipe.equipe_id}`;
-                    document.getElementById('teamMemberCount').textContent =
+                    document.getElementById('teamName')!.textContent = equipe.nom;
+                    document.getElementById('teamId')!.textContent = `Code: ${equipe.equipe_id}`;
+                    document.getElementById('teamMemberCount')!.textContent =
                         `${equipe.usersDetails.length} membre${equipe.usersDetails.length > 1 ? 's' : ''}`;
 
                     const teamLogoContainer = document.getElementById('teamLogoContainer');
@@ -216,21 +216,21 @@ const equipes = Object.values(equipesGrouped);
                             teamLogoContainer.innerHTML =
                                 `<img src="${equipe.logo_url}" alt="Logo" class="w-full h-full object-cover rounded-full">`;
                         } else {
-                            const initials = equipe.nom.split(' ').map(w => w.charAt(0)).join('').toUpperCase()
+                            const initials = equipe.nom.split(' ').map((w: string) => w.charAt(0)).join('').toUpperCase()
                                 .slice(0, 2);
                             teamLogoContainer.textContent = initials;
                         }
                     }
 
-                    const chefUser = equipe.usersDetails.find(u => u.id === equipe.chef);
+                    const chefUser = equipe.usersDetails.find((u: any) => u.id === equipe.chef);
                     if (chefUser) {
-                        document.getElementById('chefName').textContent = `${chefUser.prenom} ${chefUser.nom}`;
+                        document.getElementById('chefName')!.textContent = `${chefUser.prenom} ${chefUser.nom}`;
                     }
 
                     const teamMembers = document.getElementById('teamMembers');
                     if (teamMembers) {
                         teamMembers.innerHTML = '';
-                        equipe.usersDetails.forEach(membre => {
+                        equipe.usersDetails.forEach((membre: any) => {
                             const isChef = membre.id === equipe.chef;
                             const memberDiv = document.createElement('div');
                             memberDiv.className =
@@ -268,7 +268,36 @@ const equipes = Object.values(equipesGrouped);
         }
     }
 
-    createForm ? .addEventListener('submit', async (e) => {
+    const createModal = document.getElementById('createModal');
+    const createForm = document.getElementById('createForm');
+    const createMessageDiv = document.getElementById('createMessage');
+    const joinModal = document.getElementById('joinModal');
+    const joinForm = document.getElementById('joinForm');
+    const messageDiv = document.getElementById('message');
+
+    // Ouvrir/fermer les modales
+    const openCreateModalBtn = document.getElementById('openCreateModal');
+    const closeCreateModalBtn = document.getElementById('closeCreateModal');
+    const openJoinModalBtn = document.getElementById('openJoinModal');
+    const closeJoinModalBtn = document.getElementById('closeModal');
+
+    openCreateModalBtn?.addEventListener('click', () => {
+        createModal?.classList.remove('hidden');
+    });
+
+    closeCreateModalBtn?.addEventListener('click', () => {
+        createModal?.classList.add('hidden');
+    });
+
+    openJoinModalBtn?.addEventListener('click', () => {
+        joinModal?.classList.remove('hidden');
+    });
+
+    closeJoinModalBtn?.addEventListener('click', () => {
+        joinModal?.classList.add('hidden');
+    });
+
+    createForm?.addEventListener('submit', async (e: Event) => {
         e.preventDefault();
 
         const equipeNameInput = document.getElementById('equipeName') as HTMLInputElement;
@@ -277,8 +306,10 @@ const equipes = Object.values(equipesGrouped);
 
         const userDataString = localStorage.getItem('user');
         if (!userDataString) {
-            createMessageDiv.textContent = 'Vous devez être connecté pour créer une équipe.';
-            createMessageDiv.style.color = 'red';
+            if (createMessageDiv) {
+                createMessageDiv.textContent = 'Vous devez être connecté pour créer une équipe.';
+                createMessageDiv.style.color = 'red';
+            }
             setTimeout(() => {
                 window.location.href = '/connexion';
             }, 2000);
@@ -305,25 +336,31 @@ const equipes = Object.values(equipesGrouped);
             const data = await response.json();
 
             if (response.ok) {
-                createMessageDiv.textContent = `${data.message} ID: ${data.equipe.id}`;
-                createMessageDiv.style.color = 'green';
+                if (createMessageDiv) {
+                    createMessageDiv.textContent = `${data.message} ID: ${data.equipe.id}`;
+                    createMessageDiv.style.color = 'green';
+                }
 
                 setTimeout(() => {
-                    createModal ? .classList.add('hidden');
+                    createModal?.classList.add('hidden');
                     window.location.reload();
                 }, 2000);
             } else {
-                createMessageDiv.textContent = data.error || 'Erreur lors de la création de l\'équipe';
-                createMessageDiv.style.color = 'red';
+                if (createMessageDiv) {
+                    createMessageDiv.textContent = data.error || 'Erreur lors de la création de l\'équipe';
+                    createMessageDiv.style.color = 'red';
+                }
             }
         } catch (error) {
-            createMessageDiv.textContent = 'Erreur de connexion au serveur';
-            createMessageDiv.style.color = 'red';
+            if (createMessageDiv) {
+                createMessageDiv.textContent = 'Erreur de connexion au serveur';
+                createMessageDiv.style.color = 'red';
+            }
         }
     });
 
     // Soumission du formulaire de jonction d'équipe
-    joinForm ? .addEventListener('submit', async (e) => {
+    joinForm?.addEventListener('submit', async (e: Event) => {
         e.preventDefault();
 
         const equipeIdInput = document.getElementById('equipeId') as HTMLInputElement;
@@ -332,8 +369,10 @@ const equipes = Object.values(equipesGrouped);
         // Récupérer l'ID utilisateur depuis localStorage
         const userDataString = localStorage.getItem('user');
         if (!userDataString) {
-            messageDiv.textContent = 'Vous devez être connecté pour rejoindre une équipe.';
-            messageDiv.style.color = 'red';
+            if (messageDiv) {
+                messageDiv.textContent = 'Vous devez être connecté pour rejoindre une équipe.';
+                messageDiv.style.color = 'red';
+            }
             setTimeout(() => {
                 window.location.href = '/connexion';
             }, 2000);
@@ -358,21 +397,27 @@ const equipes = Object.values(equipesGrouped);
             const data = await response.json();
 
             if (response.ok) {
-                messageDiv.textContent = data.message;
-                messageDiv.style.color = 'green';
+                if (messageDiv) {
+                    messageDiv.textContent = data.message;
+                    messageDiv.style.color = 'green';
+                }
 
                 // Fermer la modale et rafraîchir après succès
                 setTimeout(() => {
-                    joinModal ? .classList.add('hidden');
+                    joinModal?.classList.add('hidden');
                     window.location.reload();
                 }, 2000);
             } else {
-                messageDiv.textContent = data.error || 'Erreur lors de la jonction à l\'équipe';
-                messageDiv.style.color = 'red';
+                if (messageDiv) {
+                    messageDiv.textContent = data.error || 'Erreur lors de la jonction à l\'équipe';
+                    messageDiv.style.color = 'red';
+                }
             }
         } catch (error) {
-            messageDiv.textContent = 'Erreur de connexion au serveur';
-            messageDiv.style.color = 'red';
+            if (messageDiv) {
+                messageDiv.textContent = 'Erreur de connexion au serveur';
+                messageDiv.style.color = 'red';
+            }
         }
     });
 </script>
