@@ -319,44 +319,37 @@ const equipes = Object.values(equipesGrouped) as any[];
         const userData = JSON.parse(userDataString);
         const userId = userData.id;
 
-        try {
-            const formData = new FormData();
-            formData.append('nom', equipeName);
-            formData.append('userId', userId);
-
-            if (equipeLogoInput.files && equipeLogoInput.files[0]) {
-                formData.append('logo', equipeLogoInput.files[0]);
-            }
-
-            const response = await fetch('/apis/create-equipe', {
-                method: 'POST',
-                body: formData
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                if (createMessageDiv) {
-                    createMessageDiv.textContent = `${data.message} ID: ${data.equipe.id}`;
-                    createMessageDiv.style.color = 'green';
-                }
-
-                setTimeout(() => {
-                    createModal?.classList.add('hidden');
-                    window.location.reload();
-                }, 2000);
-            } else {
-                if (createMessageDiv) {
-                    createMessageDiv.textContent = data.error || 'Erreur lors de la création de l\'équipe';
-                    createMessageDiv.style.color = 'red';
-                }
-            }
-        } catch (error) {
-            if (createMessageDiv) {
-                createMessageDiv.textContent = 'Erreur de connexion au serveur';
-                createMessageDiv.style.color = 'red';
-            }
+        // Afficher le message de chargement
+        if (createMessageDiv) {
+            createMessageDiv.innerHTML = `
+                <div class="flex items-center justify-center gap-2">
+                    <div class="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                    <span class="text-primary font-bold">Création en cours...</span>
+                </div>
+            `;
         }
+
+        // Préparer les données
+        const formData = new FormData();
+        formData.append('nom', equipeName);
+        formData.append('userId', userId);
+
+        if (equipeLogoInput.files && equipeLogoInput.files[0]) {
+            formData.append('logo', equipeLogoInput.files[0]);
+        }
+
+        // Envoi en arrière-plan
+        fetch('/apis/create-equipe', {
+            method: 'POST',
+            body: formData
+        }).catch(error => {
+            console.error('Erreur lors de la création de l\'équipe:', error);
+        });
+
+        // Redirection après 3 secondes
+        setTimeout(() => {
+            window.location.href = '/equipe';
+        }, 3000);
     });
 
     // Soumission du formulaire de jonction d'équipe
@@ -382,42 +375,33 @@ const equipes = Object.values(equipesGrouped) as any[];
         const userData = JSON.parse(userDataString);
         const userId = userData.id;
 
-        try {
-            const response = await fetch('/apis/join-equipe', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    equipeId,
-                    userId
-                })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                if (messageDiv) {
-                    messageDiv.textContent = data.message;
-                    messageDiv.style.color = 'green';
-                }
-
-                // Fermer la modale et rafraîchir après succès
-                setTimeout(() => {
-                    joinModal?.classList.add('hidden');
-                    window.location.reload();
-                }, 2000);
-            } else {
-                if (messageDiv) {
-                    messageDiv.textContent = data.error || 'Erreur lors de la jonction à l\'équipe';
-                    messageDiv.style.color = 'red';
-                }
-            }
-        } catch (error) {
-            if (messageDiv) {
-                messageDiv.textContent = 'Erreur de connexion au serveur';
-                messageDiv.style.color = 'red';
-            }
+        // Afficher le message de chargement
+        if (messageDiv) {
+            messageDiv.innerHTML = `
+                <div class="flex items-center justify-center gap-2">
+                    <div class="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                    <span class="text-primary font-bold">Traitement en cours...</span>
+                </div>
+            `;
         }
+
+        // Envoi en arrière-plan
+        fetch('/apis/join-equipe', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                equipeId,
+                userId
+            })
+        }).catch(error => {
+            console.error('Erreur lors de la jonction à l\'équipe:', error);
+        });
+
+        // Redirection après 3 secondes
+        setTimeout(() => {
+            window.location.href = '/equipe';
+        }, 3000);
     });
 </script>
