@@ -175,9 +175,18 @@ import Layout from "../layouts/Layout.astro";
                     </div>
                 </div>
 
-                <p class="text-center font-nohemi text-xs text-gray-600">
+                <p class="text-center font-nohemi text-xs text-gray-600 mb-4">
                     Le chef d'équipe <span id="chefName" class="font-bold text-primary">Chef</span> doit faire le rendu pour toute l'équipe
                 </p>
+
+                <button 
+                    id="leaveTeamBtn"
+                    style="display: none;"
+                    class="w-full bg-red-500 text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-nohemi font-bold text-sm sm:text-base shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] hover:scale-105 active:scale-95 transition-transform"
+                >
+                    Quitter l'équipe
+                </button>
+                <p id="leaveTeamMessage" class="text-center font-nohemi font-bold text-xs sm:text-sm mt-2"></p>
             </div>
         </div>
     </div>
@@ -389,6 +398,12 @@ import Layout from "../layouts/Layout.astro";
                             teamMembers.appendChild(memberDiv);
                         });
                     }
+
+                    // Afficher le bouton "Quitter l'équipe" si l'utilisateur n'est pas le chef
+                    const leaveTeamBtn = document.getElementById('leaveTeamBtn');
+                    if (leaveTeamBtn && equipe.chef !== userId) {
+                        leaveTeamBtn.style.display = 'block';
+                    }
                 }
             }
 
@@ -478,5 +493,70 @@ import Layout from "../layouts/Layout.astro";
         setTimeout(() => {
             window.location.href = '/';
         }, 1000);
+    });
+
+    // Gérer le bouton "Quitter l'équipe"
+    const leaveTeamBtn = document.getElementById('leaveTeamBtn') as HTMLButtonElement;
+    const leaveTeamMessage = document.getElementById('leaveTeamMessage');
+
+    leaveTeamBtn?.addEventListener('click', async () => {
+        // Demander confirmation
+        if (!confirm('Êtes-vous sûr de vouloir quitter cette équipe ?')) {
+            return;
+        }
+
+        const userDataString = localStorage.getItem('user');
+        if (!userDataString) {
+            if (leaveTeamMessage) {
+                leaveTeamMessage.textContent = 'Erreur : utilisateur non connecté';
+                leaveTeamMessage.style.color = 'red';
+            }
+            return;
+        }
+
+        const userData = JSON.parse(userDataString);
+        const userId = userData.id;
+
+        leaveTeamBtn.textContent = 'Départ en cours...';
+        leaveTeamBtn.disabled = true;
+
+        try {
+            const formData = new FormData();
+            formData.append('userId', userId);
+
+            const response = await fetch('/apis/leave-equipe', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                if (leaveTeamMessage) {
+                    leaveTeamMessage.textContent = '✓ ' + data.message;
+                    leaveTeamMessage.style.color = 'green';
+                }
+
+                // Recharger la page après 1.5 secondes
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            } else {
+                if (leaveTeamMessage) {
+                    leaveTeamMessage.textContent = data.error || 'Erreur lors du départ de l\'équipe';
+                    leaveTeamMessage.style.color = 'red';
+                }
+                leaveTeamBtn.textContent = 'Quitter l\'équipe';
+                leaveTeamBtn.disabled = false;
+            }
+        } catch (error) {
+            if (leaveTeamMessage) {
+                leaveTeamMessage.textContent = 'Erreur de connexion au serveur';
+                leaveTeamMessage.style.color = 'red';
+            }
+            leaveTeamBtn.textContent = 'Quitter l\'équipe';
+            leaveTeamBtn.disabled = false;
+            console.error(error);
+        }
     });
 </script>
