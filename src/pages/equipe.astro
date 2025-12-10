@@ -125,7 +125,7 @@ const equipes = Object.values(equipesGrouped) as any[];
 
     async function loadProfile(userId: string) {
         try {
-            const response = await fetch(`/apis/get-profile?userId=${userId}`);
+            const response = await fetch(`/api/get-profile?userId=${userId}`);
             const data = await response.json();
 
             if (!response.ok) {
@@ -338,18 +338,33 @@ const equipes = Object.values(equipesGrouped) as any[];
             formData.append('logo', equipeLogoInput.files[0]);
         }
 
-        // Envoi en arrière-plan
-        fetch('/apis/create-equipe', {
-            method: 'POST',
-            body: formData
-        }).catch(error => {
-            console.error('Erreur lors de la création de l\'équipe:', error);
-        });
+        // Envoyer la requête et attendre la réponse
+        try {
+            const response = await fetch('/api/create-equipe', {
+                method: 'POST',
+                body: formData
+            });
 
-        // Redirection après 3 secondes
-        setTimeout(() => {
-            window.location.href = '/equipe';
-        }, 3000);
+            const data = await response.json();
+
+            if (!response.ok) {
+                // Afficher l'erreur
+                if (createMessageDiv) {
+                    createMessageDiv.innerHTML = `<span class="text-red-500 font-bold">${data.error || 'Erreur lors de la création'}</span>`;
+                }
+                return;
+            }
+
+            // Redirection après 3 secondes en cas de succès
+            setTimeout(() => {
+                window.location.href = '/equipe';
+            }, 3000);
+        } catch (error) {
+            console.error('Erreur lors de la création de l\'équipe:', error);
+            if (createMessageDiv) {
+                createMessageDiv.innerHTML = `<span class="text-red-500 font-bold">Erreur de connexion au serveur</span>`;
+            }
+        }
     });
 
     // Soumission du formulaire de jonction d'équipe
@@ -385,23 +400,38 @@ const equipes = Object.values(equipesGrouped) as any[];
             `;
         }
 
-        // Envoi en arrière-plan
-        fetch('/apis/join-equipe', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                equipeId,
-                userId
-            })
-        }).catch(error => {
-            console.error('Erreur lors de la jonction à l\'équipe:', error);
-        });
+        // Envoyer la requête et attendre la réponse
+        try {
+            const response = await fetch('/api/join-equipe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    equipeId,
+                    userId
+                })
+            });
 
-        // Redirection après 3 secondes
-        setTimeout(() => {
-            window.location.href = '/equipe';
-        }, 3000);
+            const data = await response.json();
+
+            if (!response.ok) {
+                // Afficher l'erreur
+                if (messageDiv) {
+                    messageDiv.innerHTML = `<span class="text-red-500 font-bold">${data.error || 'Erreur lors de la jonction'}</span>`;
+                }
+                return;
+            }
+
+            // Redirection après 3 secondes en cas de succès
+            setTimeout(() => {
+                window.location.href = '/equipe';
+            }, 3000);
+        } catch (error) {
+            console.error('Erreur lors de la jonction à l\'équipe:', error);
+            if (messageDiv) {
+                messageDiv.innerHTML = `<span class="text-red-500 font-bold">Erreur de connexion au serveur</span>`;
+            }
+        }
     });
 </script>

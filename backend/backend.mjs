@@ -42,6 +42,12 @@ export async function getallPartenaires() {
 
 export async function createEquipe(nom, userId, logo) {
     try {
+        // Vérifier si l'utilisateur fait déjà partie d'une équipe
+        const user = await pb.collection('users').getOne(userId);
+        if (user.equipe) {
+            throw new Error('Vous faites déjà partie d\'une équipe. Vous devez d\'abord la quitter avant d\'en créer une nouvelle.');
+        }
+
         const equipeData = {
             nom: nom,
             chef: userId,
@@ -67,6 +73,12 @@ export async function createEquipe(nom, userId, logo) {
 
 export async function joinEquipe(equipeId, userId) {
     try {
+        // Vérifier si l'utilisateur fait déjà partie d'une équipe
+        const user = await pb.collection('users').getOne(userId);
+        if (user.equipe) {
+            throw new Error('Vous faites déjà partie d\'une équipe. Vous devez d\'abord la quitter avant d\'en rejoindre une autre.');
+        }
+
         const equipe = await pb.collection('Equipe').getOne(equipeId);
         
         const currentMembres = Array.isArray(equipe.membre) ? equipe.membre : [];

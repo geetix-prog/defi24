@@ -11,11 +11,6 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
-    server: {
-      watch: {
-        // Ignorer les fichiers PocketBase pour éviter les refresh en boucle
-        ignored: ['**/backend/pb/**', '**/pb_data/**', '**/*.db', '**/*.db-*']
-      }
-    }
+    
   },
 });

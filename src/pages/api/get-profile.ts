@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import pb from '../../../src/utils/pb';
+import pb from '../../utils/pb';
 
 export const GET: APIRoute = async ({ request }) => {
   try {

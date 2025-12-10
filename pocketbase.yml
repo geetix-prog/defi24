@@ -1,0 +1,20 @@
+# pocketbase.yml
+log:
+  level: debug
+
+settings:
+  cors:
+    enabled: true
+    origins:
+      - https://deluxe-taiyaki-19d904.netlify.app
+      - https://defi24.mathis-guellati.fr
+      - http://localhost:4321
+    methods:
+      - GET
+      - POST
+      - PUT
+      - PATCH
+      - DELETE
+    headers:
+      - Content-Type
+      - Authorization

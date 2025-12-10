@@ -208,7 +208,7 @@ import Layout from "../layouts/Layout.astro";
                 formData.append('avatar', avatarInput.files[0]);
             }
 
-            const response = await fetch('/apis/register', {
+            const response = await fetch('/api/register', {
                 method: 'POST',
                 body: formData
             });
