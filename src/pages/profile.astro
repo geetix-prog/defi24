@@ -2,7 +2,12 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout>
+<Layout
+	title="Mon Profil - Défi 24h MMI"
+	description="Gérez votre profil participant au Défi 24h MMI. Modifiez vos informations, consultez votre équipe et suivez votre participation."
+	keywords="profil défi 24h, mon compte MMI, espace personnel, gestion profil, mon équipe"
+	canonical="/profile"
+>
     <div class="flex flex-col space-y-8 sm:space-y-10 md:space-y-15 justify-center items-center mt-25 lg:mt-40 px-4 sm:px-6">
         <h1
             class="text-white font-oi text-center text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight tracking-wide">
@@ -242,7 +247,7 @@ import Layout from "../layouts/Layout.astro";
                 }
             }
 
-            // Si l'utilisateur est chef, permettre l'édition du nom de l'équipe
+            
             if (equipe && equipe.chef === userId) {
                 if (editEquipeBtn) {
                     editEquipeBtn.style.display = 'block';
@@ -250,7 +255,7 @@ import Layout from "../layouts/Layout.astro";
                     let isEditing = false;
                     editEquipeBtn.addEventListener('click', async () => {
                         if (!isEditing) {
-                            // Mode édition
+                            
                             isEditing = true;
                             equipeInput.readOnly = false;
                             equipeInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
@@ -260,7 +265,7 @@ import Layout from "../layouts/Layout.astro";
                             editEquipeBtn.classList.remove('bg-primary');
                             editEquipeBtn.classList.add('bg-green-500');
                         } else {
-                            // Sauvegarder
+                            
                             const nouveauNom = equipeInput.value.trim();
                             if (!nouveauNom) {
                                 const equipeMessage = document.getElementById('equipeMessage');
@@ -301,7 +306,7 @@ import Layout from "../layouts/Layout.astro";
                                     editEquipeBtn.classList.add('bg-primary');
                                     editEquipeBtn.classList.remove('bg-green-500');
                                     
-                                    // Recharger pour mettre à jour toute la page
+                                    
                                     setTimeout(() => window.location.reload(), 1500);
                                 } else {
                                     if (equipeMessage) {
@@ -323,7 +328,7 @@ import Layout from "../layouts/Layout.astro";
                 }
             }
 
-            // Afficher le badge de rôle
+            
             const userRoleElement = document.getElementById('userRole');
             if (userRoleElement && equipe) {
                 if (equipe.chef === userId) {
@@ -397,7 +402,7 @@ import Layout from "../layouts/Layout.astro";
         }
     }
 
-    // Gestion du formulaire de profil
+    
     const profileForm = document.getElementById('profileForm');
     const messageDiv = document.getElementById('message');
 
@@ -453,7 +458,7 @@ import Layout from "../layouts/Layout.astro";
         }
     });
 
-    // Toggle password visibility
+    
     const toggleConfirmPasswordBtn = document.getElementById('toggleConfirmPassword');
     const confirmPasswordInput = document.getElementById('confirmPassword');
 
@@ -465,7 +470,7 @@ import Layout from "../layouts/Layout.astro";
         }
     });
 
-    // Déconnexion
+    
     const logoutBtn = document.getElementById('logoutBtn');
     
     logoutBtn?.addEventListener('click', () => {
@@ -484,7 +489,7 @@ import Layout from "../layouts/Layout.astro";
         }, 1000);
     });
 
-    // Test de connexion (optionnel - pour debug)
+    
     console.log('Script profil chargé');
     console.log('User dans localStorage:', localStorage.getItem('user'));
     console.log('Token dans localStorage:', localStorage.getItem('token') ? 'Présent' : 'Absent');

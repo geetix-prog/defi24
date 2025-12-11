@@ -8,7 +8,12 @@ import { getallPartenaires } from "../../backend/backend.mjs";
 const partenaires = await getallPartenaires();
 ---
 
-<Layout>
+<Layout 
+	title="Défi 24h - L'événement incontournable du cursus MMI | 09 janvier 2026"
+	description="Participez au Défi 24H le 09 janvier 2026 ! 24 heures non-stop pour créer, imaginer et repousser vos limites sur un thème surprise. Design, développement, montage : tout le monde a sa place !"
+	keywords="défi 24h, MMI, création, design, développement, événement étudiant, challenge créatif, 24 heures, concours créatif, inscription, 09 janvier 2026"
+	canonical="/"
+>
 	<div class="flex flex-col space-y-15 justify-center items-center mt-25 lg:mt-40 px-4">
 		<h1
 			class="text-white font-oi text-center text-5xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight sm:leading-tight md:leading-normal tracking-wide">
@@ -172,7 +177,7 @@ const partenaires = await getallPartenaires();
 				avatarImg.src = userData.avatar;
 				avatarImg.alt = "Avatar";
 				
-				// Modifier le bouton d'inscription pour rediriger vers la billetterie
+				
 				const inscriptionBtn = document.getElementById('inscriptionBtn') as HTMLAnchorElement;
 				if (inscriptionBtn) {
 					inscriptionBtn.href = 'https://my.weezevent.com/defi-24h-2026';
@@ -254,7 +259,6 @@ const partenaires = await getallPartenaires();
 		const userData = JSON.parse(userDataString);
 		const userId = userData.id;
 
-		// Afficher le message de chargement
 		if (createMessageDiv) {
 			createMessageDiv.innerHTML = `
 				<div class="flex items-center justify-center gap-2">
@@ -264,7 +268,6 @@ const partenaires = await getallPartenaires();
 			`;
 		}
 
-		// Préparer les données
 		const formData = new FormData();
 		formData.append('nom', equipeName);
 		formData.append('userId', userId);
@@ -273,7 +276,6 @@ const partenaires = await getallPartenaires();
 			formData.append('logo', equipeLogoInput.files[0]);
 		}
 
-		// Envoyer la requête et attendre la réponse
 		try {
 			const response = await fetch('/api/create-equipe', {
 				method: 'POST',
@@ -283,14 +285,12 @@ const partenaires = await getallPartenaires();
 			const data = await response.json();
 
 			if (!response.ok) {
-				// Afficher l'erreur
 				if (createMessageDiv) {
 					createMessageDiv.innerHTML = `<span class="text-red-500 font-bold">${data.error || 'Erreur lors de la création'}</span>`;
 				}
 				return;
 			}
 
-			// Redirection après 3 secondes en cas de succès
 			setTimeout(() => {
 				window.location.href = '/equipe';
 			}, 3000);
@@ -321,7 +321,6 @@ const partenaires = await getallPartenaires();
 		const userData = JSON.parse(userDataString);
 		const userId = userData.id;
 
-		// Afficher le message de chargement
 		if (messageDiv) {
 			messageDiv.innerHTML = `
 				<div class="flex items-center justify-center gap-2">
@@ -331,7 +330,6 @@ const partenaires = await getallPartenaires();
 			`;
 		}
 
-		// Envoyer la requête et attendre la réponse
 		try {
 			const response = await fetch('/api/join-equipe', {
 				method: 'POST',
@@ -344,14 +342,12 @@ const partenaires = await getallPartenaires();
 			const data = await response.json();
 
 			if (!response.ok) {
-				// Afficher l'erreur
 				if (messageDiv) {
 					messageDiv.innerHTML = `<span class="text-red-500 font-bold">${data.error || 'Erreur lors de la jonction'}</span>`;
 				}
 				return;
 			}
 
-			// Redirection après 3 secondes en cas de succès
 			setTimeout(() => {
 				window.location.href = '/equipe';
 			}, 3000);

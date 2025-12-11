@@ -1,0 +1,19 @@
+# robots.txt pour Défi 24h
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://defi24h.mmimontbeliard.com/sitemap.xml
+
+# Disallow admin and API routes
+Disallow: /api/
+Disallow: /_astro/
+
+# Allow crawling of important pages
+Allow: /
+Allow: /equipe
+Allow: /programme
+Allow: /galerie
+Allow: /classement
+Allow: /contact
+Allow: /creations

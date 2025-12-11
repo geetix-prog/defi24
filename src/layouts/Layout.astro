@@ -3,6 +3,28 @@ import "../styles/global.css";
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Shape from '../assets/top_shape.svg';
+
+interface Props {
+	title?: string;
+	description?: string;
+	keywords?: string;
+	image?: string;
+	type?: string;
+	canonical?: string;
+}
+
+const {
+	title = "Défi 24h - L'événement incontournable du cursus MMI",
+	description = "Le Défi 24H : 24 heures non-stop pour créer, imaginer et repousser vos limites sur un thème surprise. Rejoignez l'aventure le 09 janvier 2026 !",
+	keywords = "défi 24h, MMI, création, design, développement, événement étudiant, challenge créatif, 24 heures, concours créatif",
+	image = "/og-image.jpg",
+	type = "website",
+	canonical = Astro.url.pathname
+} = Astro.props;
+
+const siteUrl = Astro.site || "https://defi24h.mmimontbeliard.com";
+const canonicalURL = new URL(canonical, siteUrl).href;
+const ogImageURL = new URL(image, siteUrl).href;
 ---
 
 <!doctype html>
@@ -10,10 +32,62 @@ import Shape from '../assets/top_shape.svg';
 
 <head>
 	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width" />
-	<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=6" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	
+	<title>{title}</title>
+	<meta name="title" content={title} />
+	<meta name="description" content={description} />
+	<meta name="keywords" content={keywords} />
+	<meta name="author" content="Défi 24h MMI" />
+	<meta name="robots" content="index, follow" />
 	<meta name="generator" content={Astro.generator} />
-	<title>Defi 24h</title>
+	
+	<link rel="canonical" href={canonicalURL} />
+	
+	<meta property="og:type" content={type} />
+	<meta property="og:url" content={canonicalURL} />
+	<meta property="og:title" content={title} />
+	<meta property="og:description" content={description} />
+	<meta property="og:image" content={ogImageURL} />
+	<meta property="og:locale" content="fr_FR" />
+	<meta property="og:site_name" content="Défi 24h" />
+	
+	<meta property="twitter:card" content="summary_large_image" />
+	<meta property="twitter:url" content={canonicalURL} />
+	<meta property="twitter:title" content={title} />
+	<meta property="twitter:description" content={description} />
+	<meta property="twitter:image" content={ogImageURL} />
+	
+	<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=6" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+	
+	<link rel="manifest" href="/manifest.json" />
+	<meta name="theme-color" content="#6B46C1" />
+	
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	
+	<script type="application/ld+json" set:html={JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "Event",
+		"name": "Défi 24h MMI",
+		"description": "Le Défi 24H : 24 heures non-stop pour créer, imaginer et repousser vos limites sur un thème surprise.",
+		"startDate": "2026-01-09T00:00:00+01:00",
+		"endDate": "2026-01-10T00:00:00+01:00",
+		"eventStatus": "https://schema.org/EventScheduled",
+		"eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+		"organizer": {
+			"@type": "Organization",
+			"name": "MMI - Métiers du Multimédia et de l'Internet",
+			"url": siteUrl
+		},
+		"offers": {
+			"@type": "Offer",
+			"availability": "https://schema.org/InStock",
+			"price": "2",
+			"priceCurrency": "EUR"
+		}
+	})} />
 </head>
 
 <body class="overflow-x-hidden">

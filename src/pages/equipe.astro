@@ -25,7 +25,12 @@ return acc;
 const equipes = Object.values(equipesGrouped) as any[];
 ---
 
-<Layout>
+<Layout
+	title="Les Équipes - Défi 24h MMI"
+	description="Découvrez toutes les équipes participantes au Défi 24h MMI. Rejoignez ou créez votre équipe pour participer à cet événement créatif de 24 heures."
+	keywords="équipes défi 24h, participants MMI, équipes créatives, inscription équipe, challenge 24h"
+	canonical="/equipe"
+>
     <div class="flex flex-col space-y-15 justify-center items-center mt-25 lg:mt-40 px-4">
         <h1
             class="text-white font-oi text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight sm:leading-tight md:leading-normal tracking-wide">
@@ -135,7 +140,7 @@ const equipes = Object.values(equipesGrouped) as any[];
             const user = data.user;
             const equipe = data.equipe;
 
-            // infos user
+            
             document.getElementById('userName')!.textContent = `${user.prenom} ${user.nom}`;
             document.getElementById('userEmail')!.textContent = user.email;
             (document.getElementById('prenom') as HTMLInputElement).value = user.prenom || '';
@@ -143,7 +148,7 @@ const equipes = Object.values(equipesGrouped) as any[];
             (document.getElementById('email') as HTMLInputElement).value = user.email || '';
             (document.getElementById('promo') as HTMLInputElement).value = user.promo || '';
 
-            // avatar
+            
             const avatarContainer = document.querySelector('.relative.shrink-0');
             if (avatarContainer) {
                 if (user.avatar_url) {
@@ -178,14 +183,14 @@ const equipes = Object.values(equipesGrouped) as any[];
                 }
             }
 
-            // champ équipe
+            
             (document.getElementById('equipe') as HTMLInputElement).value = equipe?.nom || 'Aucune équipe';
             const equipeIdElement = document.getElementById('equipeId');
             if (equipeIdElement) {
                 equipeIdElement.textContent = equipe ? `Code: ${equipe.equipe_id}` : '';
             }
 
-            // badge rôle
+            
             const userRoleElement = document.getElementById('userRole');
             if (userRoleElement && equipe) {
                 if (equipe.chef === userId) {
@@ -200,7 +205,7 @@ const equipes = Object.values(equipesGrouped) as any[];
                 userRoleElement.style.display = 'inline-block';
             }
 
-            // section équipe
+            
             if (equipe) {
                 const teamSection = document.getElementById('teamSection');
                 if (teamSection) {
@@ -275,7 +280,7 @@ const equipes = Object.values(equipesGrouped) as any[];
     const joinForm = document.getElementById('joinForm');
     const messageDiv = document.getElementById('message');
 
-    // Ouvrir/fermer les modales
+    
     const openCreateModalBtn = document.getElementById('openCreateModal');
     const closeCreateModalBtn = document.getElementById('closeCreateModal');
     const openJoinModalBtn = document.getElementById('openJoinModal');
@@ -319,7 +324,7 @@ const equipes = Object.values(equipesGrouped) as any[];
         const userData = JSON.parse(userDataString);
         const userId = userData.id;
 
-        // Afficher le message de chargement
+        
         if (createMessageDiv) {
             createMessageDiv.innerHTML = `
                 <div class="flex items-center justify-center gap-2">
@@ -329,7 +334,7 @@ const equipes = Object.values(equipesGrouped) as any[];
             `;
         }
 
-        // Préparer les données
+        
         const formData = new FormData();
         formData.append('nom', equipeName);
         formData.append('userId', userId);
@@ -338,7 +343,7 @@ const equipes = Object.values(equipesGrouped) as any[];
             formData.append('logo', equipeLogoInput.files[0]);
         }
 
-        // Envoyer la requête et attendre la réponse
+        
         try {
             const response = await fetch('/api/create-equipe', {
                 method: 'POST',
@@ -348,14 +353,14 @@ const equipes = Object.values(equipesGrouped) as any[];
             const data = await response.json();
 
             if (!response.ok) {
-                // Afficher l'erreur
+                
                 if (createMessageDiv) {
                     createMessageDiv.innerHTML = `<span class="text-red-500 font-bold">${data.error || 'Erreur lors de la création'}</span>`;
                 }
                 return;
             }
 
-            // Redirection après 3 secondes en cas de succès
+            
             setTimeout(() => {
                 window.location.href = '/equipe';
             }, 3000);
@@ -367,14 +372,14 @@ const equipes = Object.values(equipesGrouped) as any[];
         }
     });
 
-    // Soumission du formulaire de jonction d'équipe
+    
     joinForm?.addEventListener('submit', async (e: Event) => {
         e.preventDefault();
 
         const equipeIdInput = document.getElementById('equipeId') as HTMLInputElement;
         const equipeId = equipeIdInput.value.trim();
 
-        // Récupérer l'ID utilisateur depuis localStorage
+        
         const userDataString = localStorage.getItem('user');
         if (!userDataString) {
             if (messageDiv) {
@@ -390,7 +395,7 @@ const equipes = Object.values(equipesGrouped) as any[];
         const userData = JSON.parse(userDataString);
         const userId = userData.id;
 
-        // Afficher le message de chargement
+        
         if (messageDiv) {
             messageDiv.innerHTML = `
                 <div class="flex items-center justify-center gap-2">
@@ -400,7 +405,7 @@ const equipes = Object.values(equipesGrouped) as any[];
             `;
         }
 
-        // Envoyer la requête et attendre la réponse
+        
         try {
             const response = await fetch('/api/join-equipe', {
                 method: 'POST',
@@ -416,14 +421,14 @@ const equipes = Object.values(equipesGrouped) as any[];
             const data = await response.json();
 
             if (!response.ok) {
-                // Afficher l'erreur
+                
                 if (messageDiv) {
                     messageDiv.innerHTML = `<span class="text-red-500 font-bold">${data.error || 'Erreur lors de la jonction'}</span>`;
                 }
                 return;
             }
 
-            // Redirection après 3 secondes en cas de succès
+            
             setTimeout(() => {
                 window.location.href = '/equipe';
             }, 3000);

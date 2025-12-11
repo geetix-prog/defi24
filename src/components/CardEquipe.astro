@@ -25,23 +25,19 @@ const randomColor = teamColors[Math.floor(Math.random() * teamColors.length)];
         </div>
     )}
     
-    <!-- Contenu -->
     <div class="p-5 sm:p-6">
-        <!-- Badge nom équipe -->
         <div class="mb-6">
             <span class={`inline-block ${randomColor} text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-nohemi font-black text-sm sm:text-base border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]`}>
                 {equipe_nom}
             </span>
         </div>
 
-        <!-- Chef d'équipe label -->
         {membres && membres.length > 0 && (
             <p class="text-gray-600 text-sm font-nohemi font-medium mb-4">
                 Chef d'équipe
             </p>
         )}
 
-        <!-- Liste des membres -->
         <div class="flex flex-col gap-3 mb-4">
             {membres && membres.map((membre, index) => (
                 <div class="flex items-center gap-3 sm:gap-3.5">
@@ -58,7 +54,6 @@ const randomColor = teamColors[Math.floor(Math.random() * teamColors.length)];
                             </div>
                         )}
                         
-                        <!-- Badge chef (premier membre) -->
                         {index === 0 && (
                             <span class="absolute -top-1 -right-1 w-5 h-5 bg-yellow-400 rounded-full border-2 border-black flex items-center justify-center text-xs">
                                 ⭐
@@ -66,7 +61,6 @@ const randomColor = teamColors[Math.floor(Math.random() * teamColors.length)];
                         )}
                     </div>
 
-                    <!-- Infos membre -->
                     <div class="flex flex-col gap-0.5 min-w-0 flex-1">
                         <span class="font-nohemi font-bold text-gray-900 text-sm sm:text-base truncate">
                             {membre.user_prenom} {membre.user_nom}
@@ -81,7 +75,6 @@ const randomColor = teamColors[Math.floor(Math.random() * teamColors.length)];
             ))}
         </div>
 
-        <!-- Footer -->
         {membres && membres.length > 0 && (
             <div class="pt-4 mt-4 border-t-2 border-gray-200">
                 <p class="text-center text-gray-500 text-sm font-nohemi font-medium">

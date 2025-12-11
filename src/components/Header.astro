@@ -3,7 +3,6 @@ import Button from "../components/Button.astro"
 import Heures from "../assets/heures.astro"
 ---
 
-<!-- Menu mobile (en dehors du header pour éviter les conflits de z-index) -->
 <nav id="mobile-menu"
     class="fixed inset-0 bg-primary flex flex-col items-center justify-center gap-8 sm:gap-10 lg:hidden translate-x-full transition-transform duration-300 px-6 sm:px-8 z-40">
     <ul
@@ -75,12 +74,10 @@ import Heures from "../assets/heures.astro"
     const header = document.getElementById('main-header');
     const headerBg = document.getElementById('header-bg');
 
-    // Toggle du menu mobile
     menuBtn?.addEventListener('click', () => {
         const isMenuOpen = !mobileMenu?.classList.contains('translate-x-full');
         
         if (isMenuOpen) {
-            // Fermer le menu
             mobileMenu?.classList.add('translate-x-full');
             headerBg?.classList.remove('opacity-0');
             logo?.classList.remove('text-white');
@@ -89,7 +86,6 @@ import Heures from "../assets/heures.astro"
             line3?.classList.remove('-rotate-45', '-translate-y-[9px]', 'sm:-translate-y-[11px]', 'bg-white');
             document.body.style.overflow = '';
         } else {
-            // Ouvrir le menu
             mobileMenu?.classList.remove('translate-x-full');
             headerBg?.classList.add('opacity-0');
             logo?.classList.add('text-white');
@@ -100,7 +96,6 @@ import Heures from "../assets/heures.astro"
         }
     });
 
-    // Fermer le menu lors du clic sur un lien
     const mobileLinks = document.querySelectorAll('#mobile-menu a');
     mobileLinks.forEach(link => {
         link.addEventListener('click', () => {
@@ -146,12 +141,10 @@ import Heures from "../assets/heures.astro"
         }
     }
 
-    // Comportement du scroll pour desktop
     let lastScrollTop = 0;
-    let scrollThreshold = 100; // Seuil de défilement avant de cacher/montrer
+    let scrollThreshold = 100;
     
     function handleScroll() {
-        // Ne pas appliquer sur mobile (< 1024px)
         if (window.innerWidth < 1024) {
             if (header) {
                 header.style.transform = 'translateX(-50%) translateY(0)';
@@ -162,12 +155,10 @@ import Heures from "../assets/heures.astro"
         const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
         
         if (currentScroll > lastScrollTop && currentScroll > scrollThreshold) {
-            // Scroll vers le bas - cacher le header
             if (header) {
                 header.style.transform = 'translateX(-50%) translateY(-150%)';
             }
         } else if (currentScroll < lastScrollTop) {
-            // Scroll vers le haut - montrer le header
             if (header) {
                 header.style.transform = 'translateX(-50%) translateY(0)';
             }
@@ -176,10 +167,8 @@ import Heures from "../assets/heures.astro"
         lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
     }
 
-    // Ajouter l'écouteur de scroll
     window.addEventListener('scroll', handleScroll, { passive: true });
     
-    // Réinitialiser au redimensionnement
     window.addEventListener('resize', () => {
         if (window.innerWidth < 1024 && header) {
             header.style.transform = 'translateX(-50%) translateY(0)';

@@ -13,11 +13,9 @@ export const GET: APIRoute = async ({ request }) => {
       });
     }
 
-    // Profil complet (vue ou collection)
-    const profile = await pb.collection('Profile').getOne(userId);
+  const profile = await pb.collection('Profile').getOne(userId);
 
-    // avatar
-    let avatar_url: string | null = null;
+  let avatar_url: string | null = null;
     if (profile.avatar) {
       avatar_url = `${pb.baseUrl}/api/files/Profile/${profile.id}/${profile.avatar}`;
     }
@@ -34,15 +32,13 @@ export const GET: APIRoute = async ({ request }) => {
       emailVisibility: profile.emailVisibility
     };
 
-    // récupération des infos d'équipe
-    let equipeData = null;
+  let equipeData = null;
 
-    // on accepte plusieurs noms possibles pour l'id d'équipe
     const equipeId =
       profile.equipe_id || profile.equipe || profile.equipeId || null;
 
     if (equipeId) {
-      // tous les profils ayant la même équipe
+      
       const membresProfiles = await pb.collection('Profile').getFullList({
         filter: `equipe_id = "${equipeId}"`
       });
@@ -51,9 +47,8 @@ export const GET: APIRoute = async ({ request }) => {
         membresProfiles.map(async (membre: any) => {
           let membreAvatarUrl: string | null = null;
           if (membre.avatar) {
-            // ici on se contente de reconstruire l’URL comme pour user
-            membreAvatarUrl =
-              `${pb.baseUrl}/api/files/Profile/${membre.id}/${membre.avatar}`;
+              membreAvatarUrl =
+                `${pb.baseUrl}/api/files/Profile/${membre.id}/${membre.avatar}`;
           }
           return {
             id: membre.id,
@@ -66,7 +61,6 @@ export const GET: APIRoute = async ({ request }) => {
         })
       );
 
-      // record d’équipe pour logo et chef
       const equipeRecord = await pb.collection('Equipe').getOne(equipeId);
 
       let logo_url: string | null = null;

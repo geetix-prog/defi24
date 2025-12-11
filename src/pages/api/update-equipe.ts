@@ -16,8 +16,7 @@ export const POST: APIRoute = async ({ request }) => {
             });
         }
 
-        // Vérifier que l'utilisateur est bien le chef de l'équipe
-        const equipe = await pb.collection('Equipe').getOne(equipeId);
+    const equipe = await pb.collection('Equipe').getOne(equipeId);
         
         if (equipe.chef !== userId) {
             return new Response(JSON.stringify({ 
@@ -27,7 +26,6 @@ export const POST: APIRoute = async ({ request }) => {
             });
         }
 
-        // Mettre à jour le nom de l'équipe
         const updatedEquipe = await pb.collection('Equipe').update(equipeId, {
             nom: nouveauNom
         });
