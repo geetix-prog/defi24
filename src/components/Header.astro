@@ -2,20 +2,43 @@
 import Button from "../components/Button.astro"
 import Heures from "../assets/heures.astro"
 ---
+
+<!-- Menu mobile (en dehors du header pour éviter les conflits de z-index) -->
+<nav id="mobile-menu"
+    class="fixed inset-0 bg-primary flex flex-col items-center justify-center gap-8 sm:gap-10 lg:hidden translate-x-full transition-transform duration-300 px-6 sm:px-8 z-40">
+    <ul
+        class="capitalize flex flex-col gap-5 sm:gap-7 md:gap-8 font-nohemi text-2xl xs:text-3xl sm:text-3xl md:text-4xl font-bold text-white text-center">
+        <li><a href="/equipe" class="hover:scale-105 transition inline-block">Équipes</a></li>
+        <li><a href="/classement" class="hover:scale-105 transition inline-block">Classement</a></li>
+        <li><a href="/programme" class="hover:scale-105 transition inline-block">Programme</a></li>
+        <li><a href="/creations" class="hover:scale-105 transition inline-block">Créations</a></li>
+        <li><a href="/galerie" class="hover:scale-105 transition inline-block">Galerie</a></li>
+        <li><a href="/contact" class="hover:scale-105 transition inline-block">Contact</a></li>
+    </ul>
+
+    <div class="flex flex-col gap-3 sm:gap-4 w-full px-4 sm:w-3/4 md:w-2/3 max-w-sm" id="auth-button-mobile">
+        <Button bgClass="bg-lightprimary" colorClass="text-white" text="Guide de Style" page="guide-de-style"/>
+        <Button bgClass="bg-tertiary" colorClass="text-white" text="Connexion" page="connexion"/>
+    </div>
+</nav>
+
 <header
-    class="bg-white w-4/5 md:w-[90%] lg:w-4/5 xl:w-3/5 rounded-full border-2 md:border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] px-4 sm:px-6 md:px-8 py-3 sm:py-4">
-    <div class="flex items-center justify-between">
-        <a href="/" id="logo" class="font-oi flex flex-col -space-y-1 text-center leading-none z-50 shrink-0 transition-all hover:scale-110 duration-300 text-black">
+    class="w-4/5 md:w-[90%] lg:w-4/5 xl:w-3/5 rounded-full px-4 sm:px-6 md:px-8 py-3 sm:py-4 fixed top-10 left-1/2 z-50 transition-all duration-300"
+    style="transform: translateX(-50%);"
+    id="main-header">
+    <div id="header-bg" class="absolute inset-0 bg-white rounded-full border-2 md:border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] md:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-opacity duration-300"></div>
+    <div class="flex items-center justify-between relative z-10">
+        <a href="/" id="logo" class="font-oi flex flex-col -space-y-1 text-center leading-none relative shrink-0 transition-all hover:scale-110 duration-300 text-black">
             <span class="text-xl xs:text-2xl sm:text-3xl md:text-4xl">24</span>
             <Heures />
         </a>
 
-        <button id="menu-btn" class="lg:hidden z-50 w-9 h-9 sm:w-10 sm:h-10 relative focus:outline-none shrink-0"
+        <button id="menu-btn" class="lg:hidden relative w-9 h-9 sm:w-10 sm:h-10 focus:outline-none shrink-0"
             aria-label="Toggle menu">
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                 <span class="block w-7 rounded-full sm:w-8 h-0.75 bg-black mb-1.5 sm:mb-2 transition-all duration-300"
                     id="line1"></span>
-                <span class="block w-7 rounded-full sm:w-8 h-0.75 bg-black mb-1.5 sm:mb-2"
+                <span class="block w-7 rounded-full sm:w-8 h-0.75 bg-black mb-1.5 sm:mb-2 transition-all duration-300"
                     id="line2"></span>
                 <span class="block w-7 rounded-full sm:w-8 h-0.75 bg-black transition-all duration-300" id="line3"></span>
             </div>
@@ -41,24 +64,6 @@ import Heures from "../assets/heures.astro"
             <Button bgClass="bg-tertiary" colorClass="text-white" text="Connexion" page="connexion" />
         </div>
     </div>
-
-    <nav id="mobile-menu"
-        class="fixed inset-0 bg-primary z-40 flex flex-col items-center justify-center gap-8 sm:gap-10 lg:hidden translate-x-full transition-transform duration-300 px-6 sm:px-8">
-        <ul
-            class="capitalize flex flex-col gap-5 sm:gap-7 md:gap-8 font-nohemi text-2xl xs:text-3xl sm:text-3xl md:text-4xl font-bold text-white text-center">
-            <li><a href="/equipe" class="hover:scale-105 transition inline-block">Équipes</a></li>
-            <li><a href="/classement" class="hover:scale-105 transition inline-block">Classement</a></li>
-            <li><a href="/programme" class="hover:scale-105 transition inline-block">Programme</a></li>
-            <li><a href="/creations" class="hover:scale-105 transition inline-block">Créations</a></li>
-            <li><a href="/galerie" class="hover:scale-105 transition inline-block">Galerie</a></li>
-            <li><a href="/contact" class="hover:scale-105 transition inline-block">Contact</a></li>
-        </ul>
-
-        <div class="flex flex-col gap-3 sm:gap-4 w-full px-4 sm:w-3/4 md:w-2/3 max-w-sm" id="auth-button-mobile">
-            <Button bgClass="bg-lightprimary" colorClass="text-white" text="Guide de Style" page="guide-de-style"/>
-            <Button bgClass="bg-tertiary" colorClass="text-white" text="Connexion" page="connexion"/>
-        </div>
-    </nav>
 </header>
 
 <script>
@@ -68,31 +73,45 @@ import Heures from "../assets/heures.astro"
     const line2 = document.getElementById('line2');
     const line3 = document.getElementById('line3');
     const logo = document.getElementById('logo');
+    const header = document.getElementById('main-header');
+    const headerBg = document.getElementById('header-bg');
 
+    // Toggle du menu mobile
     menuBtn?.addEventListener('click', () => {
-        logo?.classList.toggle('text-white');
-        mobileMenu?.classList.toggle('translate-x-full');
-
-        line1?.classList.toggle('rotate-45');
-        line1?.classList.toggle('translate-y-[9px]');
-        line1?.classList.toggle('sm:translate-y-[11px]');
-        line1?.classList.toggle('bg-white');
-
-        line2?.classList.toggle('opacity-0');
-
-        line3?.classList.toggle('-rotate-45');
-        line3?.classList.toggle('-translate-y-[9px]');
-        line3?.classList.toggle('sm:-translate-y-[11px]');
-        line3?.classList.toggle('bg-white');
+        const isMenuOpen = !mobileMenu?.classList.contains('translate-x-full');
+        
+        if (isMenuOpen) {
+            // Fermer le menu
+            mobileMenu?.classList.add('translate-x-full');
+            headerBg?.classList.remove('opacity-0');
+            logo?.classList.remove('text-white');
+            line1?.classList.remove('rotate-45', 'translate-y-[9px]', 'sm:translate-y-[11px]', 'bg-white');
+            line2?.classList.remove('opacity-0');
+            line3?.classList.remove('-rotate-45', '-translate-y-[9px]', 'sm:-translate-y-[11px]', 'bg-white');
+            document.body.style.overflow = '';
+        } else {
+            // Ouvrir le menu
+            mobileMenu?.classList.remove('translate-x-full');
+            headerBg?.classList.add('opacity-0');
+            logo?.classList.add('text-white');
+            line1?.classList.add('rotate-45', 'translate-y-[9px]', 'sm:translate-y-[11px]', 'bg-white');
+            line2?.classList.add('opacity-0');
+            line3?.classList.add('-rotate-45', '-translate-y-[9px]', 'sm:-translate-y-[11px]', 'bg-white');
+            document.body.style.overflow = 'hidden';
+        }
     });
 
+    // Fermer le menu lors du clic sur un lien
     const mobileLinks = document.querySelectorAll('#mobile-menu a');
     mobileLinks.forEach(link => {
         link.addEventListener('click', () => {
             mobileMenu?.classList.add('translate-x-full');
-            line1?.classList.remove('rotate-45', 'translate-y-[9px]', 'sm:translate-y-[10px]');
+            headerBg?.classList.remove('opacity-0');
+            logo?.classList.remove('text-white');
+            line1?.classList.remove('rotate-45', 'translate-y-[9px]', 'sm:translate-y-[11px]', 'bg-white');
             line2?.classList.remove('opacity-0');
-            line3?.classList.remove('-rotate-45', '-translate-y-[9px]', 'sm:-translate-y-[10px]');
+            line3?.classList.remove('-rotate-45', '-translate-y-[9px]', 'sm:-translate-y-[11px]', 'bg-white');
+            document.body.style.overflow = '';
         });
     });
 
@@ -133,4 +152,44 @@ import Heures from "../assets/heures.astro"
             console.error('Erreur lors de la lecture des données utilisateur', error);
         }
     }
+
+    // Comportement du scroll pour desktop
+    let lastScrollTop = 0;
+    let scrollThreshold = 100; // Seuil de défilement avant de cacher/montrer
+    
+    function handleScroll() {
+        // Ne pas appliquer sur mobile (< 1024px)
+        if (window.innerWidth < 1024) {
+            if (header) {
+                header.style.transform = 'translateX(-50%) translateY(0)';
+            }
+            return;
+        }
+
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (currentScroll > lastScrollTop && currentScroll > scrollThreshold) {
+            // Scroll vers le bas - cacher le header
+            if (header) {
+                header.style.transform = 'translateX(-50%) translateY(-150%)';
+            }
+        } else if (currentScroll < lastScrollTop) {
+            // Scroll vers le haut - montrer le header
+            if (header) {
+                header.style.transform = 'translateX(-50%) translateY(0)';
+            }
+        }
+        
+        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+    }
+
+    // Ajouter l'écouteur de scroll
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Réinitialiser au redimensionnement
+    window.addEventListener('resize', () => {
+        if (window.innerWidth < 1024 && header) {
+            header.style.transform = 'translateX(-50%) translateY(0)';
+        }
+    });
 </script>
