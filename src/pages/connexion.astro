@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-    <div class="flex flex-col items-center justify-center min-h-screen px-4 py-10">
+    <div class="flex flex-col mb-15 sm:space-y-10 md:space-y-15 justify-center items-center mt-25 lg:mt-40 px-4 sm:px-6">
         <h1 class="text-white font-oi text-center text-5xl sm:text-6xl md:text-7xl lg:text-8xl mb-6 uppercase">
             Connexion
         </h1>
@@ -40,7 +40,7 @@ import Layout from "../layouts/Layout.astro";
                         <button 
                             type="button" 
                             id="togglePassword"
-                            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-black transition"
+                            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-black transition cursor-pointer"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
@@ -57,7 +57,7 @@ import Layout from "../layouts/Layout.astro";
                 
                 <button 
                     type="submit"
-                    class="inline-block w-full bg-primary text-white px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center"
+                    class="inline-block w-full bg-primary text-white px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center cursor-pointer"
                 >
                     Se connecter
                 </button>
