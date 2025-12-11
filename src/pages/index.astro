@@ -15,9 +15,11 @@ const partenaires = await getallPartenaires();
 			Le défi 24H <br>C'est bientôt !
 		</h1>
 		<div class="flex flex-col space-y-7">
-			<Tag bgClass="bg-tertiary" colorClass="text-white" text="17 JANVIER 2026" />
+			<Tag bgClass="bg-tertiary" colorClass="text-white" text="09 JANVIER 2026" />
 			<div class="text-center px-10">
-				<Button bgClass="bg-white" colorClass="text-primary" text="Inscription" page="inscription" />
+				<a id="inscriptionBtn" href="/inscription" class="inline-block bg-white text-primary px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center cursor-pointer">
+					Inscription
+				</a>
 			</div>
 		</div>
 	</div>
@@ -169,6 +171,15 @@ const partenaires = await getallPartenaires();
 				const avatarImg = document.createElement("img");
 				avatarImg.src = userData.avatar;
 				avatarImg.alt = "Avatar";
+				
+				// Modifier le bouton d'inscription pour rediriger vers la billetterie
+				const inscriptionBtn = document.getElementById('inscriptionBtn') as HTMLAnchorElement;
+				if (inscriptionBtn) {
+					inscriptionBtn.href = 'https://my.weezevent.com/defi-24h-2026';
+					inscriptionBtn.textContent = 'Billetterie';
+					inscriptionBtn.target = '_blank';
+					inscriptionBtn.rel = 'noopener noreferrer';
+				}
 			}
 		} catch (error) {
 			console.error('Erreur lors de la lecture des données utilisateur', error);
