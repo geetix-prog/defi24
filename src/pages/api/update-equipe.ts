@@ -7,8 +7,10 @@ export const POST: APIRoute = async ({ request }) => {
         const userId = formData.get('userId') as string;
         const equipeId = formData.get('equipeId') as string;
         const nouveauNom = formData.get('nom') as string;
+        const logo = formData.get('logo') as File | null;
+        const banniere = formData.get('banniere') as File | null;
 
-        if (!userId || !equipeId || !nouveauNom) {
+        if (!userId || !equipeId) {
             return new Response(JSON.stringify({ 
                 error: 'Données manquantes' 
             }), {
@@ -16,23 +18,47 @@ export const POST: APIRoute = async ({ request }) => {
             });
         }
 
-    const equipe = await pb.collection('Equipe').getOne(equipeId);
+        const equipe = await pb.collection('Equipe').getOne(equipeId);
         
         if (equipe.chef !== userId) {
             return new Response(JSON.stringify({ 
-                error: 'Seul le chef d\'équipe peut modifier le nom de l\'équipe' 
+                error: 'Seul le chef d\'équipe peut modifier l\'équipe' 
             }), {
                 status: 403
             });
         }
 
-        const updatedEquipe = await pb.collection('Equipe').update(equipeId, {
-            nom: nouveauNom
-        });
+        const updateData = new FormData();
+        let messageSuccess = '';
+
+        if (nouveauNom) {
+            updateData.append('nom', nouveauNom);
+            messageSuccess = 'Nom de l\'équipe mis à jour avec succès';
+        }
+
+        if (logo && logo.size > 0) {
+            updateData.append('logo', logo);
+            messageSuccess = 'Logo mis à jour avec succès';
+        }
+
+        if (banniere && banniere.size > 0) {
+            updateData.append('logo', banniere);
+            messageSuccess = 'Bannière mise à jour avec succès';
+        }
+
+        if (!nouveauNom && (!logo || logo.size === 0) && (!banniere || banniere.size === 0)) {
+            return new Response(JSON.stringify({ 
+                error: 'Aucune donnée à mettre à jour' 
+            }), {
+                status: 400
+            });
+        }
+
+        const updatedEquipe = await pb.collection('Equipe').update(equipeId, updateData);
 
         return new Response(JSON.stringify({
             success: true,
-            message: 'Nom de l\'équipe mis à jour avec succès',
+            message: messageSuccess,
             equipe: {
                 id: updatedEquipe.id,
                 nom: updatedEquipe.nom

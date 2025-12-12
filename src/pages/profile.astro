@@ -172,6 +172,25 @@ import Layout from "../layouts/Layout.astro";
             </div>
 
             <div id="teamSection" class="mt-8 sm:mt-10 p-4 sm:p-6 bg-pink-100 rounded-xl sm:rounded-2xl border-2 sm:border-3 border-black hidden">
+                <div class="relative mb-4 sm:mb-6 -mx-4 sm:-mx-6 -mt-4 sm:-mt-6">
+                    <div id="teamBannerContainer" class="w-full h-32 sm:h-40 md:h-48 bg-gradient-to-r from-primary to-tertiary rounded-t-xl sm:rounded-t-2xl overflow-hidden">
+                    </div>
+                    <button
+                        type="button"
+                        id="editTeamBannerBtn"
+                        style="display: none;"
+                        class="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 px-3 sm:px-4 py-1.5 sm:py-2 bg-white text-primary rounded-full border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] font-nohemi font-bold text-xs sm:text-sm hover:scale-105 transition-transform flex items-center gap-1 sm:gap-2"
+                    >
+                        🖼️ Modifier la bannière
+                    </button>
+                    <input
+                        type="file"
+                        id="teamBannerInput"
+                        accept="image/*"
+                        style="display: none;"
+                    />
+                </div>
+                
                 <h3 class="font-oi text-black text-xl sm:text-2xl mb-2 sm:mb-3">Ton équipe</h3>
                 <p class="font-nohemi text-black text-xs sm:text-sm mb-3 sm:mb-4">
                     Retrouve les membres de ton équipe. C'est le chef d'équipe qui a le droit de rendre le projet final que toute l'équipe, en attendant, donne tout ce que tu as !
@@ -422,11 +441,76 @@ import Layout from "../layouts/Layout.astro";
 
                     const teamLogoContainer = document.getElementById('teamLogoContainer');
                     if (teamLogoContainer) {
-                        if (equipe.logo_url) {
-                            teamLogoContainer.innerHTML = `<img src="${equipe.logo_url}" alt="Logo" class="w-full h-full object-cover rounded-full">`;
+                        const initials = equipe.nom.split(' ').map(word => word.charAt(0)).join('').toUpperCase().slice(0, 2);
+                        teamLogoContainer.textContent = initials;
+                    }
+
+                    const teamBannerContainer = document.getElementById('teamBannerContainer');
+                    if (teamBannerContainer) {
+                        if (equipe.banniere_url) {
+                            teamBannerContainer.innerHTML = `<img src="${equipe.banniere_url}" alt="Bannière" class="w-full h-full object-cover">`;
                         } else {
-                            const initials = equipe.nom.split(' ').map(word => word.charAt(0)).join('').toUpperCase().slice(0, 2);
-                            teamLogoContainer.textContent = initials;
+                            teamBannerContainer.className = 'w-full h-32 sm:h-40 md:h-48 bg-gradient-to-r from-primary to-tertiary rounded-t-xl sm:rounded-t-2xl overflow-hidden';
+                        }
+                    }
+
+                    if (equipe.chef === userId) {
+                        const editTeamBannerBtn = document.getElementById('editTeamBannerBtn');
+                        const teamBannerInput = document.getElementById('teamBannerInput');
+                        
+                        if (editTeamBannerBtn && teamBannerInput) {
+                            editTeamBannerBtn.style.display = 'flex';
+                            
+                            editTeamBannerBtn.addEventListener('click', () => {
+                                teamBannerInput.click();
+                            });
+
+                            teamBannerInput.addEventListener('change', async (e) => {
+                                const file = (e.target as HTMLInputElement).files?.[0];
+                                if (!file) return;
+
+                                const equipeMessage = document.getElementById('equipeMessage');
+                                if (equipeMessage) {
+                                    equipeMessage.innerHTML = `
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-3 h-3 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                                            <span class="text-primary">Mise à jour de la bannière...</span>
+                                        </div>
+                                    `;
+                                }
+
+                                try {
+                                    const formData = new FormData();
+                                    formData.append('userId', userId);
+                                    formData.append('equipeId', equipe.equipe_id);
+                                    formData.append('banniere', file);
+
+                                    const response = await fetch('/api/update-equipe', {
+                                        method: 'POST',
+                                        body: formData
+                                    });
+
+                                    const data = await response.json();
+
+                                    if (response.ok) {
+                                        if (equipeMessage) {
+                                            equipeMessage.innerHTML = '<span class="text-green-600">✓ Bannière mise à jour</span>';
+                                            setTimeout(() => equipeMessage.textContent = '', 3000);
+                                        }
+                                        setTimeout(() => window.location.reload(), 1500);
+                                    } else {
+                                        if (equipeMessage) {
+                                            equipeMessage.innerHTML = `<span class="text-red-600">${data.error || 'Erreur lors de la mise à jour'}</span>`;
+                                            setTimeout(() => equipeMessage.textContent = '', 3000);
+                                        }
+                                    }
+                                } catch (error) {
+                                    if (equipeMessage) {
+                                        equipeMessage.innerHTML = '<span class="text-red-600">Erreur de connexion</span>';
+                                        setTimeout(() => equipeMessage.textContent = '', 3000);
+                                    }
+                                }
+                            });
                         }
                     }
 

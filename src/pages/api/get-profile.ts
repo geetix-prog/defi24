@@ -74,6 +74,7 @@ export const GET: APIRoute = async ({ request }) => {
         nom: profile.equipe_nom || equipeRecord.nom,
         logo: equipeRecord.logo,
         logo_url,
+        banniere_url: logo_url,
         chef: equipeRecord.chef,
         points: equipeRecord.points ?? 0,
         created: equipeRecord.created,
