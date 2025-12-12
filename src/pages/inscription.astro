@@ -194,6 +194,12 @@ import Layout from "../layouts/Layout.astro";
 
         messageDiv.textContent = '';
 
+        if (password.length < 8) {
+            messageDiv.textContent = 'Le mot de passe doit contenir au moins 8 caractères.';
+            messageDiv.style.color = 'red';
+            return;
+        }
+
         if (password !== passwordConfirm) {
             messageDiv.textContent = 'Les mots de passe ne correspondent pas.';
             messageDiv.style.color = 'red';
