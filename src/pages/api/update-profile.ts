@@ -10,14 +10,37 @@ export const POST: APIRoute = async ({ request }) => {
         const email = formData.get('email') as string;
         const promo = formData.get('promo') as string;
         const confirmPassword = formData.get('confirmPassword') as string;
+        const avatar = formData.get('avatar') as File | null;
 
-        if (!userId || !prenom || !nom || !email || !promo || !confirmPassword) {
-            return new Response(JSON.stringify({ error: 'Tous les champs requis doivent être remplis, y compris le mot de passe de confirmation.' }), {
+        if (!userId) {
+            return new Response(JSON.stringify({ error: 'ID utilisateur requis.' }), {
                 status: 400
             });
         }
 
         const currentUser = await pb.collection('users').getOne(userId);
+        
+        if (avatar && avatar.size > 0) {
+            const updateData = new FormData();
+            updateData.append('avatar', avatar);
+
+            const user = await pb.collection('users').update(userId, updateData);
+
+            return new Response(
+                JSON.stringify({
+                    success: true,
+                    message: 'Avatar mis à jour avec succès !',
+                    user: user
+                }),
+                { status: 200 }
+            );
+        }
+
+        if (!prenom || !nom || !email || !promo || !confirmPassword) {
+            return new Response(JSON.stringify({ error: 'Tous les champs requis doivent être remplis, y compris le mot de passe de confirmation.' }), {
+                status: 400
+            });
+        }
         
         try {
             await pb.collection('users').authWithPassword(currentUser.email, confirmPassword);
