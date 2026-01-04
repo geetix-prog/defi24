@@ -144,6 +144,13 @@ export async function getAllProgrammes() {
     return records;
 }
 
+export async function getAllDefisbonus() {
+    let records = await pb.collection("Defisbonus").getFullList({
+        sort: 'points'
+    });
+    return records;
+}
+
 export async function getUserProfile(userId) {
     try {
         const user = await pb.collection('users').getOne(userId);

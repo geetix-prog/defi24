@@ -6,6 +6,7 @@ import Button from "../components/Button.astro";
 import Marquee from "../components/Banniere.astro";
 import Classement from "../components/Classement.astro";
 import Programme from "../components/Programme.astro";
+import Defisbonus from "../components/Defisbonus.astro";
 import { getallPartenaires } from "../../backend/backend.mjs";
 const partenaires = await getallPartenaires();
 ---
@@ -121,74 +122,26 @@ const partenaires = await getallPartenaires();
 			<Classement />
 			<Programme />
 		</div>
+		<div class="w-8/10">
+			<Defisbonus />
+		</div>
 
-		<div class="flex flex-col space-y-7">
-			<Tag bgClass="bg-tertiary" colorClass="text-white" text="09 JANVIER 2026" />
-			<div class="text-center px-10">
-				<a id="inscriptionBtn" href="/inscription" class="inline-block bg-white text-primary px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center cursor-pointer">
-					Inscription
-				</a>
-			</div>
-		</div>
-	</div>
-	<div class="mt-25">
-		<Marquee />
-	</div>
-	<div class="flex flex-col items-center mt-25 space-y-15">
-		<div class="space-y-5 flex flex-col items-center">
-			<div
-				class="inline-block space-y-2 lg:space-y-5 bg-white/80 w-8/10 px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl font-nohemi shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]">
-				<h2 class="font-oi uppercase text-primary text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl">24
-					heures</h2>
-				<p
-					class="font-nohemi text-tertiary text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl font-normal">
-					Pour créer, rire... et ne pas dormir !</p>
-			</div>
-			<div class="w-8/10 flex flex-col lg:flex-row gap-5 lg:items-stretch">
-				<div
-					class="space-y-2 lg:space-y-5 w-full bg-white/80 px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]">
-				<p class="font-nohemi text-black text-sm sm:text-base md:text-lg font-normal">
-					Le Défi 24H, c'est l'événement incontournable du cursus MMI : 24 heures non-stop pour créer,
-					imaginer et repousser vos limites sur un thème surprise. Que vous soyez fan de design, de
-					montage,
-					de développement ou juste là pour l'ambiance (et les pizzas), tout le monde a sa place !</p>
+		<div class="flex flex-col gap-4 sm:gap-5 w-8/10 mt-8 sm:mt-10">
+			<div class="bg-gradient-to-r from-orange-400 to-orange-500 rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
+				<div class="w-10 h-10 sm:w-12 sm:h-12 mb-3 sm:mb-4">
+					<svg xmlns="http://www.w3.org/2000/svg" class="w-full h-full text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+					</svg>
 				</div>
-				<div
-					class="space-y-2 lg:space-y-5 w-full bg-gradient-to-b from-[#FFC567] to-[#FD5A46] px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex justify-center items-center">
-					<p class="font-nohemi text-white text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">Prêt à relever le challenge ?
-					</p>
-				</div>
+				<p class="font-nohemi text-white text-xl sm:text-2xl md:text-3xl uppercase leading-tight">"Rien n'est écrit tant que tout n'est pas inventé"</p>
 			</div>
-			<div
-				class="inline-block space-y-2 lg:space-y-5 bg-white/80 w-8/10 px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl font-nohemi shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]">
-				<p class="font-nohemi text-black text-sm sm:text-base md:text-lg font-normal">
-					Au Défi 24H, on joue en équipe ! Regroupe 4 ou 5 génies créatifs (ou juste tes potes, ça marche aussi) et prépare-toi à vivre une aventure intense.
-				</p>
+
+			<div class="bg-gradient-to-br from-purple-500 via-pink-500 to-pink-400 rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
+				<h3 class="font-oi text-white text-2xl sm:text-3xl md:text-4xl uppercase mb-2 sm:mb-3">Besoin d'aide ?</h3>
+				<p class="font-nohemi text-white text-sm sm:text-base md:text-lg">Les mentors sont là pour vous ! Rendez-vous au stand d'assistance.</p>
 			</div>
 		</div>
-	</div>
-	<div class="flex justify-center w-full mt-20">
-		<Button bgClass="bg-white" colorClass="text-primary" text="Former mon équipe" page="equipe" />
-	</div>
-	<div class="mt-25 flex flex-col mx-auto w-8/10 space-y-5 lg:space-y-10">
-		<div
-			class="inline-block space-y-2 lg:space-y-5 bg-lightprimary w-full px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl font-nohemi shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]">
-			<h2 class="font-oi uppercase text-white text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">Nos<br>partenaires</h2>
-		</div>
-		<div class="flex flex-col lg:grid lg:grid-cols-4 gap-5 w-full">
-			{partenaires.map((partenaire) => (
-			<a href={partenaire.lien} class="space-y-2 hover:-translate-y-2 transition-all ease-in lg:space-y-5 bg-white w-full px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl font-nohemi shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col justify-center items-center">
-				<img src={partenaire.img} alt={partenaire.nom} class="max-h-24 sm:max-h-28 md:max-h-32 lg:max-h-36 object-contain" />
-				<p>{partenaire.nom}</p>
-			</a>
-			))}
-		</div>
-	</div>
-	<div class="space-y-2 lg:space-y-5 bg-white/80 w-8/10 lg:w-5/10 px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl font-nohemi shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center mx-auto mt-25">
-		<p class="font-nohemi text-primary text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">Une question ? Besoin d'infos ?</p>
-		<h2 class="font-oi uppercase text-tertiary text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-center">Contactez-nous !</h2>
-		<Button bgClass="bg-primary" colorClass="text-white" text="Envoyer un message" page="contact" />
-	</div>
+
 </Layout>
 
 <script>
