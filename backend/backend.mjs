@@ -131,6 +131,19 @@ export async function getallUsersInfos() {
     return records;
 }
 
+export async function getAllProgrammes() {
+    let records = await pb.collection("Programme").getFullList({
+        sort: 'heure'
+    });
+    records = records.map((row) => {
+        if (row.icon) {
+            row.logo_url = pb.files.getURL(row, row.icon);
+        }
+        return row;
+    });
+    return records;
+}
+
 export async function getUserProfile(userId) {
     try {
         const user = await pb.collection('users').getOne(userId);

@@ -1,0 +1,101 @@
+---
+import { getAllProgrammes } from "../../backend/backend.mjs";
+
+const programmes = await getAllProgrammes();
+
+// Fonction pour formater l'heure depuis une date ISO
+function formatHeure(dateStr: string) {
+  const date = new Date(dateStr);
+  const hours = date.getUTCHours().toString().padStart(2, '0');
+  const minutes = date.getUTCMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
+}
+
+// Obtenir l'heure actuelle pour déterminer quel événement est en cours
+const now = new Date();
+const currentTime = now.getHours() * 60 + now.getMinutes();
+
+// Fonction pour convertir une date ISO en minutes depuis minuit
+function dateToMinutes(dateStr: string) {
+  const date = new Date(dateStr);
+  return date.getUTCHours() * 60 + date.getUTCMinutes();
+}
+
+// Vérifier si un événement est en cours
+function isCurrentEvent(index: number) {
+  if (index >= programmes.length) return false;
+  
+  const currentEventTime = dateToMinutes(programmes[index].heure);
+  const nextEventTime = index < programmes.length - 1 
+    ? dateToMinutes(programmes[index + 1].heure) 
+    : currentEventTime + 60; // Si c'est le dernier, on suppose 1h de durée
+  
+  return currentTime >= currentEventTime && currentTime < nextEventTime;
+}
+
+const colors = [
+  'bg-purple-500',
+  'bg-gray-400',
+  'bg-gray-400',
+  'bg-gray-400',
+  'bg-red-500',
+  'bg-purple-500',
+];
+---
+
+<div class="flex justify-center w-full items-center p-5">
+  <div class="bg-white/95 rounded-3xl p-8 shadow-[0_0_0_3px_black,5px_5px_0px_2px_black] w-8/10 max-w-[800px] min-h-[600px] flex flex-col">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center shadow-[0_0_0_2px_black]">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      </div>
+      <h2 class="font-oi text-4xl sm:text-5xl uppercase text-black">Programme</h2>
+    </div>
+    
+    <div class="space-y-3">
+      {programmes.map((programme, index) => {
+        const isCurrent = isCurrentEvent(index);
+        const iconColor = colors[index % colors.length];
+        
+        return (
+          <div class={`bg-white rounded-2xl p-4 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] flex items-center justify-between ${isCurrent ? 'ring-2 ring-orange-400' : ''}`}>
+            <div class="flex items-center gap-4 flex-1">
+              <div class="bg-white border-2 border-black rounded-full px-4 py-2 font-nohemi font-bold text-sm">
+                {formatHeure(programme.heure)}
+              </div>
+              
+              <div class={`w-10 h-10 ${iconColor} rounded-full shadow-[0_0_0_2px_black] flex-shrink-0 flex items-center justify-center`}>
+                {programme.logo_url ? (
+                  <img src={programme.logo_url} alt={programme.nom} class="w-6 h-6 object-contain" />
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                  </svg>
+                )}
+              </div>
+              
+              <div class="flex-1 min-w-0">
+                <h3 class="font-nohemi font-bold text-base text-black truncate">{programme.nom}</h3>
+              </div>
+            </div>
+            
+            {isCurrent && (
+              <div class="flex items-center gap-2 bg-orange-100 px-3 py-1 rounded-full border-2 border-orange-400">
+                <div class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                <span class="font-nohemi font-bold text-xs text-orange-600">En cours</span>
+              </div>
+            )}
+          </div>
+        );
+      })}
+      
+      {programmes.length === 0 && (
+        <div class="text-center py-8">
+          <p class="font-nohemi text-gray-500">Aucun programme pour le moment</p>
+        </div>
+      )}
+    </div>
+  </div>
+</div>

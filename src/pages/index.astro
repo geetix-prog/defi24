@@ -5,6 +5,7 @@ import Tag from "../components/Tag.astro";
 import Button from "../components/Button.astro";
 import Marquee from "../components/Banniere.astro";
 import Classement from "../components/Classement.astro";
+import Programme from "../components/Programme.astro";
 import { getallPartenaires } from "../../backend/backend.mjs";
 const partenaires = await getallPartenaires();
 ---
@@ -116,7 +117,10 @@ const partenaires = await getallPartenaires();
 		</h1>
 		<p class="font-nohemi text-white text-xs sm:text-sm md:text-base lg:text-lg">Le Défi24 est en cours... Que le meilleur gagne ! 🔥</p>
 		<Decompte />
-		<Classement />
+		<div class="flex flex-col xl:flex-row w-full gap-5 px-4">
+			<Classement />
+			<Programme />
+		</div>
 
 		<div class="flex flex-col space-y-7">
 			<Tag bgClass="bg-tertiary" colorClass="text-white" text="09 JANVIER 2026" />
