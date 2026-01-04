@@ -2,32 +2,32 @@
 
 ---
 
-<div class="flex justify-center w-full items-center p-5">
-  <div class="bg-white/95 rounded-3xl p-10 sm:p-10 md:p-10 shadow-[0_0_0_3px_black,5px_5px_0px_2px_black] w-8/10">
-    <h2 class="font-oi text-5xl sm:text-5xl md:text-5xl text-center mb-2.5 uppercase text-black">Temps restant</h2>
-    <p class="font-nohemi text-center text-base mb-7.5 text-gray-600">Avant le rendu final</p>
+<div class="flex justify-center w-full items-center p-3 sm:p-4 md:p-5">
+  <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] md:shadow-[0_0_0_3px_black,5px_5px_0px_2px_black] w-full max-w-[95%] sm:w-8/10">
+    <h2 class="font-oi text-3xl sm:text-4xl md:text-5xl text-center mb-2 sm:mb-2.5 uppercase text-black">Temps restant</h2>
+    <p class="font-nohemi text-center text-sm sm:text-base mb-5 sm:mb-7.5 text-gray-600">Avant le rendu final</p>
     
-    <div class="flex justify-center gap-5 sm:gap-5 md:gap-5 mb-7.5">
-      <div class="bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl p-5 sm:p-5 md:p-5 min-w-[120px] sm:min-w-[80px] md:min-w-[120px] shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center justify-center">
-        <div class="font-oi text-6xl sm:text-4xl md:text-6xl font-bold text-white leading-none mb-1.5" id="hours">00</div>
-        <div class="font-nohemi text-sm text-white font-semibold">Heures</div>
+    <div class="flex justify-center gap-2 sm:gap-3 md:gap-5 mb-5 sm:mb-7.5">
+      <div class="bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 min-w-[80px] sm:min-w-[100px] md:min-w-[120px] shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center justify-center">
+        <div class="font-oi text-3xl sm:text-5xl md:text-6xl font-bold text-white leading-none mb-1 sm:mb-1.5" id="hours">00</div>
+        <div class="font-nohemi text-xs sm:text-sm text-white font-semibold">Heures</div>
       </div>
       
-      <div class="bg-gradient-to-br from-orange-400 to-orange-500 rounded-2xl p-5 sm:p-5 md:p-5 min-w-[120px] sm:min-w-[80px] md:min-w-[120px] shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center justify-center">
-        <div class="font-oi text-6xl sm:text-4xl md:text-6xl font-bold text-white leading-none mb-1.5" id="minutes">00</div>
-        <div class="font-nohemi text-sm text-white font-semibold">Minutes</div>
+      <div class="bg-gradient-to-br from-orange-400 to-orange-500 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 min-w-[80px] sm:min-w-[100px] md:min-w-[120px] shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center justify-center">
+        <div class="font-oi text-3xl sm:text-5xl md:text-6xl font-bold text-white leading-none mb-1 sm:mb-1.5" id="minutes">00</div>
+        <div class="font-nohemi text-xs sm:text-sm text-white font-semibold">Minutes</div>
       </div>
       
-      <div class="bg-gradient-to-br from-blue-500 to-violet-500 rounded-2xl p-5 sm:p-5 md:p-5 min-w-[120px] sm:min-w-[80px] md:min-w-[120px] shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center justify-center">
-        <div class="font-oi text-6xl sm:text-4xl md:text-6xl font-bold text-white leading-none mb-1.5" id="seconds">00</div>
-        <div class="font-nohemi text-sm text-white font-semibold">Secondes</div>
+      <div class="bg-gradient-to-br from-blue-500 to-violet-500 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 min-w-[80px] sm:min-w-[100px] md:min-w-[120px] shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center justify-center">
+        <div class="font-oi text-3xl sm:text-5xl md:text-6xl font-bold text-white leading-none mb-1 sm:mb-1.5" id="seconds">00</div>
+        <div class="font-nohemi text-xs sm:text-sm text-white font-semibold">Secondes</div>
       </div>
     </div>
     
-    <div class="w-full h-5 bg-white rounded-xl overflow-hidden shadow-[0_0_0_2px_black] mb-2.5">
-      <div class="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 transition-all duration-1000 ease-linear rounded-xl" id="progressBar" style="width: 0%"></div>
+    <div class="w-full h-4 sm:h-5 bg-white rounded-lg sm:rounded-xl overflow-hidden shadow-[0_0_0_2px_black] mb-2 sm:mb-2.5">
+      <div class="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 transition-all duration-1000 ease-linear rounded-lg sm:rounded-xl" id="progressBar" style="width: 0%"></div>
     </div>
-    <p class="font-nohemi text-center text-sm m-0 text-gray-600" id="progressText">0% du temps écoulé</p>
+    <p class="font-nohemi text-center text-xs sm:text-sm m-0 text-gray-600" id="progressText">0% du temps écoulé</p>
   </div>
 </div>
 
