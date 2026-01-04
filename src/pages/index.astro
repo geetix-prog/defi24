@@ -1,9 +1,10 @@
 ---
-import Layout from "../layouts/Layout.astro"
-import Decompte from "../components/decompte.astro"
-import Tag from "../components/Tag.astro"
-import Button from "../components/Button.astro"
-import Marquee from "../components/Banniere.astro"
+import Layout from "../layouts/Layout.astro";
+import Decompte from "../components/decompte.astro";
+import Tag from "../components/Tag.astro";
+import Button from "../components/Button.astro";
+import Marquee from "../components/Banniere.astro";
+import Classement from "../components/Classement.astro";
 import { getallPartenaires } from "../../backend/backend.mjs";
 const partenaires = await getallPartenaires();
 ---
@@ -101,11 +102,22 @@ const partenaires = await getallPartenaires();
 			background-color: var(--color-primary);
 		}
 	</style>
-	<div class="flex flex-col space-y-15 justify-center items-center mt-25 lg:mt-40 px-4">
+	<div class="flex flex-col space-y-8 justify-center items-center mt-25 lg:mt-40 px-4">
+		<div
+			class="inline-block bg-white px-3 sm:px-4 md:px-5 py-1 sm:py-1.5 md:py-2 rounded-xl font-nohemi font-black text-xs sm:text-sm lg:text-base shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] text-center"
+			>
+			<p class="uppercase">
+				🔴 En direct
+			</p>
+		</div>	
 		<h1
 			class="text-white font-oi text-center text-5xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight sm:leading-tight md:leading-normal tracking-wide">
 			C’est parti!
 		</h1>
+		<p class="font-nohemi text-white text-xs sm:text-sm md:text-base lg:text-lg">Le Défi24 est en cours... Que le meilleur gagne ! 🔥</p>
+		<Decompte />
+		<Classement />
+
 		<div class="flex flex-col space-y-7">
 			<Tag bgClass="bg-tertiary" colorClass="text-white" text="09 JANVIER 2026" />
 			<div class="text-center px-10">
@@ -199,4 +211,45 @@ const partenaires = await getallPartenaires();
 			console.error('Erreur lors de la lecture des données utilisateur', error);
 		}
 	}
+	
+	// Gestion du changement de couleur de fond
+	const savedColor = localStorage.getItem('bgColor');
+	if (savedColor) {
+		document.documentElement.style.backgroundColor = savedColor;
+		document.body.style.backgroundColor = savedColor;
+	}
+	
+	const colorOptions = document.querySelectorAll('.color-option');
+	const customColorPicker = document.getElementById('customColorPicker') as HTMLInputElement;
+	
+	function updateBackgroundColor(color: string) {
+		document.documentElement.style.backgroundColor = color;
+		document.body.style.backgroundColor = color;
+		localStorage.setItem('bgColor', color);
+		
+		// Mise à jour de l'état actif
+		colorOptions.forEach(option => {
+			if ((option as HTMLElement).dataset.color === color) {
+				option.classList.add('active');
+			} else {
+				option.classList.remove('active');
+			}
+		});
+		
+		customColorPicker.value = color;
+	}
+	
+	colorOptions.forEach(option => {
+		option.addEventListener('click', () => {
+			const color = (option as HTMLElement).dataset.color!;
+			updateBackgroundColor(color);
+		});
+	});
+	
+	customColorPicker.addEventListener('input', (e) => {
+		const color = (e.target as HTMLInputElement).value;
+		updateBackgroundColor(color);
+		// Enlever l'état actif de toutes les options prédéfinies
+		colorOptions.forEach(option => option.classList.remove('active'));
+	});
 </script>
