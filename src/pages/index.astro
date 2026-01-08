@@ -114,9 +114,13 @@ const partenaires = await getallPartenaires();
 		</h1>
 		<p class="font-nohemi text-white text-xs sm:text-sm md:text-base lg:text-lg">Le Défi24 est en cours... Que le meilleur gagne ! 🔥</p>
 		<Decompte />
-		<div class="flex flex-col xl:flex-row w-8/10 max-w-[1600px] gap-3 sm:gap-4 md:gap-5 px-4">
-			<Classement />
-			<Programme />
+		<div class="flex flex-col xl:flex-row w-full max-w-[1600px] gap-3 sm:gap-4 md:gap-5 xl:items-stretch">
+			<div class="flex-1">
+				<Classement />
+			</div>
+			<div class="flex-1">
+				<Programme />
+			</div>
 		</div>
 		<div class="w-8/10">
 			<Defisbonus />
