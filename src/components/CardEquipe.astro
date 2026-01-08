@@ -1,85 +1,121 @@
 ---
-const { equipe_nom, equipe_logo_url, membres } = Astro.props;
+const { equipe_nom, equipe_logo_url, membres, position = 0, points = 0 } = Astro.props;
 
-const teamColors = [
-    'bg-indigo-500',
+const chef = membres && membres.length > 0 ? membres[0] : null;
+const autresMembres = membres && membres.length > 1 ? membres.slice(1) : [];
+
+const headerColors = [
+    'bg-yellow',
+    'bg-tertiary',
+    'bg-primary',
     'bg-purple-500',
     'bg-pink-500',
-    'bg-green-500',
-    'bg-amber-500',
-    'bg-red-500',
-    'bg-cyan-500',
-    'bg-teal-500'
 ];
-const randomColor = teamColors[Math.floor(Math.random() * teamColors.length)];
+
+const colorIndex = (position - 1) % headerColors.length;
+const headerColor = headerColors[colorIndex];
 ---
 
-<div class="bg-white rounded-3xl overflow-hidden border-3 border-black shadow-[0_0_0_3px_black,8px_8px_0px_2px_black] max-w-md">
-    {equipe_logo_url && (
-        <div class="w-full h-48 sm:h-52 overflow-hidden border-b-3 border-black">
-            <img 
-                src={equipe_logo_url} 
-                alt={equipe_nom} 
-                class="w-full h-full object-cover"
-            />
+<div class="bg-white rounded-3xl overflow-hidden border-3 border-black shadow-[0_0_0_3px_black,8px_8px_0px_2px_black] max-w-2xl">
+    <div class={`${headerColor} p-6 sm:p-8 flex items-center justify-between border-b-3 border-black relative`}>
+        <div class="w-14 h-14 sm:w-16 sm:h-16 bg-white rounded-full border-3 border-black flex items-center justify-center flex-shrink-0">
+            <span class="font-oi text-2xl sm:text-3xl text-black">{position}</span>
         </div>
-    )}
-    
-    <div class="p-5 sm:p-6">
-        <div class="mb-6">
-            <span class={`inline-block ${randomColor} text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-nohemi font-black text-sm sm:text-base border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]`}>
+        
+        <div class="flex-1 mx-4 sm:mx-6">
+            <h2 class="font-oi text-white text-2xl sm:text-3xl md:text-4xl uppercase text-center leading-tight">
                 {equipe_nom}
-            </span>
+            </h2>
         </div>
-
-        {membres && membres.length > 0 && (
-            <p class="text-gray-600 text-sm font-nohemi font-medium mb-4">
-                Chef d'équipe
-            </p>
-        )}
-
-        <div class="flex flex-col gap-3 mb-4">
-            {membres && membres.map((membre, index) => (
-                <div class="flex items-center gap-3 sm:gap-3.5">
+        
+        <div class="w-14 h-14 sm:w-16 sm:h-16 bg-white rounded-full border-3 border-black flex items-center justify-center flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 sm:h-8 sm:w-8 text-yellow" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+        </div>
+        
+        <p class="absolute bottom-2 right-2 sm:right-4 font-nohemi text-white text-sm sm:text-base font-bold">
+            🏆 {points} points
+        </p>
+    </div>
+    
+    <div class="p-6 sm:p-8 bg-gray-50">
+        {chef && (
+            <div class="mb-6">
+                <p class="text-gray-600 text-xs sm:text-sm font-nohemi font-bold uppercase mb-3 tracking-wide">
+                    Chef d'équipe
+                </p>
+                <div class="bg-yellow/10 border-l-4 border-yellow rounded-2xl p-4 flex items-center gap-4">
                     <div class="relative flex-shrink-0">
-                        {membre.user_avatar_url ? (
-                            <img 
-                                src={membre.user_avatar_url} 
-                                alt={membre.user_prenom}
-                                class="w-11 h-11 sm:w-12 sm:h-12 rounded-full object-cover border-3 border-black"
-                            />
-                        ) : (
-                            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 border-3 border-black flex items-center justify-center text-white font-oi text-base sm:text-lg font-bold">
-                                {`${membre.user_prenom?.charAt(0) || ''}${membre.user_nom?.charAt(0) || ''}`.toUpperCase()}
+                        {chef.user_avatar_url ? (
+                            <div class="relative">
+                                <img 
+                                    src={chef.user_avatar_url} 
+                                    alt={chef.user_prenom}
+                                    class="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-3 border-black"
+                                />
+                                <div class="absolute -top-1 -right-1 w-7 h-7 bg-yellow rounded-full border-2 border-black flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                </div>
                             </div>
-                        )}
-                        
-                        {index === 0 && (
-                            <span class="absolute -top-1 -right-1 w-5 h-5 bg-yellow-400 rounded-full border-2 border-black flex items-center justify-center text-xs">
-                                ⭐
-                            </span>
+                        ) : (
+                            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-yellow border-3 border-black flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                            </div>
                         )}
                     </div>
 
                     <div class="flex flex-col gap-0.5 min-w-0 flex-1">
-                        <span class="font-nohemi font-bold text-gray-900 text-sm sm:text-base truncate">
-                            {membre.user_prenom} {membre.user_nom}
+                        <span class="font-nohemi font-bold text-black text-base sm:text-lg">
+                            {chef.user_prenom} {chef.user_nom}
                         </span>
-                        {membre.user_email && (
-                            <span class="font-nohemi text-gray-500 text-xs sm:text-sm truncate">
-                                {membre.user_email}
-                            </span>
-                        )}
+                        <span class="font-nohemi text-gray-600 text-sm truncate">
+                            Chef d'équipe
+                        </span>
                     </div>
                 </div>
-            ))}
-        </div>
+            </div>
+        )}
 
-        {membres && membres.length > 0 && (
-            <div class="pt-4 mt-4 border-t-2 border-gray-200">
-                <p class="text-center text-gray-500 text-sm font-nohemi font-medium">
-                    {membres.length} membre{membres.length > 1 ? 's' : ''}
+        {autresMembres.length > 0 && (
+            <div>
+                <p class="text-gray-600 text-xs sm:text-sm font-nohemi font-bold uppercase mb-3 tracking-wide">
+                    Membres
                 </p>
+                <div class="flex flex-col gap-3">
+                    {autresMembres.map((membre) => (
+                        <div class="bg-white border-3 border-black rounded-2xl p-4 flex items-center gap-4 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                            <div class="flex-shrink-0">
+                                {membre.user_avatar_url ? (
+                                    <img 
+                                        src={membre.user_avatar_url} 
+                                        alt={membre.user_prenom}
+                                        class="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-3 border-black"
+                                    />
+                                ) : (
+                                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-yellow to-tertiary border-3 border-black flex items-center justify-center text-white font-oi text-base sm:text-lg font-bold">
+                                        {`${membre.user_prenom?.charAt(0) || ''}${membre.user_nom?.charAt(0) || ''}`.toUpperCase()}
+                                    </div>
+                                )}
+                            </div>
+
+                            <div class="flex flex-col gap-0.5 min-w-0 flex-1">
+                                <span class="font-nohemi font-bold text-black text-base sm:text-lg">
+                                    {membre.user_prenom} {membre.user_nom}
+                                </span>
+                                {membre.user_email && (
+                                    <span class="font-nohemi text-gray-600 text-sm truncate">
+                                        {membre.user_email}
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         )}
     </div>
