@@ -1,92 +1,92 @@
----
+  ---
 
----
+  ---
 
-<div class="flex justify-center w-full items-center p-3 sm:p-4 md:p-5">
-  <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] md:shadow-[0_0_0_3px_black,5px_5px_0px_2px_black] w-full max-w-[95%] sm:w-8/10">
-    <h2 class="font-oi text-3xl sm:text-4xl md:text-5xl text-center mb-2 sm:mb-2.5 uppercase text-black">Temps restant</h2>
-    <p class="font-nohemi text-center text-sm sm:text-base mb-5 sm:mb-7.5 text-gray-600">Avant le rendu final</p>
-    
-    <div class="flex justify-center gap-2 sm:gap-3 md:gap-5 mb-5 sm:mb-7.5">
-      <div class="bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 min-w-[80px] sm:min-w-[100px] md:min-w-[120px] shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center justify-center">
-        <div class="font-oi text-3xl sm:text-5xl md:text-6xl font-bold text-white leading-none mb-1 sm:mb-1.5" id="hours">00</div>
-        <div class="font-nohemi text-xs sm:text-sm text-white font-semibold">Heures</div>
+  <div class="flex justify-center w-full items-center p-3 sm:p-4 md:p-5">
+    <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] md:shadow-[0_0_0_3px_black,5px_5px_0px_2px_black] w-full max-w-[95%] sm:w-8/10">
+      <h2 class="font-oi text-3xl sm:text-4xl md:text-5xl text-center mb-2 sm:mb-2.5 uppercase text-black">Temps restant</h2>
+      <p class="font-nohemi text-center text-sm sm:text-base mb-5 sm:mb-7.5 text-gray-600">Avant le rendu final</p>
+      
+      <div class="flex justify-center gap-2 sm:gap-3 md:gap-5 mb-5 sm:mb-7.5">
+        <div class="bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 min-w-[80px] sm:min-w-[100px] md:min-w-[120px] shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center justify-center">
+          <div class="font-oi text-3xl sm:text-5xl md:text-6xl font-bold text-white leading-none mb-1 sm:mb-1.5" id="hours">00</div>
+          <div class="font-nohemi text-xs sm:text-sm text-white font-semibold">Heures</div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-orange-400 to-orange-500 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 min-w-[80px] sm:min-w-[100px] md:min-w-[120px] shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center justify-center">
+          <div class="font-oi text-3xl sm:text-5xl md:text-6xl font-bold text-white leading-none mb-1 sm:mb-1.5" id="minutes">00</div>
+          <div class="font-nohemi text-xs sm:text-sm text-white font-semibold">Minutes</div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-blue-500 to-violet-500 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 min-w-[80px] sm:min-w-[100px] md:min-w-[120px] shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center justify-center">
+          <div class="font-oi text-3xl sm:text-5xl md:text-6xl font-bold text-white leading-none mb-1 sm:mb-1.5" id="seconds">00</div>
+          <div class="font-nohemi text-xs sm:text-sm text-white font-semibold">Secondes</div>
+        </div>
       </div>
       
-      <div class="bg-gradient-to-br from-orange-400 to-orange-500 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 min-w-[80px] sm:min-w-[100px] md:min-w-[120px] shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center justify-center">
-        <div class="font-oi text-3xl sm:text-5xl md:text-6xl font-bold text-white leading-none mb-1 sm:mb-1.5" id="minutes">00</div>
-        <div class="font-nohemi text-xs sm:text-sm text-white font-semibold">Minutes</div>
+      <div class="w-full h-4 sm:h-5 bg-white rounded-lg sm:rounded-xl overflow-hidden shadow-[0_0_0_2px_black] mb-2 sm:mb-2.5">
+        <div class="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 transition-all duration-1000 ease-linear rounded-lg sm:rounded-xl" id="progressBar" style="width: 0%"></div>
       </div>
-      
-      <div class="bg-gradient-to-br from-blue-500 to-violet-500 rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 min-w-[80px] sm:min-w-[100px] md:min-w-[120px] shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center justify-center">
-        <div class="font-oi text-3xl sm:text-5xl md:text-6xl font-bold text-white leading-none mb-1 sm:mb-1.5" id="seconds">00</div>
-        <div class="font-nohemi text-xs sm:text-sm text-white font-semibold">Secondes</div>
-      </div>
+      <p class="font-nohemi text-center text-xs sm:text-sm m-0 text-gray-600" id="progressText">0% du temps écoulé</p>
     </div>
-    
-    <div class="w-full h-4 sm:h-5 bg-white rounded-lg sm:rounded-xl overflow-hidden shadow-[0_0_0_2px_black] mb-2 sm:mb-2.5">
-      <div class="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 transition-all duration-1000 ease-linear rounded-lg sm:rounded-xl" id="progressBar" style="width: 0%"></div>
-    </div>
-    <p class="font-nohemi text-center text-xs sm:text-sm m-0 text-gray-600" id="progressText">0% du temps écoulé</p>
   </div>
-</div>
 
-<script>
-  var duree: number;
-  const totalDuration = 24 * 60 * 60; // 24 heures en secondes
+  <script>
+    var duree: number;
+    const totalDuration = 24 * 60 * 60; // 24 heures en secondes
 
-  function t() {
-    const hoursEl = document.getElementById("hours");
-    const minutesEl = document.getElementById("minutes");
-    const secondsEl = document.getElementById("seconds");
-    const progressBar = document.getElementById("progressBar");
-    const progressText = document.getElementById("progressText");
-    
-    if (!hoursEl || !minutesEl || !secondsEl || !progressBar || !progressText) return;
+    function t() {
+      const hoursEl = document.getElementById("hours");
+      const minutesEl = document.getElementById("minutes");
+      const secondsEl = document.getElementById("seconds");
+      const progressBar = document.getElementById("progressBar");
+      const progressText = document.getElementById("progressText");
+      
+      if (!hoursEl || !minutesEl || !secondsEl || !progressBar || !progressText) return;
 
-    if (duree < 0) {
-      hoursEl.innerHTML = "00";
-      minutesEl.innerHTML = "00";
-      secondsEl.innerHTML = "00";
-      progressBar.style.width = "100%";
-      progressText.innerHTML = "100% du temps écoulé";
-      return;
+      if (duree < 0) {
+        hoursEl.innerHTML = "00";
+        minutesEl.innerHTML = "00";
+        secondsEl.innerHTML = "00";
+        progressBar.style.width = "100%";
+        progressText.innerHTML = "100% du temps écoulé";
+        return;
+      }
+
+      let s = duree;
+      let m = 0;
+      let h = 0;
+
+      if (s > 59) {
+        m = Math.floor(s / 60);
+        s = s - m * 60;
+      }
+      if (m > 59) {
+        h = Math.floor(m / 60);
+        m = m - h * 60;
+      }
+
+      hoursEl.innerHTML = h < 10 ? "0" + h : h.toString();
+      minutesEl.innerHTML = m < 10 ? "0" + m : m.toString();
+      secondsEl.innerHTML = s < 10 ? "0" + s : s.toString();
+
+      // Calcul de la progression
+      const elapsed = totalDuration - duree;
+      const percentage = Math.min(Math.floor((elapsed / totalDuration) * 100), 100);
+      progressBar.style.width = percentage + "%";
+      progressText.innerHTML = percentage + "% du temps écoulé";
+
+      duree = duree - 1;
+      window.setTimeout(t, 1000);
     }
 
-    let s = duree;
-    let m = 0;
-    let h = 0;
+    // Date de début du défi : jeudi 09 janvier 2026 à 18:00
+    var dateDebut = new Date(2026, 0, 9, 18, 0, 0);
+    // Date de fin : vendredi 10 janvier 2026 à 18:00 (24h après)
+    var dateFin = new Date(2026, 0, 10, 18, 0, 0);
+    var maintenant = new Date();
 
-    if (s > 59) {
-      m = Math.floor(s / 60);
-      s = s - m * 60;
-    }
-    if (m > 59) {
-      h = Math.floor(m / 60);
-      m = m - h * 60;
-    }
+    duree = Math.floor((dateFin.getTime() - maintenant.getTime()) / 1000);
 
-    hoursEl.innerHTML = h < 10 ? "0" + h : h.toString();
-    minutesEl.innerHTML = m < 10 ? "0" + m : m.toString();
-    secondsEl.innerHTML = s < 10 ? "0" + s : s.toString();
-
-    // Calcul de la progression
-    const elapsed = totalDuration - duree;
-    const percentage = Math.min(Math.floor((elapsed / totalDuration) * 100), 100);
-    progressBar.style.width = percentage + "%";
-    progressText.innerHTML = percentage + "% du temps écoulé";
-
-    duree = duree - 1;
-    window.setTimeout(t, 1000);
-  }
-
-  // Date de début du défi : jeudi 09 janvier 2026 à 18:00
-  var dateDebut = new Date(2026, 0, 9, 18, 0, 0);
-  // Date de fin : vendredi 10 janvier 2026 à 18:00 (24h après)
-  var dateFin = new Date(2026, 0, 10, 18, 0, 0);
-  var maintenant = new Date();
-
-  duree = Math.floor((dateFin.getTime() - maintenant.getTime()) / 1000);
-
-  t();
-</script>
+    t();
+  </script>

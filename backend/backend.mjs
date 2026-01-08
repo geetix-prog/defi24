@@ -151,6 +151,12 @@ export async function getAllDefisbonus() {
     return records;
 }
 
+export async function stats() {
+    let records = await pb.collection("stats").getFullList({
+    });
+    return records;
+}
+
 export async function getUserProfile(userId) {
     try {
         const user = await pb.collection('users').getOne(userId);

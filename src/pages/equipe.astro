@@ -1,8 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import CardEquipe from '../components/CardEquipe.astro';
-import { allEquipes } from '../../backend/backend.mjs';
+import { allEquipes, stats } from '../../backend/backend.mjs';
 import Button from '../components/Button.astro';
+import Decomptesimple from '../components/decomptesimple.astro';
+
+const statsData = await stats();
 
 const equipesData = await allEquipes();
 
@@ -25,19 +28,19 @@ return acc;
 
 const equipes = Object.values(equipesGrouped) as any[];
 ---
-
+<!--
 <Layout
 	title="Les Équipes - Défi 24h MMI"
 	description="Découvrez toutes les équipes participantes au Défi 24h MMI. Rejoignez ou créez votre équipe pour participer à cet événement créatif de 24 heures."
 	keywords="équipes défi 24h, participants MMI, équipes créatives, inscription équipe, challenge 24h"
 	canonical="/equipe"
+    bgColor="var(--color-secondary)"
 >
     <div class="flex flex-col space-y-15 justify-center items-center mt-25 lg:mt-40 px-4">
         <h1
             class="text-white font-oi text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight sm:leading-tight md:leading-normal tracking-wide">
             Les équipes
         </h1>
-        <!--
         <div class="w-8/10 lg:w-5/10">
             <p class="text-white font-nohemi text-center text-base sm:text-lg mb-4">
                 Juste en dessous, découvre la liste des équipes déjà créées et leurs membres.
@@ -57,9 +60,145 @@ const equipes = Object.values(equipesGrouped) as any[];
             Intégrer une équipe
         </button>
     </div>
-    -->
     </div>
 
+    <div id="createModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
+        <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] relative">
+            <button id="closeCreateModal"
+                class="absolute top-4 right-4 text-2xl hover:text-primary transition">✕</button>
+
+            <h2 class="font-oi text-primary text-3xl md:text-4xl text-center mb-6">Créer une équipe</h2>
+
+            <form id="createForm" class="space-y-4" enctype="multipart/form-data">
+                <div>
+                    <label for="equipeName" class="block font-nohemi text-black mb-2">Nom de l'équipe</label>
+                    <input type="text" id="equipeName" name="equipeName" required
+                        placeholder="Entrez le nom de votre équipe"
+                        class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary" />
+                </div>
+
+                <div>
+                    <label for="equipeLogo" class="block font-nohemi text-black mb-2">Logo de l'équipe</label>
+                    <input type="file" required id="equipeLogo" name="equipeLogo" accept="image/*"
+                        class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-opacity-90" />
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-lg font-bold hover:scale-105 active:scale-95 transition-transform">
+                    Créer l'équipe
+                </button>
+            </form>
+
+            <div id="createMessage" class="mt-4 text-center font-nohemi"></div>
+        </div>
+    </div>
+
+    <div id="joinModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
+        <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] relative">
+            <button id="closeModal" class="absolute top-4 right-4 text-2xl hover:text-primary transition">✕</button>
+
+            <h2 class="font-oi text-primary text-3xl md:text-4xl text-center mb-6">Rejoindre une équipe</h2>
+
+            <form id="joinForm" class="space-y-4">
+                <div>
+                    <label for="equipeId" class="block font-nohemi text-black mb-2">ID de l'équipe</label>
+                    <input type="text" id="equipeId" name="equipeId" required placeholder="Entrez l'ID de l'équipe"
+                        class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary" />
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-lg font-bold hover:scale-105 active:scale-95 transition-transform">
+                    Rejoindre l'équipe
+                </button>
+            </form>
+
+            <div id="message" class="mt-4 text-center font-nohemi"></div>
+        </div>
+    </div>
+
+    <div class="flex flex-col lg:grid lg:grid-cols-3 w-9/10 mx-auto mt-25 gap-10">
+        {equipes.map(equipe => (
+        <CardEquipe {...equipe} />
+        ))}
+    </div>
+
+    <div
+        class="flex flex-col mt-20 mx-auto lg:space-y-8 bg-white/80 w-8/10 px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl font-nohemi shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]">
+        <h2 class="text-center text-2xl sm:text-3xl font-oi text-primary font-normal mb-5">Si ton équipe est déjà créée</h2>
+        <p class="text-black text-center font-nohemi text-base sm:text-lg mb-10">
+            Tu peux rejoindre ton équipe en cliquant sur le bouton "Intégrer une équipe" et en entrant l'ID de
+            l'équipe fournie par le chef d'équipe.
+        </p>
+        <div class="flex justify-center">
+            <Button bgClass="bg-primary" colorClass="text-white" text="Voir mon code" page="profile" />
+        </div>
+    </div>
+</Layout> -->
+
+<Layout
+	title="Les Équipes - Défi 24h MMI"
+	description="Découvrez toutes les équipes participantes au Défi 24h MMI. Rejoignez ou créez votre équipe pour participer à cet événement créatif de 24 heures."
+	keywords="équipes défi 24h, participants MMI, équipes créatives, inscription équipe, challenge 24h"
+	canonical="/equipe"
+    bgColor="var(--color-secondary)"
+>
+    <div class="flex flex-col space-y-8 justify-center items-center mt-25 lg:mt-40 px-4">
+        <h1
+            class="text-white font-oi text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight sm:leading-tight md:leading-normal tracking-wide">
+            Les équipes
+        </h1>
+        <p class="text-white font-nohemi text-lg">{statsData[0]?.total_equipes || 0} équipes en compétition ! 💪</p>
+        <div class="w-8/10">
+            <Decomptesimple />
+        </div>
+        <div class="w-8/10 px-4 hidden lg:block">
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
+                <!-- Équipes actives -->
+                <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-purple-500 rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] mb-3 sm:mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                    <p class="font-nohemi text-sm sm:text-base text-gray-600 mb-2">Équipes actives</p>
+                    <p class="font-oi text-4xl sm:text-5xl md:text-6xl text-black">{statsData[0]?.total_equipes || 0}</p>
+                </div>
+
+                <!-- Participants -->
+                <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-yellow rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] mb-3 sm:mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </div>
+                    <p class="font-nohemi text-sm sm:text-base text-gray-600 mb-2">Participants</p>
+                    <p class="font-oi text-4xl sm:text-5xl md:text-6xl text-black">{statsData[0]?.total_membres || 0}</p>
+                </div>
+
+                <!-- Projets -->
+                <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-pink-500 rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] mb-3 sm:mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                        </svg>
+                    </div>
+                    <p class="font-nohemi text-sm sm:text-base text-gray-600 mb-2">Projets</p>
+                    <p class="font-oi text-4xl sm:text-5xl md:text-6xl text-black">{statsData[0]?.total_equipes || 0}</p>
+                </div>
+
+                <!-- Temps restant -->
+                <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-tertiary rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] mb-3 sm:mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <p class="font-nohemi text-sm sm:text-base text-gray-600 mb-2">Temps restant</p>
+                    <p class="font-oi text-3xl sm:text-4xl md:text-5xl text-black" id="countdown-stats-equipe">00h</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="createModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
         <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] relative">
             <button id="closeCreateModal"
@@ -453,4 +592,46 @@ const equipes = Object.values(equipesGrouped) as any[];
             }
         }
     });
+
+    // Compteur pour les stats
+    var duree: number;
+
+    function updateStatsCountdown() {
+        const countdownEl = document.getElementById("countdown-stats-equipe");
+        
+        if (!countdownEl) return;
+
+        if (duree < 0) {
+            countdownEl.innerHTML = "00h";
+            return;
+        }
+
+        let s = duree;
+        let m = 0;
+        let h = 0;
+
+        if (s > 59) {
+            m = Math.floor(s / 60);
+            s = s - m * 60;
+        }
+        if (m > 59) {
+            h = Math.floor(m / 60);
+            m = m - h * 60;
+        }
+
+        countdownEl.innerHTML = h + "h";
+
+        duree = duree - 1;
+        window.setTimeout(updateStatsCountdown, 1000);
+    }
+
+    // Date de début du défi : jeudi 09 janvier 2026 à 18:00
+    var dateDebut = new Date(2026, 0, 9, 18, 0, 0);
+    // Date de fin : vendredi 10 janvier 2026 à 18:00 (24h après)
+    var dateFin = new Date(2026, 0, 10, 18, 0, 0);
+    var maintenant = new Date();
+
+    duree = Math.floor((dateFin.getTime() - maintenant.getTime()) / 1000);
+
+    updateStatsCountdown();
 </script>

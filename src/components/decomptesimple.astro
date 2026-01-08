@@ -1,0 +1,59 @@
+---
+
+---
+
+<div class="flex justify-center w-full items-center">
+  <div class="bg-white/95 rounded-2xl sm:rounded-3xl px-6 sm:px-8 py-4 sm:py-5 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] w-full">
+    <div class="flex items-center justify-center gap-3 sm:gap-4">
+      <p class="font-nohemi text-base sm:text-lg md:text-xl text-black font-medium">Temps restant :</p>
+      <div class="font-oi text-2xl sm:text-3xl md:text-4xl text-tertiary font-bold" id="countdown">00:00:00</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var duree: number;
+
+  function t() {
+    const countdownEl = document.getElementById("countdown");
+    
+    if (!countdownEl) return;
+
+    if (duree < 0) {
+      countdownEl.innerHTML = "00:00:00";
+      return;
+    }
+
+    let s = duree;
+    let m = 0;
+    let h = 0;
+
+    if (s > 59) {
+      m = Math.floor(s / 60);
+      s = s - m * 60;
+    }
+    if (m > 59) {
+      h = Math.floor(m / 60);
+      m = m - h * 60;
+    }
+
+    const hours = h < 10 ? "0" + h : h.toString();
+    const minutes = m < 10 ? "0" + m : m.toString();
+    const seconds = s < 10 ? "0" + s : s.toString();
+    
+    countdownEl.innerHTML = `${hours}:${minutes}:${seconds}`;
+
+    duree = duree - 1;
+    window.setTimeout(t, 1000);
+  }
+
+  // Date de début du défi : jeudi 09 janvier 2026 à 18:00
+  var dateDebut = new Date(2026, 0, 9, 18, 0, 0);
+  // Date de fin : vendredi 10 janvier 2026 à 18:00 (24h après)
+  var dateFin = new Date(2026, 0, 10, 18, 0, 0);
+  var maintenant = new Date();
+
+  duree = Math.floor((dateFin.getTime() - maintenant.getTime()) / 1000);
+
+  t();
+</script>
