@@ -1,5 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
+const token = Astro.cookies.get('token')?.value;
+if (token) {
+    return Astro.redirect('/profile');
+}
 ---
 
 <Layout
@@ -7,6 +11,7 @@ import Layout from "../layouts/Layout.astro";
 	description="Inscrivez-vous au Défi 24h MMI ! Créez votre compte, rejoignez ou formez votre équipe et participez à 24 heures de création non-stop le 09 janvier 2026."
 	keywords="inscription défi 24h, créer compte MMI, rejoindre défi 24h, s'inscrire événement créatif, inscription équipe"
 	canonical="/inscription"
+    bgColor="var(--color-primary)"
 >
     <div class="flex flex-col space-y-15 justify-center items-center mt-25 lg:mt-40 px-4">
 		<h1

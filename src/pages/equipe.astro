@@ -30,607 +30,595 @@ return acc;
 const equipes = (Object.values(equipesGrouped) as any[]).sort((a, b) => b.points - a.points);
 ---
 
-    <!--
-    <Layout
-        title="Les Équipes - Défi 24h MMI"
-        description="Découvrez toutes les équipes participantes au Défi 24h MMI. Rejoignez ou créez votre équipe pour participer à cet événement créatif de 24 heures."
-        keywords="équipes défi 24h, participants MMI, équipes créatives, inscription équipe, challenge 24h"
-        canonical="/equipe"
-        bgColor="var(--color-secondary)"
-    >
-        <div class="flex flex-col space-y-15 justify-center items-center mt-25 lg:mt-40 px-4">
-            <h1
-                class="text-white font-oi text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight sm:leading-tight md:leading-normal tracking-wide">
-                Les équipes
-            </h1>
-            <div class="w-8/10 lg:w-5/10">
-                <p class="text-white font-nohemi text-center text-base sm:text-lg mb-4">
-                    Juste en dessous, découvre la liste des équipes déjà créées et leurs membres.
-                </p>
-                <p class="text-white font-nohemi text-center text-base sm:text-lg mb-6">
-                    Tu peux choisir de créer ta propre équipe en cliquant sur "Créer mon équipe". Tu deviendras alors
-                    automatiquement chef d'équipe.
-                </p>
-            </div>
-                <div class="flex space-x-6">
-                    <button id="openCreateModal"
-                    class="inline-block bg-primary text-white px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center cursor-pointer">
-                    Créer mon équipe
-                </button>
-                <button id="openJoinModal"
-                class="inline-block bg-white text-primary px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center cursor-pointer">
-                Intégrer une équipe
+<!--
+<Layout
+    title="Les Équipes - Défi 24h MMI"
+    description="Découvrez toutes les équipes participantes au Défi 24h MMI. Rejoignez ou créez votre équipe pour participer à cet événement créatif de 24 heures."
+    keywords="équipes défi 24h, participants MMI, équipes créatives, inscription équipe, challenge 24h"
+    canonical="/equipe"
+    bgColor="var(--color-secondary)"
+>
+    <div class="flex flex-col space-y-15 justify-center items-center mt-25 lg:mt-40 px-4">
+        <h1
+            class="text-white font-oi text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight sm:leading-tight md:leading-normal tracking-wide">
+            Les équipes
+        </h1>
+        <div class="w-8/10 lg:w-5/10">
+            <p class="text-white font-nohemi text-center text-base sm:text-lg mb-4">
+                Juste en dessous, découvre la liste des équipes déjà créées et leurs membres.
+            </p>
+            <p class="text-white font-nohemi text-center text-base sm:text-lg mb-6">
+                Tu peux choisir de créer ta propre équipe en cliquant sur "Créer mon équipe". Tu deviendras alors
+                automatiquement chef d'équipe.
+            </p>
+        </div>
+            <div class="flex space-x-6">
+                <button id="openCreateModal"
+                class="inline-block bg-primary text-white px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center cursor-pointer">
+                Créer mon équipe
             </button>
+            <button id="openJoinModal"
+            class="inline-block bg-white text-primary px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-full font-nohemi font-black text-base sm:text-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:scale-105 active:scale-95 transition-transform duration-150 ease-in text-center cursor-pointer">
+            Intégrer une équipe
+        </button>
+    </div>
+    </div>
+
+    <div id="createModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
+        <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] relative">
+            <button id="closeCreateModal"
+                class="absolute top-4 right-4 text-2xl hover:text-primary transition">✕</button>
+
+            <h2 class="font-oi text-primary text-3xl md:text-4xl text-center mb-6">Créer une équipe</h2>
+
+            <form id="createForm" class="space-y-4" enctype="multipart/form-data">
+                <div>
+                    <label for="equipeName" class="block font-nohemi text-black mb-2">Nom de l'équipe</label>
+                    <input type="text" id="equipeName" name="equipeName" required
+                        placeholder="Entrez le nom de votre équipe"
+                        class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary" />
+                </div>
+
+                <div>
+                    <label for="equipeLogo" class="block font-nohemi text-black mb-2">Logo de l'équipe</label>
+                    <input type="file" required id="equipeLogo" name="equipeLogo" accept="image/*"
+                        class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-opacity-90" />
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-lg font-bold hover:scale-105 active:scale-95 transition-transform">
+                    Créer l'équipe
+                </button>
+            </form>
+
+            <div id="createMessage" class="mt-4 text-center font-nohemi"></div>
         </div>
+    </div>
+
+    <div id="joinModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
+        <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] relative">
+            <button id="closeModal" class="absolute top-4 right-4 text-2xl hover:text-primary transition">✕</button>
+
+            <h2 class="font-oi text-primary text-3xl md:text-4xl text-center mb-6">Rejoindre une équipe</h2>
+
+            <form id="joinForm" class="space-y-4">
+                <div>
+                    <label for="equipeId" class="block font-nohemi text-black mb-2">ID de l'équipe</label>
+                    <input type="text" id="equipeId" name="equipeId" required placeholder="Entrez l'ID de l'équipe"
+                        class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary" />
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-lg font-bold hover:scale-105 active:scale-95 transition-transform">
+                    Rejoindre l'équipe
+                </button>
+            </form>
+
+            <div id="message" class="mt-4 text-center font-nohemi"></div>
         </div>
+    </div>
 
-        <div id="createModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
-            <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] relative">
-                <button id="closeCreateModal"
-                    class="absolute top-4 right-4 text-2xl hover:text-primary transition">✕</button>
+    <div class="flex flex-col lg:grid lg:grid-cols-3 w-9/10 mx-auto mt-25 gap-10">
+        {equipes.map(equipe => (
+        <CardEquipe {...equipe} />
+        ))}
+    </div>
 
-                <h2 class="font-oi text-primary text-3xl md:text-4xl text-center mb-6">Créer une équipe</h2>
+    <div
+        class="flex flex-col mt-20 mx-auto lg:space-y-8 bg-white/80 w-8/10 px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl font-nohemi shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]">
+        <h2 class="text-center text-2xl sm:text-3xl font-oi text-primary font-normal mb-5">Si ton équipe est déjà créée</h2>
+        <p class="text-black text-center font-nohemi text-base sm:text-lg mb-10">
+            Tu peux rejoindre ton équipe en cliquant sur le bouton "Intégrer une équipe" et en entrant l'ID de
+            l'équipe fournie par le chef d'équipe.
+        </p>
+        <div class="flex justify-center">
+            <Button bgClass="bg-primary" colorClass="text-white" text="Voir mon code" page="profile" />
+        </div>
+    </div>
+</Layout> -->
 
-                <form id="createForm" class="space-y-4" enctype="multipart/form-data">
-                    <div>
-                        <label for="equipeName" class="block font-nohemi text-black mb-2">Nom de l'équipe</label>
-                        <input type="text" id="equipeName" name="equipeName" required
-                            placeholder="Entrez le nom de votre équipe"
-                            class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary" />
+<Layout
+    title="Les Équipes - Défi 24h MMI"
+    description="Découvrez toutes les équipes participantes au Défi 24h MMI. Rejoignez ou créez votre équipe pour participer à cet événement créatif de 24 heures."
+    keywords="équipes défi 24h, participants MMI, équipes créatives, inscription équipe, challenge 24h"
+    canonical="/equipe"
+    bgColor="var(--color-secondary)"
+>
+    <div class="flex flex-col space-y-8 justify-center items-center mt-25 lg:mt-40 px-4">
+        <h1
+            class="text-white font-oi text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight sm:leading-tight md:leading-normal tracking-wide">
+            Les équipes
+        </h1>
+        <p class="text-white font-nohemi text-lg">{statsData[0]?.total_equipes || 0} équipes en compétition ! 💪</p>
+        <div class="w-8/10">
+            <Decomptesimple />
+        </div>
+        <div class="w-8/10 px-4 hidden lg:block">
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
+                <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-purple-500 rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] mb-3 sm:mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
                     </div>
+                    <p class="font-nohemi text-sm sm:text-base text-gray-600 mb-2">Équipes actives</p>
+                    <p class="font-oi text-4xl sm:text-5xl md:text-6xl text-black">{statsData[0]?.total_equipes || 0}</p>
+                </div>
 
-                    <div>
-                        <label for="equipeLogo" class="block font-nohemi text-black mb-2">Logo de l'équipe</label>
-                        <input type="file" required id="equipeLogo" name="equipeLogo" accept="image/*"
-                            class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-opacity-90" />
+                <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-yellow rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] mb-3 sm:mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
                     </div>
+                    <p class="font-nohemi text-sm sm:text-base text-gray-600 mb-2">Participants</p>
+                    <p class="font-oi text-4xl sm:text-5xl md:text-6xl text-black">{statsData[0]?.total_membres || 0}</p>
+                </div>
 
-                    <button type="submit"
-                        class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-lg font-bold hover:scale-105 active:scale-95 transition-transform">
-                        Créer l'équipe
-                    </button>
-                </form>
+                <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-pink-500 rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] mb-3 sm:mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                        </svg>
+                    </div>
+                    <p class="font-nohemi text-sm sm:text-base text-gray-600 mb-2">Projets</p>
+                    <p class="font-oi text-4xl sm:text-5xl md:text-6xl text-black">{statsData[0]?.total_equipes || 0}</p>
+                </div>
 
-                <div id="createMessage" class="mt-4 text-center font-nohemi"></div>
+                <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-tertiary rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] mb-3 sm:mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <p class="font-nohemi text-sm sm:text-base text-gray-600 mb-2">Temps restant</p>
+                    <p class="font-oi text-3xl sm:text-4xl md:text-5xl text-black" id="countdown-stats-equipe">00h</p>
+                </div>
             </div>
         </div>
+    </div>
+    <div id="createModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
+        <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] relative">
+            <button id="closeCreateModal"
+                class="absolute top-4 right-4 text-2xl hover:text-primary transition">✕</button>
 
-        <div id="joinModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
-            <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] relative">
-                <button id="closeModal" class="absolute top-4 right-4 text-2xl hover:text-primary transition">✕</button>
+            <h2 class="font-oi text-primary text-3xl md:text-4xl text-center mb-6">Créer une équipe</h2>
 
-                <h2 class="font-oi text-primary text-3xl md:text-4xl text-center mb-6">Rejoindre une équipe</h2>
+            <form id="createForm" class="space-y-4" enctype="multipart/form-data">
+                <div>
+                    <label for="equipeName" class="block font-nohemi text-black mb-2">Nom de l'équipe</label>
+                    <input type="text" id="equipeName" name="equipeName" required
+                        placeholder="Entrez le nom de votre équipe"
+                        class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary" />
+                </div>
 
-                <form id="joinForm" class="space-y-4">
-                    <div>
-                        <label for="equipeId" class="block font-nohemi text-black mb-2">ID de l'équipe</label>
-                        <input type="text" id="equipeId" name="equipeId" required placeholder="Entrez l'ID de l'équipe"
-                            class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary" />
-                    </div>
+                <div>
+                    <label for="equipeLogo" class="block font-nohemi text-black mb-2">Logo de l'équipe</label>
+                    <input type="file" required id="equipeLogo" name="equipeLogo" accept="image/*"
+                        class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-opacity-90" />
+                </div>
 
-                    <button type="submit"
-                        class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-lg font-bold hover:scale-105 active:scale-95 transition-transform">
-                        Rejoindre l'équipe
-                    </button>
-                </form>
+                <button type="submit"
+                    class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-lg font-bold hover:scale-105 active:scale-95 transition-transform">
+                    Créer l'équipe
+                </button>
+            </form>
 
-                <div id="message" class="mt-4 text-center font-nohemi"></div>
-            </div>
+            <div id="createMessage" class="mt-4 text-center font-nohemi"></div>
         </div>
+    </div>
 
-        <div class="flex flex-col lg:grid lg:grid-cols-3 w-9/10 mx-auto mt-25 gap-10">
-            {equipes.map(equipe => (
-            <CardEquipe {...equipe} />
+    <div id="joinModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
+        <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] relative">
+            <button id="closeModal" class="absolute top-4 right-4 text-2xl hover:text-primary transition">✕</button>
+
+            <h2 class="font-oi text-primary text-3xl md:text-4xl text-center mb-6">Rejoindre une équipe</h2>
+
+            <form id="joinForm" class="space-y-4">
+                <div>
+                    <label for="equipeId" class="block font-nohemi text-black mb-2">ID de l'équipe</label>
+                    <input type="text" id="equipeId" name="equipeId" required placeholder="Entrez l'ID de l'équipe"
+                        class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary" />
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-lg font-bold hover:scale-105 active:scale-95 transition-transform">
+                    Rejoindre l'équipe
+                </button>
+            </form>
+
+            <div id="message" class="mt-4 text-center font-nohemi"></div>
+        </div>
+    </div>
+
+    <div class="w-8/10 mx-auto px-4 mt-15 lg:mt-20">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+            {equipes.map((equipe, index) => (
+                <CardEquipe {...equipe} position={index + 1} points={equipe.points || 0} />
             ))}
         </div>
+    </div>
+</Layout>
 
-        <div
-            class="flex flex-col mt-20 mx-auto lg:space-y-8 bg-white/80 w-8/10 px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl font-nohemi shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]">
-            <h2 class="text-center text-2xl sm:text-3xl font-oi text-primary font-normal mb-5">Si ton équipe est déjà créée</h2>
-            <p class="text-black text-center font-nohemi text-base sm:text-lg mb-10">
-                Tu peux rejoindre ton équipe en cliquant sur le bouton "Intégrer une équipe" et en entrant l'ID de
-                l'équipe fournie par le chef d'équipe.
-            </p>
-            <div class="flex justify-center">
-                <Button bgClass="bg-primary" colorClass="text-white" text="Voir mon code" page="profile" />
+<script>
+    const userDataString = localStorage.getItem('user');
+    if (!userDataString) {
+        window.location.href = '/connexion';
+    } else {
+        const userData = JSON.parse(userDataString);
+        loadProfile(userData.id);
+    }
+
+    async function loadProfile(userId: string) {
+        try {
+            const response = await fetch(`/api/get-profile?userId=${userId}`);
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Erreur lors du chargement du profil');
+            }
+
+            const user = data.user;
+            const equipe = data.equipe;
+
+            
+            document.getElementById('userName')!.textContent = `${user.prenom} ${user.nom}`;
+            document.getElementById('userEmail')!.textContent = user.email;
+            (document.getElementById('prenom') as HTMLInputElement).value = user.prenom || '';
+            (document.getElementById('nom') as HTMLInputElement).value = user.nom || '';
+            (document.getElementById('email') as HTMLInputElement).value = user.email || '';
+            (document.getElementById('promo') as HTMLInputElement).value = user.promo || '';
+
+            
+            const avatarContainer = document.querySelector('.relative.shrink-0');
+            if (avatarContainer) {
+                if (user.avatar_url) {
+                    avatarContainer.innerHTML = `
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 sm:border-3 border-black shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] overflow-hidden">
+            <img src="${user.avatar_url}" alt="Avatar" class="w-full h-full object-cover" />
             </div>
-        </div>
-    </Layout> -->
-
-    <Layout
-        title="Les Équipes - Défi 24h MMI"
-        description="Découvrez toutes les équipes participantes au Défi 24h MMI. Rejoignez ou créez votre équipe pour participer à cet événement créatif de 24 heures."
-        keywords="équipes défi 24h, participants MMI, équipes créatives, inscription équipe, challenge 24h"
-        canonical="/equipe"
-        bgColor="var(--color-secondary)"
-    >
-        <div class="flex flex-col space-y-8 justify-center items-center mt-25 lg:mt-40 px-4">
-            <h1
-                class="text-white font-oi text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight sm:leading-tight md:leading-normal tracking-wide">
-                Les équipes
-            </h1>
-            <p class="text-white font-nohemi text-lg">{statsData[0]?.total_equipes || 0} équipes en compétition ! 💪</p>
-            <div class="w-8/10">
-                <Decomptesimple />
+        `;
+                } else {
+                    const initials = `${user.prenom?.charAt(0) || ''}${user.nom?.charAt(0) || ''}`.toUpperCase();
+                    avatarContainer.innerHTML = `
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-primary to-tertiary flex items-center justify-center text-white font-oi text-3xl sm:text-4xl border-2 sm:border-3 border-black shadow-[0_0_0_2px_black,3px_3px_0px_1px_black]">
+            ${initials}
             </div>
-            <div class="w-8/10 px-4 hidden lg:block">
-                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
-                    <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
-                        <div class="w-12 h-12 sm:w-14 sm:h-14 bg-purple-500 rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] mb-3 sm:mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                        </div>
-                        <p class="font-nohemi text-sm sm:text-base text-gray-600 mb-2">Équipes actives</p>
-                        <p class="font-oi text-4xl sm:text-5xl md:text-6xl text-black">{statsData[0]?.total_equipes || 0}</p>
-                    </div>
+        `;
+                }
 
-                    <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
-                        <div class="w-12 h-12 sm:w-14 sm:h-14 bg-yellow rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] mb-3 sm:mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                            </svg>
-                        </div>
-                        <p class="font-nohemi text-sm sm:text-base text-gray-600 mb-2">Participants</p>
-                        <p class="font-oi text-4xl sm:text-5xl md:text-6xl text-black">{statsData[0]?.total_membres || 0}</p>
-                    </div>
+                if (equipe) {
+                    if (equipe.chef === userId) {
+                        avatarContainer.innerHTML += `
+            <button class="absolute -bottom-1 -right-1 sm:-bottom-2 sm:-right-2 bg-primary text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-nohemi font-bold border-2 border-black">
+                Chef
+            </button>
+            `;
+                    } else {
+                        avatarContainer.innerHTML += `
+            <button class="absolute -bottom-1 -right-1 sm:-bottom-2 sm:-right-2 bg-tertiary text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-nohemi font-bold border-2 border-black">
+                Membre
+            </button>
+            `;
+                    }
+                }
+            }
 
-                    <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
-                        <div class="w-12 h-12 sm:w-14 sm:h-14 bg-pink-500 rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] mb-3 sm:mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                            </svg>
-                        </div>
-                        <p class="font-nohemi text-sm sm:text-base text-gray-600 mb-2">Projets</p>
-                        <p class="font-oi text-4xl sm:text-5xl md:text-6xl text-black">{statsData[0]?.total_equipes || 0}</p>
-                    </div>
+            
+            (document.getElementById('equipe') as HTMLInputElement).value = equipe?.nom || 'Aucune équipe';
+            const equipeIdElement = document.getElementById('equipeId');
+            if (equipeIdElement) {
+                equipeIdElement.textContent = equipe ? `Code: ${equipe.equipe_id}` : '';
+            }
 
-                    <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
-                        <div class="w-12 h-12 sm:w-14 sm:h-14 bg-tertiary rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] mb-3 sm:mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                        <p class="font-nohemi text-sm sm:text-base text-gray-600 mb-2">Temps restant</p>
-                        <p class="font-oi text-3xl sm:text-4xl md:text-5xl text-black" id="countdown-stats-equipe">00h</p>
-                    </div>
+            
+            const userRoleElement = document.getElementById('userRole');
+            if (userRoleElement && equipe) {
+                if (equipe.chef === userId) {
+                    userRoleElement.textContent = "👑 Chef d'équipe";
+                    userRoleElement.className =
+                        'inline-block px-3 py-1 rounded-full text-xs font-nohemi font-bold border-2 border-black bg-primary text-white';
+                } else {
+                    userRoleElement.textContent = '👤 Membre';
+                    userRoleElement.className =
+                        'inline-block px-3 py-1 rounded-full text-xs font-nohemi font-bold border-2 border-black bg-tertiary text-white';
+                }
+                userRoleElement.style.display = 'inline-block';
+            }
+
+            
+            if (equipe) {
+                const teamSection = document.getElementById('teamSection');
+                if (teamSection) {
+                    teamSection.classList.remove('hidden');
+                    document.getElementById('teamName')!.textContent = equipe.nom;
+                    document.getElementById('teamId')!.textContent = `Code: ${equipe.equipe_id}`;
+                    document.getElementById('teamMemberCount')!.textContent =
+                        `${equipe.usersDetails.length} membre${equipe.usersDetails.length > 1 ? 's' : ''}`;
+
+                    const teamLogoContainer = document.getElementById('teamLogoContainer');
+                    if (teamLogoContainer) {
+                        if (equipe.logo_url) {
+                            teamLogoContainer.innerHTML =
+                                `<img src="${equipe.logo_url}" alt="Logo" class="w-full h-full object-cover rounded-full">`;
+                        } else {
+                            const initials = equipe.nom.split(' ').map((w: string) => w.charAt(0)).join('').toUpperCase()
+                                .slice(0, 2);
+                            teamLogoContainer.textContent = initials;
+                        }
+                    }
+
+                    const chefUser = equipe.usersDetails.find((u: any) => u.id === equipe.chef);
+                    if (chefUser) {
+                        document.getElementById('chefName')!.textContent = `${chefUser.prenom} ${chefUser.nom}`;
+                    }
+
+                    const teamMembers = document.getElementById('teamMembers');
+                    if (teamMembers) {
+                        teamMembers.innerHTML = '';
+                        equipe.usersDetails.forEach((membre: any) => {
+                            const isChef = membre.id === equipe.chef;
+                            const memberDiv = document.createElement('div');
+                            memberDiv.className =
+                                'flex items-center justify-between p-2.5 sm:p-3 bg-white rounded-xl border-2 border-black';
+
+                            let avatarHtml = '';
+                            if (membre.avatar_url) {
+                                avatarHtml =
+                                    `<img src="${membre.avatar_url}" alt="Avatar" class="w-full h-full object-cover rounded-full">`;
+                            } else {
+                                const initials =
+                                    `${membre.prenom?.charAt(0) || ''}${membre.nom?.charAt(0) || ''}`
+                                    .toUpperCase();
+                                avatarHtml = initials;
+                            }
+
+                            memberDiv.innerHTML = `
+                <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-primary to-tertiary flex items-center justify-center text-white font-oi text-xs sm:text-sm border-2 border-black shrink-0">
+                    ${avatarHtml}
                 </div>
-            </div>
-        </div>
-        <div id="createModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
-            <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] relative">
-                <button id="closeCreateModal"
-                    class="absolute top-4 right-4 text-2xl hover:text-primary transition">✕</button>
+                <div class="font-nohemi text-black text-sm sm:text-base truncate">
+                    ${membre.prenom} ${membre.nom}
+                </div>
+                </div>
+                ${isChef ? '<span class="bg-tertiary text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-nohemi font-bold shrink-0">Chef</span>' : ''}
+            `;
+                            teamMembers.appendChild(memberDiv);
+                        });
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Erreur:', error);
+        }
+    }
 
-                <h2 class="font-oi text-primary text-3xl md:text-4xl text-center mb-6">Créer une équipe</h2>
+    const createModal = document.getElementById('createModal');
+    const createForm = document.getElementById('createForm');
+    const createMessageDiv = document.getElementById('createMessage');
+    const joinModal = document.getElementById('joinModal');
+    const joinForm = document.getElementById('joinForm');
+    const messageDiv = document.getElementById('message');
 
-                <form id="createForm" class="space-y-4" enctype="multipart/form-data">
-                    <div>
-                        <label for="equipeName" class="block font-nohemi text-black mb-2">Nom de l'équipe</label>
-                        <input type="text" id="equipeName" name="equipeName" required
-                            placeholder="Entrez le nom de votre équipe"
-                            class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary" />
-                    </div>
+    
+    const openCreateModalBtn = document.getElementById('openCreateModal');
+    const closeCreateModalBtn = document.getElementById('closeCreateModal');
+    const openJoinModalBtn = document.getElementById('openJoinModal');
+    const closeJoinModalBtn = document.getElementById('closeModal');
 
-                    <div>
-                        <label for="equipeLogo" class="block font-nohemi text-black mb-2">Logo de l'équipe</label>
-                        <input type="file" required id="equipeLogo" name="equipeLogo" accept="image/*"
-                            class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-opacity-90" />
-                    </div>
+    openCreateModalBtn?.addEventListener('click', () => {
+        createModal?.classList.remove('hidden');
+    });
 
-                    <button type="submit"
-                        class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-lg font-bold hover:scale-105 active:scale-95 transition-transform">
-                        Créer l'équipe
-                    </button>
-                </form>
+    closeCreateModalBtn?.addEventListener('click', () => {
+        createModal?.classList.add('hidden');
+    });
 
-                <div id="createMessage" class="mt-4 text-center font-nohemi"></div>
-            </div>
-        </div>
+    openJoinModalBtn?.addEventListener('click', () => {
+        joinModal?.classList.remove('hidden');
+    });
 
-        <div id="joinModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center px-4">
-            <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] relative">
-                <button id="closeModal" class="absolute top-4 right-4 text-2xl hover:text-primary transition">✕</button>
+    closeJoinModalBtn?.addEventListener('click', () => {
+        joinModal?.classList.add('hidden');
+    });
 
-                <h2 class="font-oi text-primary text-3xl md:text-4xl text-center mb-6">Rejoindre une équipe</h2>
+    createForm?.addEventListener('submit', async (e: Event) => {
+        e.preventDefault();
 
-                <form id="joinForm" class="space-y-4">
-                    <div>
-                        <label for="equipeId" class="block font-nohemi text-black mb-2">ID de l'équipe</label>
-                        <input type="text" id="equipeId" name="equipeId" required placeholder="Entrez l'ID de l'équipe"
-                            class="w-full px-4 py-3 border-3 border-black rounded-xl font-nohemi focus:outline-none focus:ring-2 focus:ring-primary" />
-                    </div>
+        const equipeNameInput = document.getElementById('equipeName') as HTMLInputElement;
+        const equipeLogoInput = document.getElementById('equipeLogo') as HTMLInputElement;
+        const equipeName = equipeNameInput.value.trim();
 
-                    <button type="submit"
-                        class="w-full bg-primary text-white px-6 py-3 rounded-xl border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-nohemi text-lg font-bold hover:scale-105 active:scale-95 transition-transform">
-                        Rejoindre l'équipe
-                    </button>
-                </form>
-
-                <div id="message" class="mt-4 text-center font-nohemi"></div>
-            </div>
-        </div>
-
-        <div class="w-8/10 mx-auto px-4 mt-15 lg:mt-20">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-                {equipes.map((equipe, index) => (
-                    <CardEquipe {...equipe} position={index + 1} points={equipe.points || 0} />
-                ))}
-            </div>
-        </div>
-
-        <div
-            class="flex flex-col mt-20 mx-auto lg:space-y-8 bg-white/80 w-8/10 px-6 sm:px-8 md:px-10 py-7 md:py-10 lg:py-15 rounded-2xl font-nohemi shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]">
-            <h2 class="text-center text-2xl sm:text-3xl font-oi text-primary font-normal mb-5">Si ton équipe est déjà créée</h2>
-            <p class="text-black text-center font-nohemi text-base sm:text-lg mb-10">
-                Tu peux rejoindre ton équipe en cliquant sur le bouton "Intégrer une équipe" et en entrant l'ID de
-                l'équipe fournie par le chef d'équipe.
-            </p>
-            <div class="flex justify-center">
-                <Button bgClass="bg-primary" colorClass="text-white" text="Voir mon code" page="profile" />
-            </div>
-        </div>
-    </Layout>
-
-    <script>
         const userDataString = localStorage.getItem('user');
         if (!userDataString) {
-            window.location.href = '/connexion';
-        } else {
-            const userData = JSON.parse(userDataString);
-            loadProfile(userData.id);
-        }
-
-        async function loadProfile(userId: string) {
-            try {
-                const response = await fetch(`/api/get-profile?userId=${userId}`);
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.error || 'Erreur lors du chargement du profil');
-                }
-
-                const user = data.user;
-                const equipe = data.equipe;
-
-                
-                document.getElementById('userName')!.textContent = `${user.prenom} ${user.nom}`;
-                document.getElementById('userEmail')!.textContent = user.email;
-                (document.getElementById('prenom') as HTMLInputElement).value = user.prenom || '';
-                (document.getElementById('nom') as HTMLInputElement).value = user.nom || '';
-                (document.getElementById('email') as HTMLInputElement).value = user.email || '';
-                (document.getElementById('promo') as HTMLInputElement).value = user.promo || '';
-
-                
-                const avatarContainer = document.querySelector('.relative.shrink-0');
-                if (avatarContainer) {
-                    if (user.avatar_url) {
-                        avatarContainer.innerHTML = `
-                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 sm:border-3 border-black shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] overflow-hidden">
-                <img src="${user.avatar_url}" alt="Avatar" class="w-full h-full object-cover" />
-                </div>
-            `;
-                    } else {
-                        const initials = `${user.prenom?.charAt(0) || ''}${user.nom?.charAt(0) || ''}`.toUpperCase();
-                        avatarContainer.innerHTML = `
-                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-primary to-tertiary flex items-center justify-center text-white font-oi text-3xl sm:text-4xl border-2 sm:border-3 border-black shadow-[0_0_0_2px_black,3px_3px_0px_1px_black]">
-                ${initials}
-                </div>
-            `;
-                    }
-
-                    if (equipe) {
-                        if (equipe.chef === userId) {
-                            avatarContainer.innerHTML += `
-                <button class="absolute -bottom-1 -right-1 sm:-bottom-2 sm:-right-2 bg-primary text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-nohemi font-bold border-2 border-black">
-                    Chef
-                </button>
-                `;
-                        } else {
-                            avatarContainer.innerHTML += `
-                <button class="absolute -bottom-1 -right-1 sm:-bottom-2 sm:-right-2 bg-tertiary text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-nohemi font-bold border-2 border-black">
-                    Membre
-                </button>
-                `;
-                        }
-                    }
-                }
-
-                
-                (document.getElementById('equipe') as HTMLInputElement).value = equipe?.nom || 'Aucune équipe';
-                const equipeIdElement = document.getElementById('equipeId');
-                if (equipeIdElement) {
-                    equipeIdElement.textContent = equipe ? `Code: ${equipe.equipe_id}` : '';
-                }
-
-                
-                const userRoleElement = document.getElementById('userRole');
-                if (userRoleElement && equipe) {
-                    if (equipe.chef === userId) {
-                        userRoleElement.textContent = "👑 Chef d'équipe";
-                        userRoleElement.className =
-                            'inline-block px-3 py-1 rounded-full text-xs font-nohemi font-bold border-2 border-black bg-primary text-white';
-                    } else {
-                        userRoleElement.textContent = '👤 Membre';
-                        userRoleElement.className =
-                            'inline-block px-3 py-1 rounded-full text-xs font-nohemi font-bold border-2 border-black bg-tertiary text-white';
-                    }
-                    userRoleElement.style.display = 'inline-block';
-                }
-
-                
-                if (equipe) {
-                    const teamSection = document.getElementById('teamSection');
-                    if (teamSection) {
-                        teamSection.classList.remove('hidden');
-                        document.getElementById('teamName')!.textContent = equipe.nom;
-                        document.getElementById('teamId')!.textContent = `Code: ${equipe.equipe_id}`;
-                        document.getElementById('teamMemberCount')!.textContent =
-                            `${equipe.usersDetails.length} membre${equipe.usersDetails.length > 1 ? 's' : ''}`;
-
-                        const teamLogoContainer = document.getElementById('teamLogoContainer');
-                        if (teamLogoContainer) {
-                            if (equipe.logo_url) {
-                                teamLogoContainer.innerHTML =
-                                    `<img src="${equipe.logo_url}" alt="Logo" class="w-full h-full object-cover rounded-full">`;
-                            } else {
-                                const initials = equipe.nom.split(' ').map((w: string) => w.charAt(0)).join('').toUpperCase()
-                                    .slice(0, 2);
-                                teamLogoContainer.textContent = initials;
-                            }
-                        }
-
-                        const chefUser = equipe.usersDetails.find((u: any) => u.id === equipe.chef);
-                        if (chefUser) {
-                            document.getElementById('chefName')!.textContent = `${chefUser.prenom} ${chefUser.nom}`;
-                        }
-
-                        const teamMembers = document.getElementById('teamMembers');
-                        if (teamMembers) {
-                            teamMembers.innerHTML = '';
-                            equipe.usersDetails.forEach((membre: any) => {
-                                const isChef = membre.id === equipe.chef;
-                                const memberDiv = document.createElement('div');
-                                memberDiv.className =
-                                    'flex items-center justify-between p-2.5 sm:p-3 bg-white rounded-xl border-2 border-black';
-
-                                let avatarHtml = '';
-                                if (membre.avatar_url) {
-                                    avatarHtml =
-                                        `<img src="${membre.avatar_url}" alt="Avatar" class="w-full h-full object-cover rounded-full">`;
-                                } else {
-                                    const initials =
-                                        `${membre.prenom?.charAt(0) || ''}${membre.nom?.charAt(0) || ''}`
-                                        .toUpperCase();
-                                    avatarHtml = initials;
-                                }
-
-                                memberDiv.innerHTML = `
-                    <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-                    <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-primary to-tertiary flex items-center justify-center text-white font-oi text-xs sm:text-sm border-2 border-black shrink-0">
-                        ${avatarHtml}
-                    </div>
-                    <div class="font-nohemi text-black text-sm sm:text-base truncate">
-                        ${membre.prenom} ${membre.nom}
-                    </div>
-                    </div>
-                    ${isChef ? '<span class="bg-tertiary text-white px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-nohemi font-bold shrink-0">Chef</span>' : ''}
-                `;
-                                teamMembers.appendChild(memberDiv);
-                            });
-                        }
-                    }
-                }
-            } catch (error) {
-                console.error('Erreur:', error);
-            }
-        }
-
-        const createModal = document.getElementById('createModal');
-        const createForm = document.getElementById('createForm');
-        const createMessageDiv = document.getElementById('createMessage');
-        const joinModal = document.getElementById('joinModal');
-        const joinForm = document.getElementById('joinForm');
-        const messageDiv = document.getElementById('message');
-
-        
-        const openCreateModalBtn = document.getElementById('openCreateModal');
-        const closeCreateModalBtn = document.getElementById('closeCreateModal');
-        const openJoinModalBtn = document.getElementById('openJoinModal');
-        const closeJoinModalBtn = document.getElementById('closeModal');
-
-        openCreateModalBtn?.addEventListener('click', () => {
-            createModal?.classList.remove('hidden');
-        });
-
-        closeCreateModalBtn?.addEventListener('click', () => {
-            createModal?.classList.add('hidden');
-        });
-
-        openJoinModalBtn?.addEventListener('click', () => {
-            joinModal?.classList.remove('hidden');
-        });
-
-        closeJoinModalBtn?.addEventListener('click', () => {
-            joinModal?.classList.add('hidden');
-        });
-
-        createForm?.addEventListener('submit', async (e: Event) => {
-            e.preventDefault();
-
-            const equipeNameInput = document.getElementById('equipeName') as HTMLInputElement;
-            const equipeLogoInput = document.getElementById('equipeLogo') as HTMLInputElement;
-            const equipeName = equipeNameInput.value.trim();
-
-            const userDataString = localStorage.getItem('user');
-            if (!userDataString) {
-                if (createMessageDiv) {
-                    createMessageDiv.textContent = 'Vous devez être connecté pour créer une équipe.';
-                    createMessageDiv.style.color = 'red';
-                }
-                setTimeout(() => {
-                    window.location.href = '/connexion';
-                }, 2000);
-                return;
-            }
-
-            const userData = JSON.parse(userDataString);
-            const userId = userData.id;
-
-            
             if (createMessageDiv) {
-                createMessageDiv.innerHTML = `
-                    <div class="flex items-center justify-center gap-2">
-                        <div class="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                        <span class="text-primary font-bold">Création en cours...</span>
-                    </div>
-                `;
+                createMessageDiv.textContent = 'Vous devez être connecté pour créer une équipe.';
+                createMessageDiv.style.color = 'red';
             }
-
-            
-            const formData = new FormData();
-            formData.append('nom', equipeName);
-            formData.append('userId', userId);
-
-            if (equipeLogoInput.files && equipeLogoInput.files[0]) {
-                formData.append('logo', equipeLogoInput.files[0]);
-            }
-
-            
-            try {
-                const response = await fetch('/api/create-equipe', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    
-                    if (createMessageDiv) {
-                        createMessageDiv.innerHTML = `<span class="text-red-500 font-bold">${data.error || 'Erreur lors de la création'}</span>`;
-                    }
-                    return;
-                }
-
-                
-                setTimeout(() => {
-                    window.location.href = '/equipe';
-                }, 3000);
-            } catch (error) {
-                console.error('Erreur lors de la création de l\'équipe:', error);
-                if (createMessageDiv) {
-                    createMessageDiv.innerHTML = `<span class="text-red-500 font-bold">Erreur de connexion au serveur</span>`;
-                }
-            }
-        });
-
-        
-        joinForm?.addEventListener('submit', async (e: Event) => {
-            e.preventDefault();
-
-            const equipeIdInput = document.getElementById('equipeId') as HTMLInputElement;
-            const equipeId = equipeIdInput.value.trim();
-
-            
-            const userDataString = localStorage.getItem('user');
-            if (!userDataString) {
-                if (messageDiv) {
-                    messageDiv.textContent = 'Vous devez être connecté pour rejoindre une équipe.';
-                    messageDiv.style.color = 'red';
-                }
-                setTimeout(() => {
-                    window.location.href = '/connexion';
-                }, 2000);
-                return;
-            }
-
-            const userData = JSON.parse(userDataString);
-            const userId = userData.id;
-
-            
-            if (messageDiv) {
-                messageDiv.innerHTML = `
-                    <div class="flex items-center justify-center gap-2">
-                        <div class="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                        <span class="text-primary font-bold">Traitement en cours...</span>
-                    </div>
-                `;
-            }
-
-            
-            try {
-                const response = await fetch('/api/join-equipe', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        equipeId,
-                        userId
-                    })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    
-                    if (messageDiv) {
-                        messageDiv.innerHTML = `<span class="text-red-500 font-bold">${data.error || 'Erreur lors de la jonction'}</span>`;
-                    }
-                    return;
-                }
-
-                
-                setTimeout(() => {
-                    window.location.href = '/equipe';
-                }, 3000);
-            } catch (error) {
-                console.error('Erreur lors de la jonction à l\'équipe:', error);
-                if (messageDiv) {
-                    messageDiv.innerHTML = `<span class="text-red-500 font-bold">Erreur de connexion au serveur</span>`;
-                }
-            }
-        });
-
-        var duree: number;
-
-        function updateStatsCountdown() {
-            const countdownEl = document.getElementById("countdown-stats-equipe");
-            
-            if (!countdownEl) return;
-
-            if (duree < 0) {
-                countdownEl.innerHTML = "00h";
-                return;
-            }
-
-            let s = duree;
-            let m = 0;
-            let h = 0;
-
-            if (s > 59) {
-                m = Math.floor(s / 60);
-                s = s - m * 60;
-            }
-            if (m > 59) {
-                h = Math.floor(m / 60);
-                m = m - h * 60;
-            }
-
-            countdownEl.innerHTML = h + "h";
-
-            duree = duree - 1;
-            window.setTimeout(updateStatsCountdown, 1000);
+            setTimeout(() => {
+                window.location.href = '/connexion';
+            }, 2000);
+            return;
         }
 
-        // Date de début du défi : jeudi 09 janvier 2026 à 18:00
-        var dateDebut = new Date(2026, 0, 9, 18, 0, 0);
-        // Date de fin : vendredi 10 janvier 2026 à 18:00 (24h après)
-        var dateFin = new Date(2026, 0, 10, 18, 0, 0);
-        var maintenant = new Date();
+        const userData = JSON.parse(userDataString);
+        const userId = userData.id;
 
-        duree = Math.floor((dateFin.getTime() - maintenant.getTime()) / 1000);
+        
+        if (createMessageDiv) {
+            createMessageDiv.innerHTML = `
+                <div class="flex items-center justify-center gap-2">
+                    <div class="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                    <span class="text-primary font-bold">Création en cours...</span>
+                </div>
+            `;
+        }
 
-        updateStatsCountdown();
-    </script>
+        
+        const formData = new FormData();
+        formData.append('nom', equipeName);
+        formData.append('userId', userId);
+
+        if (equipeLogoInput.files && equipeLogoInput.files[0]) {
+            formData.append('logo', equipeLogoInput.files[0]);
+        }
+
+        
+        try {
+            const response = await fetch('/api/create-equipe', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                
+                if (createMessageDiv) {
+                    createMessageDiv.innerHTML = `<span class="text-red-500 font-bold">${data.error || 'Erreur lors de la création'}</span>`;
+                }
+                return;
+            }
+
+            
+            setTimeout(() => {
+                window.location.href = '/equipe';
+            }, 3000);
+        } catch (error) {
+            console.error('Erreur lors de la création de l\'équipe:', error);
+            if (createMessageDiv) {
+                createMessageDiv.innerHTML = `<span class="text-red-500 font-bold">Erreur de connexion au serveur</span>`;
+            }
+        }
+    });
+
+    
+    joinForm?.addEventListener('submit', async (e: Event) => {
+        e.preventDefault();
+
+        const equipeIdInput = document.getElementById('equipeId') as HTMLInputElement;
+        const equipeId = equipeIdInput.value.trim();
+
+        
+        const userDataString = localStorage.getItem('user');
+        if (!userDataString) {
+            if (messageDiv) {
+                messageDiv.textContent = 'Vous devez être connecté pour rejoindre une équipe.';
+                messageDiv.style.color = 'red';
+            }
+            setTimeout(() => {
+                window.location.href = '/connexion';
+            }, 2000);
+            return;
+        }
+
+        const userData = JSON.parse(userDataString);
+        const userId = userData.id;
+
+        
+        if (messageDiv) {
+            messageDiv.innerHTML = `
+                <div class="flex items-center justify-center gap-2">
+                    <div class="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                    <span class="text-primary font-bold">Traitement en cours...</span>
+                </div>
+            `;
+        }
+
+        
+        try {
+            const response = await fetch('/api/join-equipe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    equipeId,
+                    userId
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                
+                if (messageDiv) {
+                    messageDiv.innerHTML = `<span class="text-red-500 font-bold">${data.error || 'Erreur lors de la jonction'}</span>`;
+                }
+                return;
+            }
+
+            
+            setTimeout(() => {
+                window.location.href = '/equipe';
+            }, 3000);
+        } catch (error) {
+            console.error('Erreur lors de la jonction à l\'équipe:', error);
+            if (messageDiv) {
+                messageDiv.innerHTML = `<span class="text-red-500 font-bold">Erreur de connexion au serveur</span>`;
+            }
+        }
+    });
+
+    var duree: number;
+
+    function updateStatsCountdown() {
+        const countdownEl = document.getElementById("countdown-stats-equipe");
+        
+        if (!countdownEl) return;
+
+        if (duree < 0) {
+            countdownEl.innerHTML = "00h";
+            return;
+        }
+
+        let s = duree;
+        let m = 0;
+        let h = 0;
+
+        if (s > 59) {
+            m = Math.floor(s / 60);
+            s = s - m * 60;
+        }
+        if (m > 59) {
+            h = Math.floor(m / 60);
+            m = m - h * 60;
+        }
+
+        countdownEl.innerHTML = h + "h";
+
+        duree = duree - 1;
+        window.setTimeout(updateStatsCountdown, 1000);
+    }
+
+    // Date de début du défi : jeudi 09 janvier 2026 à 18:00
+    var dateDebut = new Date(2026, 0, 9, 18, 0, 0);
+    // Date de fin : vendredi 10 janvier 2026 à 18:00 (24h après)
+    var dateFin = new Date(2026, 0, 10, 18, 0, 0);
+    var maintenant = new Date();
+
+    duree = Math.floor((dateFin.getTime() - maintenant.getTime()) / 1000);
+
+    updateStatsCountdown();
+</script>
