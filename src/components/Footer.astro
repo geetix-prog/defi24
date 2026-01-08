@@ -4,9 +4,15 @@ import Marianne from "../assets/rf.webp"
 import Mmi from "../assets/mmi.webp"
 import Iut from "../assets/iut.webp"
 import Umlp from "../assets/umlp.webp"
+
+interface Props {
+	bgColor?: string;
+}
+
+const { bgColor = "#6B46C1" } = Astro.props;
 ---
 
-<footer class="bg-primary w-full border-t-4 space-y-6 md:space-y-10 py-8 md:py-10">
+<footer class="w-full border-t-4 space-y-6 md:space-y-10 py-8 md:py-10" style={`background-color: ${bgColor};`}>
     <div class="flex items-center mx-auto justify-center">
         <a href="/" id="logo"
             class="font-oi flex flex-col -space-y-1 text-center leading-none z-10 shrink-0 transition-all hover:scale-110 duration-300 text-white">
