@@ -1,12 +1,37 @@
 ---
-import Layout from "../layouts/Layout.astro"
-import Icon from "../assets/Icon.svg"
-import Trophy from "../assets/trophy.svg"
-import Medals from "../assets/medals.svg"
-import Calendar from "../assets/calendar.svg"
-import Button from "../components/Button.astro"
----
+import Layout from "../layouts/Layout.astro";
+import Icon from "../assets/Icon.svg";
+import Trophy from "../assets/trophy.svg";
+import Medals from "../assets/medals.svg";
+import Calendar from "../assets/calendar.svg";
+import Button from "../components/Button.astro";
+import Decomptesimple from "../components/decomptesimple.astro";
+import Podium from "../components/Podium.astro";
+import { allEquipes } from "../../backend/backend.mjs";
 
+const equipesData = await allEquipes();
+
+const equipesGrouped = equipesData.reduce((acc: any, row: any) => {
+if (!acc[row.equipe_nom]) {
+acc[row.equipe_nom] = {
+equipe_nom: row.equipe_nom,
+equipe_logo_url: row.equipe_logo_url,
+points: row.points || 0,
+membres: []
+};
+}
+acc[row.equipe_nom].membres.push({
+user_nom: row.user_nom,
+user_prenom: row.user_prenom,
+user_avatar_url: row.user_avatar_url,
+user_email: row.user_email
+});
+return acc;
+}, {});
+
+const equipe = (Object.values(equipesGrouped) as any[]).sort((a, b) => b.points - a.points);
+---
+<!-- 
 <Layout
 	title="Classement - Défi 24h MMI | Résultats et gagnants"
 	description="Consultez le classement officiel du Défi 24h MMI. Découvrez les équipes gagnantes et les résultats de cette compétition créative de 24 heures."
@@ -65,5 +90,33 @@ import Button from "../components/Button.astro"
             class="rounded-2xl w-8/10 text-center lg:w-auto py-5 px-4 bg-white/80 font-nohemi shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]4">
             💡 En attendant, inscris-toi et forme ton équipe !
         </div>
+    </div>
+</Layout>
+-->
+
+<Layout
+	title="Défi 24h - L'événement incontournable du cursus MMI | 09 janvier 2026"
+	description="Participez au Défi 24H le 09 janvier 2026 ! 24 heures non-stop pour créer, imaginer et repousser vos limites sur un thème surprise. Design, développement, montage : tout le monde a sa place !"
+	keywords="défi 24h, MMI, création, design, développement, événement étudiant, challenge créatif, 24 heures, concours créatif, inscription, 09 janvier 2026"
+	canonical="/"
+	bgColor="var(--color-yellow)"
+>
+	<div class="flex flex-col space-y-8 justify-center items-center mt-25 lg:mt-40 px-4">
+		<div
+			class="inline-block bg-white px-3 sm:px-4 md:px-5 py-1 sm:py-1.5 md:py-2 rounded-xl font-nohemi font-black text-xs sm:text-sm lg:text-base shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] text-center"
+			>
+			<p class="uppercase">
+				🔴 En direct
+			</p>
+		</div>	
+		<h1
+			class="text-white font-oi text-center text-5xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight sm:leading-tight md:leading-normal tracking-wide">
+			Classement
+		</h1>
+		<p class="font-nohemi text-white text-xs sm:text-sm md:text-base lg:text-lg">La compétition fait rage ! 🔥</p>
+        <div class="w-8/10">
+            <Decomptesimple />
+        </div>
+        <Podium equipes={equipe} />
     </div>
 </Layout>

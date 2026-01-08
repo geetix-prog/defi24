@@ -4,7 +4,6 @@ import Trophy from "../assets/trophy.svg"
 
 const fullEquipes = await allEquipes();
 
-// Regrouper par équipe et compter les membres
 const equipesMap = new Map();
 fullEquipes.forEach(row => {
 const equipeKey = row.equipe_nom;
