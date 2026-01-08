@@ -1,0 +1,72 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button.astro";
+import Decomptesimple from "../components/decomptesimple.astro";
+---
+
+<Layout
+	title="Accès restreint - Défi 24h MMI"
+	description="Connectez-vous pour accéder au Défi 24h en direct ou attendez la fin de l'événement pour découvrir le récapitulatif."
+	keywords="défi 24h, accès, connexion, participant"
+	canonical="/acces-restreint"
+    bgColor="var(--color-tertiary)"
+>
+    <div class="flex flex-col items-center justify-center min-h-[70vh] px-4 sm:px-6 py-16 mt-10 lg:mt-25">
+        <div class="max-w-2xl w-full text-center">
+            <div class="mb-8 flex justify-center">
+                <div class="p-2 bg-white rounded-full shadow-[0_0_0_3px_black,3px_3px_0px_2px_black] flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 sm:h-16 sm:w-16 text-tertiary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </div>
+            </div>
+
+            <h1 class="text-white font-oi text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-6 uppercase">
+                Accès Restreint
+            </h1>
+
+            <div class="bg-white/95 rounded-3xl p-6 sm:p-8 md:p-10 shadow-[0_0_0_3px_black,6px_6px_0px_2px_black] mb-8">
+                <p class="font-nohemi text-lg sm:text-xl md:text-2xl text-black font-bold mb-4">
+                    Le Défi 24h est en cours !
+                </p>
+                <p class="font-nohemi text-base sm:text-lg text-gray-700 mb-6 leading-relaxed">
+                    Pour suivre le défi en direct et accéder à toutes les fonctionnalités, tu dois être connecté à ton compte participant.
+                </p>
+                
+                <div class="bg-yellow/20 border-l-4 border-yellow rounded-2xl p-4 sm:p-5 text-left mb-6">
+                    <p class="font-nohemi text-sm sm:text-base text-gray-800 mb-3">
+                        <strong class="text-black">Tu as deux options :</strong>
+                    </p>
+                    <ul class="space-y-2 font-nohemi text-sm sm:text-base text-gray-800">
+                        <li class="flex items-start gap-2">
+                            <span class="text-yellow font-bold mt-0.5">→</span>
+                            <span><strong>Connexion :</strong> Accède immédiatement au direct, au programme, aux créations et au classement en temps réel.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-yellow font-bold mt-0.5">→</span>
+                            <span><strong>Attendre la fin :</strong> Le récapitulatif complet et les créations seront disponibles pour tous une fois le défi terminé.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <Button 
+                        page="connexion"
+                        text="Se connecter" 
+                        bgClass="bg-tertiary"
+                        colorClass="text-white"
+                    />
+                    <Button 
+                        page="/"
+                        text="Retour à l'accueil" 
+                        bgClass="bg-primary"
+                        colorClass="text-white"
+                    />
+            </div>
+            </div>
+            <div>
+                <Decomptesimple />
+            </div>
+        </div>
+    </div>
+</Layout>

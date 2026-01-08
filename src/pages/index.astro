@@ -212,4 +212,10 @@ const statsData = await stats();
 	duree = Math.floor((dateFin.getTime() - maintenant.getTime()) / 1000);
 
 	updateStatsCountdown();
+
+	// Vérifier l'authentification
+	const token = localStorage.getItem('token');
+	if (!token) {
+		window.location.href = '/acces-restreint';
+	}
 </script>

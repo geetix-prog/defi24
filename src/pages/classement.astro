@@ -128,3 +128,11 @@ const equipe = (Object.values(equipesGrouped) as any[]).sort((a, b) => b.points 
         </div>
     </div>
 </Layout>
+
+<script>
+    // Vérifier l'authentification
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = '/acces-restreint';
+    }
+</script>
