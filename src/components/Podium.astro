@@ -13,7 +13,7 @@ const podiumColors = [
 const podiumOrder = [1, 0, 2];
 ---
 
-<div class="flex items-end justify-center gap-8 lg:gap-12 px-4 w-full max-w-[1400px] mx-auto">
+<div class="flex flex-col lg:flex-row lg:items-end justify-center gap-6 lg:gap-8 xl:gap-12 px-4 w-full max-w-[1400px] mx-auto">
     {podiumOrder.map((index) => {
         const equipe = top3[index];
         if (!equipe) return null;
@@ -24,8 +24,11 @@ const podiumOrder = [1, 0, 2];
         const isLast = index === 2;
         const chef = equipe.membres && equipe.membres.length > 0 ? equipe.membres[0] : null;
         
+        const mobileOrder = index === 0 ? 'order-1' : (index === 1 ? 'order-2' : 'order-3');
+        const desktopOrder = index === 0 ? 'lg:order-2' : (index === 1 ? 'lg:order-1' : 'lg:order-3');
+        
         return (
-            <div class={`relative flex-1 ${isFirst ? 'max-w-[600px]' : 'max-w-[480px]'}`}>
+            <div class={`relative w-full ${mobileOrder} ${desktopOrder} ${isFirst ? 'lg:flex-1 lg:max-w-[600px]' : 'lg:flex-1 lg:max-w-[480px]'}`}>
                 {isFirst && (
                     <div class="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-16 flex items-center justify-center z-10">
                         <img src={couronne.src} alt="Couronne" class="w-50 h-50 object-contain" />
@@ -37,15 +40,15 @@ const podiumOrder = [1, 0, 2];
                         <img 
                                 src={equipe.equipe_logo_url} 
                                 alt={equipe.equipe_nom}
-                                class={`rounded-full object-cover border-3 border-black mb-6 ${isFirst ? 'w-28 h-28 sm:w-32 sm:h-32' : 'w-20 h-20 sm:w-24 sm:h-24'}`}
+                                class={`rounded-full object-cover border-3 border-black ${isLast ? 'mb-3' : 'mb-6'} ${isFirst ? 'w-28 h-28 sm:w-32 sm:h-32' : 'w-20 h-20 sm:w-24 sm:h-24'}`}
                             />
                         
-                        <h3 class={`font-nohemi font-bold text-2xl sm:text-3xl text-center mb-4 leading-tight ${isFirst ? 'text-white' : 'text-black'}`}>
+                        <h3 class={`font-nohemi font-bold text-2xl sm:text-3xl text-center ${isLast ? 'mb-2' : 'mb-4'} leading-tight ${isFirst ? 'text-white' : 'text-black'}`}>
                             {equipe.equipe_nom}
                         </h3>
                         
                         {chef && (
-                            <p class={`font-nohemi text-sm sm:text-base mb-6 ${isFirst ? 'text-white' : 'text-gray-600'}`}>
+                            <p class={`font-nohemi text-sm sm:text-base ${isLast ? 'mb-3' : 'mb-6'} ${isFirst ? 'text-white' : 'text-gray-600'}`}>
                                 Chef : {chef.user_prenom} {chef.user_nom}
                             </p>
                         )}
@@ -56,7 +59,7 @@ const podiumOrder = [1, 0, 2];
                             </p>
                         </div>
                         
-                        <div class="flex gap-2 mt-6">
+                        <div class={`flex gap-2 ${isLast ? 'mt-3' : 'mt-6'}`}>
                             {Array.from({ length: isFirst ? 3 : (isLast ? 1 : 2) }).map(() => (
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
