@@ -1,62 +1,62 @@
-    ---
-    import { allEquipes } from "../../backend/backend.mjs";
-    import Trophy from "../assets/trophy.svg"
+---
+import { allEquipes } from "../../backend/backend.mjs";
+import Trophy from "../assets/trophy.svg"
 
-    const fullEquipes = await allEquipes();
+const fullEquipes = await allEquipes();
 
-    // Regrouper par équipe et compter les membres
-    const equipesMap = new Map();
-    fullEquipes.forEach(row => {
-    const equipeKey = row.equipe_nom;
-    if (!equipesMap.has(equipeKey)) {
-        equipesMap.set(equipeKey, {
-        id: row.id,
-        nom: row.equipe_nom,
-        logo: row.equipe_logo_url,
-        points: row.points || 0,
-        membres: []
-        });
-    }
-    if (row.user_nom) {
-        const equipe = equipesMap.get(equipeKey);
-        const membreExiste = equipe.membres.some(m => m.nom === row.user_nom && m.prenom === row.user_prenom);
-        if (!membreExiste) {
-        equipe.membres.push({
-            nom: row.user_nom,
-            prenom: row.user_prenom
-        });
-        }
-    }
+// Regrouper par équipe et compter les membres
+const equipesMap = new Map();
+fullEquipes.forEach(row => {
+const equipeKey = row.equipe_nom;
+if (!equipesMap.has(equipeKey)) {
+    equipesMap.set(equipeKey, {
+    id: row.id,
+    nom: row.equipe_nom,
+    logo: row.equipe_logo_url,
+    points: row.points || 0,
+    membres: []
     });
+}
+if (row.user_nom) {
+    const equipe = equipesMap.get(equipeKey);
+    const membreExiste = equipe.membres.some(m => m.nom === row.user_nom && m.prenom === row.user_prenom);
+    if (!membreExiste) {
+    equipe.membres.push({
+        nom: row.user_nom,
+        prenom: row.user_prenom
+    });
+    }
+}
+});
 
-    const equipes = Array.from(equipesMap.values())
-    .sort((a, b) => b.points - a.points)
-    .slice(0, 5);
+const equipes = Array.from(equipesMap.values())
+.sort((a, b) => b.points - a.points)
+.slice(0, 5);
 
-    // Couleurs pour le podium
-    const podiumBgColors = [
-    'bg-yellow/25',  // 1er - Or
-    'bg-secondary/25',    // 2ème - Argent
-    'bg-primary/25',  // 3ème - Bronze
-    ];
+// Couleurs pour le podium
+const podiumBgColors = [
+'bg-yellow/25',  // 1er - Or
+'bg-secondary/25',    // 2ème - Argent
+'bg-primary/25',  // 3ème - Bronze
+];
 
-    const podiumCircleColors = [
-    'bg-yellow/25',  // 1er - Or
-    'bg-secondary/25',    // 2ème - Argent
-    'bg-primary/25',  // 3ème - Bronze
-    ];
+const podiumCircleColors = [
+'bg-yellow/25',  // 1er - Or
+'bg-secondary/25',    // 2ème - Argent
+'bg-primary/25',  // 3ème - Bronze
+];
 
-    // Couleurs pour les autres positions
-    const colors = [
-    'bg-pink-500',
-    'bg-purple-500',
-    'bg-red-500',
-    'bg-green-500',
-    'bg-blue-500',
-    'bg-indigo-500',
-    'bg-teal-500'
-    ];
-    ---
+// Couleurs pour les autres positions
+const colors = [
+'bg-pink-500',
+'bg-purple-500',
+'bg-red-500',
+'bg-green-500',
+'bg-blue-500',
+'bg-indigo-500',
+'bg-teal-500'
+];
+---
         
 <div class="flex justify-center w-full items-center p-2 sm:p-3 md:p-4 h-full">
     <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 lg:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] md:shadow-[0_0_0_3px_black,5px_5px_0px_2px_black] w-full max-w-[95%] sm:max-w-[90%] md:max-w-full h-full flex flex-col">

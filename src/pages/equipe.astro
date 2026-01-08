@@ -1,33 +1,35 @@
-    ---
-    import Layout from '../layouts/Layout.astro';
-    import CardEquipe from '../components/CardEquipe.astro';
-    import { allEquipes, stats } from '../../backend/backend.mjs';
-    import Button from '../components/Button.astro';
-    import Decomptesimple from '../components/decomptesimple.astro';
+---
+import Layout from '../layouts/Layout.astro';
+import CardEquipe from '../components/CardEquipe.astro';
+import { allEquipes, stats } from '../../backend/backend.mjs';
+import Button from '../components/Button.astro';
+import Decomptesimple from '../components/decomptesimple.astro';
 
-    const statsData = await stats();
+const statsData = await stats();
 
-    const equipesData = await allEquipes();
+const equipesData = await allEquipes();
 
-    const equipesGrouped = equipesData.reduce((acc: any, row: any) => {
-    if (!acc[row.equipe_nom]) {
-    acc[row.equipe_nom] = {
-    equipe_nom: row.equipe_nom,
-    equipe_logo_url: row.equipe_logo_url,
-    membres: []
-    };
-    }
-    acc[row.equipe_nom].membres.push({
-    user_nom: row.user_nom,
-    user_prenom: row.user_prenom,
-    user_avatar_url: row.user_avatar_url,
-    user_email: row.user_email
-    });
-    return acc;
-    }, {});
+const equipesGrouped = equipesData.reduce((acc: any, row: any) => {
+if (!acc[row.equipe_nom]) {
+acc[row.equipe_nom] = {
+equipe_nom: row.equipe_nom,
+equipe_logo_url: row.equipe_logo_url,
+points: row.points || 0,
+membres: []
+};
+}
+acc[row.equipe_nom].membres.push({
+user_nom: row.user_nom,
+user_prenom: row.user_prenom,
+user_avatar_url: row.user_avatar_url,
+user_email: row.user_email
+});
+return acc;
+}, {});
 
-    const equipes = Object.values(equipesGrouped) as any[];
-    ---
+const equipes = (Object.values(equipesGrouped) as any[]).sort((a, b) => b.points - a.points);
+---
+
     <!--
     <Layout
         title="Les Équipes - Défi 24h MMI"
