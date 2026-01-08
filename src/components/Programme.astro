@@ -3,7 +3,6 @@ import { getAllProgrammes } from "../../backend/backend.mjs";
 
 const programmes = await getAllProgrammes();
 
-// Fonction pour formater l'heure depuis une date ISO
 function formatHeure(dateStr: string) {
   const date = new Date(dateStr);
   const hours = date.getUTCHours().toString().padStart(2, '0');
@@ -11,82 +10,65 @@ function formatHeure(dateStr: string) {
   return `${hours}:${minutes}`;
 }
 
-// Obtenir l'heure actuelle pour déterminer quel événement est en cours
-const now = new Date();
-const currentTime = now.getHours() * 60 + now.getMinutes();
-
-// Fonction pour convertir une date ISO en minutes depuis minuit
-function dateToMinutes(dateStr: string) {
-  const date = new Date(dateStr);
-  return date.getUTCHours() * 60 + date.getUTCMinutes();
-}
-
-// Vérifier si un événement est en cours
-function isCurrentEvent(index: number) {
-  if (index >= programmes.length) return false;
-  
-  const currentEventTime = dateToMinutes(programmes[index].heure);
-  const nextEventTime = index < programmes.length - 1 
-    ? dateToMinutes(programmes[index + 1].heure) 
-    : currentEventTime + 60; // Si c'est le dernier, on suppose 1h de durée
-  
-  return currentTime >= currentEventTime && currentTime < nextEventTime;
-}
-
-const colors = [
-  'bg-purple-500',
-  'bg-gray-400',
-  'bg-gray-400',
-  'bg-gray-400',
-  'bg-red-500',
-  'bg-purple-500',
+const eventColors = [
+  'bg-primary',
+  'bg-secondary',
+  'bg-tertiary',
+  'bg-yellow',
+  'bg-pink',
 ];
 ---
 
 <div class="flex justify-center w-full items-center p-2 sm:p-3 md:p-4 h-full">
-  <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 lg:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] md:shadow-[0_0_0_3px_black,5px_5px_0px_2px_black] w-full max-w-[95%] sm:max-w-[90%] md:max-w-full h-full flex flex-col">
-    <div class="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-      <div class="w-8 h-8 sm:w-10 sm:h-10 bg-purple-500 rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] flex-shrink-0">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <div class="bg-white/95 rounded-xl sm:rounded-2xl md:rounded-3xl p-3 sm:p-4 md:p-6 lg:p-8 shadow-[2px_2px_0px_1px_black] sm:shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] md:shadow-[0_0_0_3px_black,5px_5px_0px_2px_black] w-full max-w-[98%] sm:max-w-[95%] md:max-w-full h-full flex flex-col">
+    <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 md:mb-6">
+      <div class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 bg-primary rounded-full flex items-center justify-center border-2 border-black flex-shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6 lg:h-7 lg:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
         </svg>
       </div>
-      <h2 class="font-oi text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl uppercase text-black leading-tight">Programme</h2>
+      <h2 class="font-oi text-lg sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl uppercase text-black leading-tight">Programme</h2>
     </div>
     
-    <div class="space-y-2 sm:space-y-3">
+    <div class="space-y-2 sm:space-y-3 md:space-y-4">
       {programmes.map((programme, index) => {
-        const isCurrent = isCurrentEvent(index);
-        const iconColor = colors[index % colors.length];
+        const iconBgColor = eventColors[index % eventColors.length];
         
         return (
-          <div class={`bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-[0_0_0_2px_black,2px_2px_0px_1px_black] sm:shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 ${isCurrent ? 'ring-2 ring-orange-400' : ''}`}>
-            <div class="flex items-center gap-2 sm:gap-3 md:gap-4 flex-1 w-full sm:w-auto">
-              <div class="bg-white border-2 border-black rounded-full px-2.5 py-1 sm:px-3 sm:py-1.5 font-nohemi font-bold text-xs sm:text-sm whitespace-nowrap">
+          <div 
+            class="programme-card bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 border-2 border-black shadow-[2px_2px_0px_1px_black] sm:shadow-[3px_3px_0px_2px_black] flex items-center justify-between gap-3 sm:gap-4"
+            data-heure={programme.heure}
+            data-icon-color={iconBgColor}
+          >
+            <div class="flex items-center gap-2 sm:gap-3 md:gap-4 flex-1 min-w-0">
+              <div class="heure-badge bg-white border-2 border-black rounded-full px-3 py-1.5 sm:px-4 sm:py-2 font-nohemi font-bold text-sm sm:text-base md:text-lg whitespace-nowrap">
                 {formatHeure(programme.heure)}
               </div>
               
-              <div class={`w-10 h-10 sm:w-12 sm:h-12 ${iconColor} rounded-full shadow-[0_0_0_2px_black] flex-shrink-0 flex items-center justify-center`}>
+              <div class={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 ${iconBgColor} border-2 border-black rounded-full flex-shrink-0 flex items-center justify-center`}>
                 {programme.logo_url ? (
-                  <img src={programme.logo_url} alt={programme.nom} class="w-6 h-6 sm:w-7 sm:h-7 object-contain" />
+                  <img src={programme.logo_url} alt={programme.nom} class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 object-contain" />
                 ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 text-white" viewBox="0 0 20 20" fill="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 text-white" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
                   </svg>
                 )}
               </div>
               
               <div class="flex-1 min-w-0">
-                <h3 class="font-nohemi font-bold text-sm sm:text-base md:text-lg text-black truncate">{programme.nom}</h3>
+                <h3 class="font-nohemi font-bold text-base sm:text-lg md:text-xl text-black truncate">{programme.nom}</h3>
               </div>
             </div>
             
-            {isCurrent && (
-              <div class="flex items-center gap-1.5 sm:gap-2 bg-orange-100 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border-2 border-orange-400 ml-10 sm:ml-0">
-                <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-red-500 rounded-full animate-pulse"></div>
-                <span class="font-nohemi font-bold text-[10px] sm:text-xs text-orange-600 whitespace-nowrap">En cours</span>
+            <div class="status-badge hidden flex-shrink-0">
+              <div class="badge-termine hidden bg-gray-400 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border-2 border-black font-nohemi font-bold text-xs sm:text-sm whitespace-nowrap">
+                Terminé
               </div>
-            )}
+              <div class="badge-encours hidden flex items-center gap-1.5 sm:gap-2 bg-tertiary text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-[0_0_0_2px_black,2px_2px_0px_1px_black] sm:shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] font-nohemi font-bold text-xs sm:text-sm whitespace-nowrap">
+                <div class="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full animate-pulse"></div>
+                <span>En direct</span>
+              </div>
+            </div>
           </div>
         );
       })}
@@ -99,3 +81,79 @@ const colors = [
     </div>
   </div>
 </div>
+
+<script>
+  function updateProgrammeStatus() {
+    const now = new Date();
+    let visibleCount = 0;
+    
+    document.querySelectorAll('.programme-card').forEach((card) => {
+      const heureStr = card.getAttribute('data-heure');
+      const iconColor = card.getAttribute('data-icon-color');
+      
+      if (!heureStr) return;
+      
+      const eventDate = new Date(heureStr);
+      const adjustedEventDate = new Date(eventDate.getTime() - 60 * 60 * 1000); // -1 heure
+      const eventEndDate = new Date(adjustedEventDate.getTime() + 30 * 60 * 1000);
+      
+      let status = 'none';
+      if (now >= adjustedEventDate && now < eventEndDate) {
+        status = 'encours';
+      } else if (now >= eventEndDate) {
+        status = 'termine';
+      }
+      
+      const heureBadge = card.querySelector('.heure-badge');
+      const iconBadge = card.querySelector('.heure-badge').nextElementSibling;
+      const statusBadge = card.querySelector('.status-badge');
+      const badgeTermine = statusBadge?.querySelector('.badge-termine');
+      const badgeEncours = statusBadge?.querySelector('.badge-encours');
+      
+      // Reset
+      if (heureBadge) {
+        heureBadge.className = 'heure-badge border-2 border-black rounded-full px-2.5 py-1 sm:px-3 sm:py-1.5 font-nohemi font-bold text-xs sm:text-sm whitespace-nowrap';
+      }
+      if (iconBadge) {
+        iconBadge.className = 'w-10 h-10 sm:w-12 sm:h-12 rounded-full shadow-[0_0_0_2px_black] flex-shrink-0 flex items-center justify-center';
+      }
+      if (statusBadge) statusBadge.classList.add('hidden');
+      if (badgeTermine) badgeTermine.classList.add('hidden');
+      if (badgeEncours) badgeEncours.classList.add('hidden');
+      
+      if (status === 'termine') {
+        card.style.display = 'none';
+      } else {
+        if (visibleCount < 5) {
+          card.style.display = '';
+          visibleCount++;
+          
+          if (status === 'encours') {
+            if (heureBadge) {
+              heureBadge.classList.add(iconColor, 'text-white');
+            }
+            if (iconBadge) {
+              iconBadge.classList.add(iconColor);
+            }
+            if (statusBadge && badgeEncours) {
+              statusBadge.classList.remove('hidden');
+              badgeEncours.classList.remove('hidden');
+            }
+          } else {
+            if (heureBadge) {
+              heureBadge.classList.add('bg-white', 'text-black');
+            }
+            if (iconBadge) {
+              iconBadge.classList.add(iconColor);
+            }
+          }
+        } else {
+          card.style.display = 'none';
+        }
+      }
+    });
+  }
+  
+  updateProgrammeStatus();
+  setInterval(updateProgrammeStatus, 30000);
+</script>
