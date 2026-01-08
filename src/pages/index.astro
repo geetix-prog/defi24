@@ -115,56 +115,6 @@ const statsData = await stats();
 			C’est parti!
 		</h1>
 		<p class="font-nohemi text-white text-xs sm:text-sm md:text-base lg:text-lg">Le Défi24 est en cours... Que le meilleur gagne ! 🔥</p>
-		<div class="w-8/10">
-			<Decomptesimple />
-		</div>
-		<div class="w-full max-w-[1600px] px-4">
-			<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
-				<!-- Équipes actives -->
-				<div class="bg-white/95 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
-					<div class="w-12 h-12 sm:w-14 sm:h-14 bg-purple-500 rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] mb-3 sm:mb-4">
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-						</svg>
-					</div>
-					<p class="font-nohemi text-sm sm:text-base text-gray-600 mb-2">Équipes actives</p>
-					<p class="font-oi text-4xl sm:text-5xl md:text-6xl text-black">{statsData[0]?.total_equipes || 0}</p>
-				</div>
-
-				<!-- Participants -->
-				<div class="bg-white/95 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
-					<div class="w-12 h-12 sm:w-14 sm:h-14 bg-yellow rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] mb-3 sm:mb-4">
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-						</svg>
-					</div>
-					<p class="font-nohemi text-sm sm:text-base text-gray-600 mb-2">Participants</p>
-					<p class="font-oi text-4xl sm:text-5xl md:text-6xl text-black">{statsData[0]?.total_membres || 0}</p>
-				</div>
-
-				<!-- Projets -->
-				<div class="bg-white/95 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
-					<div class="w-12 h-12 sm:w-14 sm:h-14 bg-pink-500 rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] mb-3 sm:mb-4">
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-						</svg>
-					</div>
-					<p class="font-nohemi text-sm sm:text-base text-gray-600 mb-2">Projets</p>
-					<p class="font-oi text-4xl sm:text-5xl md:text-6xl text-black">{statsData[0]?.total_equipes || 0}</p>
-				</div>
-
-				<!-- Temps restant -->
-				<div class="bg-white/95 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
-					<div class="w-12 h-12 sm:w-14 sm:h-14 bg-tertiary rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] mb-3 sm:mb-4">
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-						</svg>
-					</div>
-					<p class="font-nohemi text-sm sm:text-base text-gray-600 mb-2">Temps restant</p>
-					<p class="font-oi text-3xl sm:text-4xl md:text-5xl text-black" id="countdown-stats">00h</p>
-				</div>
-			</div>
-		</div>
 		<Decompte />
 		<div class="flex flex-col xl:flex-row w-full max-w-[1600px] gap-3 sm:gap-4 md:gap-5 xl:items-stretch">
 			<div class="flex-1">
