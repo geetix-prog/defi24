@@ -1,0 +1,165 @@
+---
+import { getAllProgrammes } from "../../backend/backend.mjs";
+
+const programmes = await getAllProgrammes();
+
+function formatHeure(dateStr: string) {
+const date = new Date(dateStr);
+const hours = date.getUTCHours().toString().padStart(2, '0');
+const minutes = date.getUTCMinutes().toString().padStart(2, '0');
+return `${hours}:${minutes}`;
+}
+
+const eventColors = [
+'bg-primary',
+'bg-secondary',
+'bg-tertiary',
+'bg-yellow',
+'bg-pink',
+];
+---
+
+<div class="bg-white/95 rounded-3xl p-6 sm:p-8 border-4 border-black shadow-[0_0_0_4px_black,8px_8px_0px_3px_black] w-full">
+<div class="flex items-center gap-3 mb-6">
+    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-primary rounded-full flex items-center justify-center border-3 border-black">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+    </svg>
+    </div>
+    <h2 class="font-oi text-3xl sm:text-4xl md:text-5xl uppercase text-black">
+    PROGRAMME
+    </h2>
+</div>
+
+<div class="space-y-3" id="programme-container">
+    {programmes.map((programme: any, index: number) => {
+    const iconBgColor = eventColors[index % eventColors.length];
+
+    return (
+        <div 
+        class="programme-card bg-white rounded-2xl p-4 sm:p-5 border-3 border-black shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex items-center justify-between gap-4"
+        data-heure={programme.heure}
+        data-icon-color={iconBgColor}
+        >
+        <div class="flex items-center gap-3 sm:gap-4 flex-1">
+            <div class="heure-badge bg-white border-3 border-black rounded-full px-4 py-2 font-nohemi text-lg sm:text-xl font-bold whitespace-nowrap text-black">
+            {formatHeure(programme.heure)}
+            </div>
+
+            <div class={`w-12 h-12 sm:w-14 sm:h-14 ${iconBgColor} rounded-full border-3 border-black flex-shrink-0 flex items-center justify-center`}>
+            {programme.logo_url ? (
+                <img src={programme.logo_url} alt={programme.nom} class="w-7 h-7 sm:w-8 sm:h-8 object-contain" />
+            ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                </svg>
+            )}
+            </div>
+
+            <div class="flex-1 min-w-0">
+            <h3 class="font-nohemi font-bold text-lg sm:text-xl text-black">{programme.nom}</h3>
+            </div>
+        </div>
+
+        <div class="status-badge hidden">
+            <div class="badge-termine hidden bg-gray-400 text-white px-4 py-2 rounded-full shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] border-black font-nohemi font-bold text-sm whitespace-nowrap">
+            Terminé
+            </div>
+            <div class="badge-encours hidden bg-tertiary text-white px-4 py-2 rounded-full shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] font-nohemi font-bold text-sm whitespace-nowrap flex items-center gap-2">
+            <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+            <p>En direct</p>
+            </div>
+        </div>
+        </div>
+    );
+    })}
+
+    {programmes.length === 0 && (
+    <div class="text-center py-6 sm:py-8">
+        <p class="font-nohemi text-sm sm:text-base text-gray-500">Aucun programme pour le moment</p>
+    </div>
+    )}
+</div>
+</div>
+
+<script>
+function updateProgrammeStatus() {
+    const now = new Date();
+    console.log('Update at:', now.toISOString());
+    
+    document.querySelectorAll('.programme-card').forEach((card) => {
+    const heureStr = card.getAttribute('data-heure');
+    const iconColor = card.getAttribute('data-icon-color');
+    
+    if (!heureStr) return;
+    
+    const eventDate = new Date(heureStr);
+    const adjustedEventDate = new Date(eventDate.getTime() - 60 * 60 * 1000); // -1 heure
+    const eventEndDate = new Date(adjustedEventDate.getTime() + 30 * 60 * 1000);
+    
+    let status = 'none';
+    if (now >= adjustedEventDate && now < eventEndDate) {
+        status = 'encours';
+    } else if (now >= eventEndDate) {
+        status = 'termine';
+    }
+    
+    console.log('Event:', heureStr, 'Adjusted:', adjustedEventDate.toISOString(), 'Status:', status);
+    
+    const heureBadge = card.querySelector('.heure-badge');
+    const iconBadge = card.querySelector('.heure-badge').nextElementSibling;
+    const statusBadge = card.querySelector('.status-badge');
+    const badgeTermine = statusBadge?.querySelector('.badge-termine');
+    const badgeEncours = statusBadge?.querySelector('.badge-encours');
+    
+    // Reset
+    card.className = 'programme-card rounded-2xl p-4 sm:p-5 border-3 border-black shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex items-center justify-between gap-4';
+    if (heureBadge) {
+        heureBadge.className = 'heure-badge border-3 border-black rounded-full px-4 py-2 font-nohemi text-lg sm:text-xl font-bold whitespace-nowrap';
+    }
+    if (iconBadge) {
+        iconBadge.className = 'w-12 h-12 sm:w-14 sm:h-14 rounded-full border-3 border-black flex-shrink-0 flex items-center justify-center';
+    }
+    if (statusBadge) statusBadge.classList.add('hidden');
+    if (badgeTermine) badgeTermine.classList.add('hidden');
+    if (badgeEncours) badgeEncours.classList.add('hidden');
+    
+    if (status === 'termine') {
+        card.classList.add('bg-white');
+        if (heureBadge) {
+        heureBadge.classList.add('bg-gray-400', 'text-white');
+        }
+        if (iconBadge) {
+        iconBadge.classList.add('bg-gray-400');
+        }
+        if (statusBadge && badgeTermine) {
+        statusBadge.classList.remove('hidden');
+        badgeTermine.classList.remove('hidden');
+        }
+    } else if (status === 'encours') {
+        card.classList.add(iconColor + '/25');
+        if (heureBadge) {
+        heureBadge.classList.add(iconColor, 'text-white');
+        }
+        if (iconBadge) {
+        iconBadge.classList.add(iconColor);
+        }
+        if (statusBadge && badgeEncours) {
+        statusBadge.classList.remove('hidden');
+        badgeEncours.classList.remove('hidden');
+        }
+    } else {
+        card.classList.add('bg-white');
+        if (heureBadge) {
+        heureBadge.classList.add('bg-white', 'text-black');
+        }
+        if (iconBadge) {
+        iconBadge.classList.add(iconColor);
+        }
+    }
+    });
+}
+
+updateProgrammeStatus();
+setInterval(updateProgrammeStatus, 30000);
+</script>
