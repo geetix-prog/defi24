@@ -47,10 +47,8 @@
     window.setTimeout(t, 1000);
   }
 
-  // Date de début du défi : jeudi 09 janvier 2026 à 18:00
   var dateDebut = new Date(2026, 0, 9, 18, 0, 0);
-  // Date de fin : vendredi 10 janvier 2026 à 18:00 (24h après)
-  var dateFin = new Date(2026, 0, 10, 18, 0, 0);
+  var dateFin = new Date(2026, 0, 10, 16, 0, 0);
   var maintenant = new Date();
 
   duree = Math.floor((dateFin.getTime() - maintenant.getTime()) / 1000);
