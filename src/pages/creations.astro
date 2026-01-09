@@ -68,7 +68,7 @@ import Button from "../components/Button.astro"
 <script>
     const userDataString = localStorage.getItem('user');
     if (!userDataString) {
-        window.location.href = '/connexion';
+        window.location.href = '/acces-restreint';
     }
 
     const form = document.getElementById('creationForm') as HTMLFormElement;
