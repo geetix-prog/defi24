@@ -214,9 +214,6 @@ const statsData = await stats();
 
 	updateStatsCountdown();
 
-	// Vérifier l'authentification
-	const token = localStorage.getItem('token');
-	if (!token) {
-		window.location.href = '/acces-restreint';
-	}
+	// Rediriger tout le monde vers la page d'accès restreint
+	window.location.href = '/acces-restreint';
 </script>

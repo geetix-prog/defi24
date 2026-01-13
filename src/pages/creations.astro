@@ -66,10 +66,10 @@ import Button from "../components/Button.astro"
 </Layout>
 
 <script>
+    // Rediriger tout le monde vers la page d'accès restreint
+    window.location.href = '/acces-restreint';
+    
     const userDataString = localStorage.getItem('user');
-    if (!userDataString) {
-        window.location.href = '/acces-restreint';
-    }
 
     const form = document.getElementById('creationForm') as HTMLFormElement;
     const messageContainer = document.getElementById('messageContainer') as HTMLDivElement;
