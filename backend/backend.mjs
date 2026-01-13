@@ -159,8 +159,20 @@ export async function stats() {
 
 export async function countDepots() {
     try {
-        const records = await pb.collection("Depot").getFullList();
-        return records.length;
+        const records = await pb.collection("Full_equipe").getFullList();
+        
+        const equipesWithDepot = new Set();
+        
+        records.forEach((row) => {
+            const equipeId = row.equipe_id || row.id;
+            const lienDepot = row.lien_depot || row.equipe_lien_depot || row.depot_lien || 'N/A';
+            
+            if (lienDepot && lienDepot !== '#' && lienDepot !== 'N/A' && lienDepot.trim() !== '') {
+                equipesWithDepot.add(equipeId);
+            }
+        });
+        
+        return equipesWithDepot.size;
     } catch (error) {
         console.error('Erreur lors du comptage des dépôts :', error);
         return 0;

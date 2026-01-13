@@ -1,11 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import CardEquipe from '../components/CardEquipe.astro';
-import { allEquipes, stats } from '../../backend/backend.mjs';
+import { allEquipes, stats, countDepots } from '../../backend/backend.mjs';
 import Button from '../components/Button.astro';
 import Decomptesimple from '../components/decomptesimple.astro';
 
 const statsData = await stats();
+const depotsCount = await countDepots();
 
 const equipesData = await allEquipes();
 
@@ -148,11 +149,8 @@ const equipes = (Object.values(equipesGrouped) as any[]).sort((a, b) => b.points
             Les équipes
         </h1>
         <p class="text-white font-nohemi text-lg">{statsData[0]?.total_equipes || 0} équipes en compétition ! 💪</p>
-        <div class="w-8/10">
-            <Decomptesimple />
-        </div>
         <div class="w-8/10 px-4 hidden lg:block">
-            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5">
                 <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
                     <div class="w-12 h-12 sm:w-14 sm:h-14 bg-purple-500 rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] mb-3 sm:mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -180,17 +178,7 @@ const equipes = (Object.values(equipesGrouped) as any[]).sort((a, b) => b.points
                         </svg>
                     </div>
                     <p class="font-nohemi text-sm sm:text-base text-gray-600 mb-2">Projets</p>
-                    <p class="font-oi text-4xl sm:text-5xl md:text-6xl text-black">{statsData[0]?.total_equipes || 0}</p>
-                </div>
-
-                <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] flex flex-col items-center text-center">
-                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-tertiary rounded-full flex items-center justify-center shadow-[0_0_0_2px_black] mb-3 sm:mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-7 sm:w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <p class="font-nohemi text-sm sm:text-base text-gray-600 mb-2">Temps restant</p>
-                    <p class="font-oi text-3xl sm:text-4xl md:text-5xl text-black" id="countdown-stats-equipe">00h</p>
+                    <p class="font-oi text-4xl sm:text-5xl md:text-6xl text-black">{depotsCount}</p>
                 </div>
             </div>
         </div>
@@ -581,42 +569,5 @@ const equipes = (Object.values(equipesGrouped) as any[]).sort((a, b) => b.points
 
     var duree: number;
 
-    function updateStatsCountdown() {
-        const countdownEl = document.getElementById("countdown-stats-equipe");
-        
-        if (!countdownEl) return;
 
-        if (duree < 0) {
-            countdownEl.innerHTML = "00h";
-            return;
-        }
-
-        let s = duree;
-        let m = 0;
-        let h = 0;
-
-        if (s > 59) {
-            m = Math.floor(s / 60);
-            s = s - m * 60;
-        }
-        if (m > 59) {
-            h = Math.floor(m / 60);
-            m = m - h * 60;
-        }
-
-        countdownEl.innerHTML = h + "h";
-
-        duree = duree - 1;
-        window.setTimeout(updateStatsCountdown, 1000);
-    }
-
-    // Date de début du défi : jeudi 09 janvier 2026 à 18:00
-    var dateDebut = new Date(2026, 0, 9, 18, 0, 0);
-    // Date de fin : vendredi 10 janvier 2026 à 18:00 (24h après)
-    var dateFin = new Date(2026, 0, 10, 18, 0, 0);
-    var maintenant = new Date();
-
-    duree = Math.floor((dateFin.getTime() - maintenant.getTime()) / 1000);
-
-    updateStatsCountdown();
 </script>
