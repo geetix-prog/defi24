@@ -1,0 +1,78 @@
+---
+import Medal from '../assets/medals.svg';
+
+interface Props {
+    nom: string;
+    points: number;
+    membres: Array<{ prenom: string; nom: string }>;
+    lien: string;
+    imageUrl?: string;
+    bgColor?: string;
+    pointsColor?: string;
+    isFirst?: boolean;
+}
+
+const { nom, points, membres, lien, imageUrl, bgColor = 'bg-pink/25', pointsColor = 'text-pink', isFirst = false } = Astro.props;
+---
+
+<a 
+    href={lien}
+    class="block bg-white rounded-3xl overflow-hidden shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] hover:-translate-y-2 transition-transform duration-300 ease-in-out relative"
+>
+    {isFirst && (
+        <div class="absolute top-4 left-4 z-10 w-12 h-12">
+            <img src={Medal.src} alt="Médaille" class="w-full h-full" />
+        </div>
+    )}
+    <div class={`relative h-48 sm:h-56 md:h-64 ${bgColor} flex items-center justify-center overflow-hidden`}>
+        {imageUrl ? (
+            <>
+                <img 
+                    src={imageUrl} 
+                    alt={nom} 
+                    class="w-full h-full object-cover"
+                />
+                <div class={`absolute inset-0 ${bgColor} mix-blend-multiply`}></div>
+            </>
+        ) : (
+            <div class="text-6xl sm:text-7xl opacity-30">
+                🎨
+            </div>
+        )}
+    </div>
+
+    <div class="p-4 sm:p-6">
+        <h3 class="font-oi text-2xl sm:text-3xl md:text-4xl text-black mb-4">
+            {nom}
+        </h3>
+
+        <div class="flex items-center gap-2 mb-4">
+            <p class={`font-oi text-3xl sm:text-4xl ${pointsColor}`}>
+                {points}
+            </p>
+            <p class="font-nohemi text-sm text-gray-600">pts</p>
+        </div>
+
+        <div class="space-y-1">
+            <div class="flex items-center gap-2 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                <p class="font-nohemi text-xs sm:text-sm font-bold text-black uppercase">ÉQUIPE</p>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-2">
+                {membres.map((membre) => (
+                    <div class="bg-white border-2 border-black rounded-full px-3 py-1.5 text-center">
+                        <p class="font-nohemi text-xs sm:text-sm font-medium text-black truncate">
+                            {membre.prenom} {membre.nom}
+                        </p>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </div>
+</a>

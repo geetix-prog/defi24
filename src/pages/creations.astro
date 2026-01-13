@@ -1,109 +1,73 @@
 ---
-import Layout from "../layouts/Layout.astro"
-import Icon from "../assets/Icon.svg"
-import Ampoule from "../assets/ampoule.svg"
-import Image from "../assets/image.svg"
-import Stars from "../assets/stars.svg"
-import Button from "../components/Button.astro"
+import Layout from "../layouts/Layout.astro";
+import Rendu from "../components/Rendu.astro";
+import { getAllCreations } from "../../backend/backend.mjs";
+
+const creations = await getAllCreations();
+
+const bgColors = [
+    'bg-yellow/50',
+    'bg-primary/50', 
+    'bg-secondary/50',
+    'bg-tertiary/50',
+    'bg-pink/50',
+];
+
+const pointsColors = [
+    'text-yellow',
+    'text-primary',
+    'text-secondary',
+    'text-tertiary',
+    'text-pink',
+];
 ---
 
 <Layout
-	title="Créations - Défi 24h MMI | Projets et réalisations"
-	description="Découvrez toutes les créations réalisées lors du Défi 24h MMI. Explorez les projets innovants des équipes participantes et laissez-vous inspirer !"
-	keywords="créations défi 24h, projets MMI, réalisations 24h, portfolio créatif, travaux étudiants MMI"
-	canonical="/creations"
+    title="Les créations | Défi 24h MMI"
+    description="Découvrez toutes les identités visuelles créées en 24 heures par nos équipes talentueuses !"
+    keywords="créations, identité visuelle, 24h, MMI, design, graphisme"
+    bgColor="linear-gradient(to bottom right, var(--color-pink), var(--color-primary))"
 >
-    <div class="flex flex-col mb-15 justify-center items-center mt-25 lg:mt-40 px-4">
-        <h1
-            class="text-white font-oi text-center text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl leading-tight tracking-wide">
-            Les talents à découvrir
-        </h1>
-    </div>
-    <div class="flex flex-col items-center space-y-10">
-        <div
-            class="space-y-6 bg-white/80 w-8/10 px-6 sm:px-8 md:px-10 py-7 md:py-10 rounded-2xl font-nohemi shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]">
-            <h2 class="text-2xl sm:text-3xl font-black text-center">Soumettre votre projet</h2>
-            <p class="text-center text-[#717182]">Partagez votre création avec la communauté !</p>
-            
-            <form id="creationForm" class="space-y-6">
-                <div class="space-y-2">
-                    <label for="nom" class="block font-bold text-lg">Nom du projet <span class="text-red-500">*</span></label>
-                    <input 
-                        type="text" 
-                        id="nom" 
-                        name="nom" 
-                        required
-                        placeholder="Ex: Mon projet innovant"
-                        class="w-full px-4 py-3 rounded-lg border-2 border-black font-nohemi focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
+    <main class="min-h-screen pb-20">
+        <div class="container mx-auto px-4 pt-24 sm:pt-32">
+            <div class="mb-8 sm:mb-12 md:mb-16 max-w-4xl mx-auto text-center">
+                <div class="inline-block bg-white border-2 border-black rounded-full px-4 sm:px-6 py-2 mb-6 shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]">
+                    <p class="font-nohemi text-xs sm:text-sm font-bold uppercase tracking-wider">
+                        Résultats Officiels
+                    </p>
                 </div>
-
-                <div class="space-y-2">
-                    <label for="lien" class="block font-bold text-lg">Lien de redirection <span class="text-red-500">*</span></label>
-                    <input 
-                        type="url" 
-                        id="lien" 
-                        name="lien" 
-                        required
-                        placeholder="https://exemple.com/mon-projet"
-                        class="w-full px-4 py-3 rounded-lg border-2 border-black font-nohemi focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                </div>
-
-                <div id="messageContainer" class="hidden">
-                    <div id="messageContent" class="p-4 rounded-lg text-center font-bold"></div>
-                </div>
-
-                <button 
-                    type="submit" 
-                    class="w-full bg-primary text-white font-bold py-4 px-6 rounded-lg shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] hover:translate-y-[-2px] transition-transform">
-                    Soumettre mon projet
-                </button>
-            </form>
-        </div>
-    </div>
-</Layout>
-
-<script>
-    const userDataString = localStorage.getItem('user');
-
-    const form = document.getElementById('creationForm') as HTMLFormElement;
-    const messageContainer = document.getElementById('messageContainer') as HTMLDivElement;
-    const messageContent = document.getElementById('messageContent') as HTMLDivElement;
-
-    form?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const userData = JSON.parse(userDataString);
-        const formData = new FormData(form);
-        formData.append('userId', userData.id);
-
-        try {
-            const response = await fetch('/api/create-creation', {
-                method: 'POST',
-                body: formData,
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                messageContainer.classList.remove('hidden');
-                messageContent.textContent = data.message;
-                messageContent.className = 'p-4 rounded-lg text-center font-bold bg-green-100 text-green-800 border-2 border-green-500';
-                form.reset();
                 
-                setTimeout(() => {
-                    messageContainer.classList.add('hidden');
-                }, 5000);
-            } else {
-                messageContainer.classList.remove('hidden');
-                messageContent.textContent = data.error;
-                messageContent.className = 'p-4 rounded-lg text-center font-bold bg-red-100 text-red-800 border-2 border-red-500';
-            }
-        } catch (error) {
-            messageContainer.classList.remove('hidden');
-            messageContent.textContent = 'Erreur de connexion au serveur.';
-            messageContent.className = 'p-4 rounded-lg text-center font-bold bg-red-100 text-red-800 border-2 border-red-500';
-        }
-    });
-</script>
+                <h1 class="font-oi text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white mb-4 sm:mb-6">
+                    Les créations
+                </h1>
+                
+                <p class="font-nohemi text-base sm:text-lg md:text-xl text-white/90">
+                    Découvrez toutes les identités visuelles créées en 24 heures par nos équipes talentueuses ! 🎨
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                {creations.map((creation, index) => (
+                    <Rendu
+                        nom={creation.nom}
+                        points={creation.points}
+                        membres={creation.membres}
+                        lien={creation.lien}
+                        imageUrl={creation.logo_url}
+                        bgColor={bgColors[index % bgColors.length]}
+                        pointsColor={pointsColors[index % pointsColors.length]}
+                        isFirst={index === 0}
+                    />
+                ))}
+            </div>
+
+            {creations.length === 0 && (
+                <div class="text-center py-20">
+                    <p class="font-nohemi text-xl text-white/80">
+                        Aucune création disponible pour le moment.
+                    </p>
+                </div>
+            )}
+        </div>
+    </main>
+</Layout>

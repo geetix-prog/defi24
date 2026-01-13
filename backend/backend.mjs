@@ -167,6 +167,59 @@ export async function countDepots() {
     }
 }
 
+export async function getAllCreations() {
+    try {
+        const records = await pb.collection("Full_equipe").getFullList();
+        
+        const equipesMap = new Map();
+        
+        records.forEach((row) => {
+            const equipeId = row.equipe_id || row.id;
+            
+            if (!equipesMap.has(equipeId)) {
+                const lienDepot = row.lien_depot || row.equipe_lien_depot || row.depot_lien || 'N/A';
+                
+                const equipeRecord = {
+                    id: equipeId,
+                    nom: row.equipe_nom,
+                    lien: lienDepot,
+                    logo: row.equipe_logo,
+                    logo_url: row.equipe_logo ? pb.files.getURL(row, row.equipe_logo) : null,
+                    points: parseInt(row.equipe_points) || parseInt(row.points) || 0,
+                    membres: []
+                };
+                equipesMap.set(equipeId, equipeRecord);
+            }
+            
+            if (row.user_nom && row.user_prenom) {
+                const equipe = equipesMap.get(equipeId);
+                const membreExiste = equipe.membres.some(m => 
+                    m.nom === row.user_nom && m.prenom === row.user_prenom
+                );
+                
+                if (!membreExiste) {
+                    equipe.membres.push({
+                        nom: row.user_nom,
+                        prenom: row.user_prenom
+                    });
+                }
+            }
+        });
+        
+        return Array.from(equipesMap.values())
+            .filter(equipe => 
+                equipe.lien && 
+                equipe.lien !== '#' && 
+                equipe.lien !== 'N/A' &&
+                equipe.lien.trim() !== ''
+            )
+            .sort((a, b) => b.points - a.points);
+    } catch (error) {
+        console.error('Erreur lors de la récupération des créations :', error);
+        return [];
+    }
+}
+
 export async function getUserProfile(userId) {
     try {
         const user = await pb.collection('users').getOne(userId);
