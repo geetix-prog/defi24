@@ -55,13 +55,13 @@ const podiumConfigs = [
             const config = podiumConfigs[Math.min(index, 3)];
             
             return (
-            <div class={`${config.cardBg} rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]`}>
-                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+            <div class={`${config.cardBg} rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] mx-auto max-w-2xl`}>
+                <div class="flex flex-col sm:flex-row items-center sm:items-center gap-4 sm:gap-6">
                     <div class={`${config.badge} w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-[0_0_0_3px_black,3px_3px_0px_2px_black] flex-shrink-0`}>
                         <span class="text-white font-oi text-xl sm:text-2xl">{index + 1}</span>
                     </div>
                     
-                    <div class="flex-1 min-w-0">
+                    <div class="flex-1 min-w-0 text-center sm:text-left">
                         <h3 class="font-oi text-xl sm:text-2xl md:text-3xl text-black mb-1">
                             {equipe.nom}
                         </h3>
@@ -70,7 +70,7 @@ const podiumConfigs = [
                                 {equipe.description}
                             </p>
                         )}
-                        <div class="flex flex-wrap gap-1 sm:gap-2 text-xs sm:text-sm font-nohemi text-gray-600">
+                        <div class="flex flex-wrap gap-1 sm:gap-2 text-xs sm:text-sm font-nohemi text-gray-600 justify-center sm:justify-start">
                             {equipe.membres.map((membre, i) => (
                                 <span>
                                     {membre.prenom} {membre.nom}{i < equipe.membres.length - 1 ? ',' : ''}
