@@ -135,11 +135,3 @@ import Prog from "../components/fullProgramme.astro"
         </div>
     </div>
 </Layout>
-
-<script>
-    // Vérifier l'authentification
-    const token = localStorage.getItem('token');
-    if (!token) {
-        window.location.href = '/acces-restreint';
-    }
-</script>
