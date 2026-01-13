@@ -9,7 +9,7 @@ interface Props {
 	bgColor?: string;
 }
 
-const { bgColor = "#6B46C1" } = Astro.props;
+const { bgColor = "var(--color-primary)" } = Astro.props;
 ---
 
 <footer class="w-full border-t-4 space-y-6 md:space-y-10 py-8 md:py-10" style={`background-color: ${bgColor};`}>

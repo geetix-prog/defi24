@@ -12,7 +12,6 @@ import Button from "../components/Button.astro"
 	description="Découvrez toutes les créations réalisées lors du Défi 24h MMI. Explorez les projets innovants des équipes participantes et laissez-vous inspirer !"
 	keywords="créations défi 24h, projets MMI, réalisations 24h, portfolio créatif, travaux étudiants MMI"
 	canonical="/creations"
-    bgColor="var(--color-primary)"
 >
     <div class="flex flex-col mb-15 justify-center items-center mt-25 lg:mt-40 px-4">
         <h1
@@ -66,9 +65,6 @@ import Button from "../components/Button.astro"
 </Layout>
 
 <script>
-    // Rediriger tout le monde vers la page d'accès restreint
-    window.location.href = '/acces-restreint';
-    
     const userDataString = localStorage.getItem('user');
 
     const form = document.getElementById('creationForm') as HTMLFormElement;

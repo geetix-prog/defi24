@@ -157,6 +157,16 @@ export async function stats() {
     return records;
 }
 
+export async function countDepots() {
+    try {
+        const records = await pb.collection("Depot").getFullList();
+        return records.length;
+    } catch (error) {
+        console.error('Erreur lors du comptage des dépôts :', error);
+        return 0;
+    }
+}
+
 export async function getUserProfile(userId) {
     try {
         const user = await pb.collection('users').getOne(userId);

@@ -21,16 +21,20 @@ const {
 	image = "/og-image.jpg",
 	type = "website",
 	canonical = Astro.url.pathname,
-	bgColor
+	bgColor = "var(--color-primary)"
 } = Astro.props;
 
 const siteUrl = Astro.site || "https://defi24h.mmimontbeliard.com";
 const canonicalURL = new URL(canonical, siteUrl).href;
 const ogImageURL = new URL(image, siteUrl).href;
+
+// Détecte si c'est un gradient ou une couleur solide
+const isGradient = bgColor.includes('gradient');
+const bgStyle = isGradient ? `background: ${bgColor};` : `background-color: ${bgColor};`;
 ---
 
 <!doctype html>
-<html lang="fr" style={bgColor ? `background-color: ${bgColor};` : ''}>
+<html lang="fr" style={bgStyle}>
 
 <head>
 	<meta charset="UTF-8" />
@@ -92,15 +96,15 @@ const ogImageURL = new URL(image, siteUrl).href;
 	})} />
 </head>
 
-<body class="overflow-x-hidden" style={bgColor ? `background-color: ${bgColor};` : ''}>
-	<!--<img src={Shape.src} class="absolute top-0 left-0 z-0" alt=""> -->
+<body class="overflow-x-hidden" style={bgStyle}>
+	<img src={Shape.src} class="absolute top-0 left-0 z-0" alt="">
 	<div class="relative w-full z-10">
 		<div class="flex mt-10 justify-center">
 			<Header/>
 		</div>
 		<slot/>
 		<div class="mt-50">
-			<Footer bgColor={bgColor}/>
+			<Footer/>
 		</div>
 	</div>
 </body>
@@ -126,6 +130,7 @@ const ogImageURL = new URL(image, siteUrl).href;
 		background:
 			linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
 			linear-gradient(180deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+			background-color: var(--color-primary);
 		background-size: 50px 50px;
 		pointer-events: none;
 		z-index: 0;

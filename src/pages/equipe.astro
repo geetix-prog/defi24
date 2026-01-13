@@ -36,7 +36,6 @@ const equipes = (Object.values(equipesGrouped) as any[]).sort((a, b) => b.points
     description="Découvrez toutes les équipes participantes au Défi 24h MMI. Rejoignez ou créez votre équipe pour participer à cet événement créatif de 24 heures."
     keywords="équipes défi 24h, participants MMI, équipes créatives, inscription équipe, challenge 24h"
     canonical="/equipe"
-    bgColor="var(--color-secondary)"
 >
     <div class="flex flex-col space-y-15 justify-center items-center mt-25 lg:mt-40 px-4">
         <h1
@@ -142,7 +141,6 @@ const equipes = (Object.values(equipesGrouped) as any[]).sort((a, b) => b.points
     description="Découvrez toutes les équipes participantes au Défi 24h MMI. Rejoignez ou créez votre équipe pour participer à cet événement créatif de 24 heures."
     keywords="équipes défi 24h, participants MMI, équipes créatives, inscription équipe, challenge 24h"
     canonical="/equipe"
-    bgColor="var(--color-secondary)"
 >
     <div class="flex flex-col space-y-8 justify-center items-center mt-25 lg:mt-40 px-4">
         <h1
@@ -621,7 +619,4 @@ const equipes = (Object.values(equipesGrouped) as any[]).sort((a, b) => b.points
     duree = Math.floor((dateFin.getTime() - maintenant.getTime()) / 1000);
 
     updateStatsCountdown();
-
-    // Rediriger tout le monde vers la page d'accès restreint
-    window.location.href = '/acces-restreint';
 </script>
