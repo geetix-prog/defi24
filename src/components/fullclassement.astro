@@ -12,7 +12,12 @@ if (!equipesMap.has(equipeKey)) {
     id: row.id,
     nom: row.equipe_nom,
     logo: row.equipe_logo_url,
+    description: row.description || '',
     points: row.points || 0,
+    crea: row.crea || 0,
+    coher: row.coher || 0,
+    exec: row.exec || 0,
+    presen: row.presen || 0,
     membres: []
     });
 }
@@ -29,68 +34,65 @@ if (row.user_nom) {
 });
 
 const equipes = Array.from(equipesMap.values())
-.sort((a, b) => b.points - a.points)
-.slice(3, equipesMap.size);
+.sort((a, b) => b.points - a.points);
 
-const podiumBgColors = [
-'bg-yellow/25',
-'bg-secondary/25',
-'bg-primary/25',
-];
-
-const podiumCircleColors = [
-'bg-yellow/25',
-'bg-secondary/25',
-'bg-primary/25',
-];
-
-const colors = [
-'bg-pink-500',
-'bg-purple-500',
-'bg-red-500',
-'bg-green-500',
-'bg-blue-500',
-'bg-indigo-500',
-'bg-teal-500'
+const podiumConfigs = [
+{ badge: 'bg-[#FFA500]', textColor: 'text-[#FFA500]', cardBg: 'bg-yellow/20' },
+{ badge: 'bg-[#FF69B4]', textColor: 'text-[#FF69B4]', cardBg: 'bg-pink/20' },
+{ badge: 'bg-[#6B46C1]', textColor: 'text-[#6B46C1]', cardBg: 'bg-primary/20' },
+{ badge: 'bg-gray-700', textColor: 'text-gray-700', cardBg: 'bg-white' },
 ];
 ---
         
 <div class="flex justify-center w-full items-center p-2 sm:p-3 md:p-4 h-full">
-    <div class="bg-white/95 rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 lg:p-8 shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] sm:shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] md:shadow-[0_0_0_3px_black,5px_5px_0px_2px_black] w-full h-full flex flex-col">
-        <div class="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-            <h2 class="font-oi text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl uppercase text-black leading-tight">Classement complet</h2>
-        </div>
+    <div class="bg-white rounded-3xl p-6 sm:p-8 md:p-10 shadow-[0_0_0_3px_black,4px_4px_0px_2px_black] sm:shadow-[0_0_0_4px_black,6px_6px_0px_3px_black] w-full">
+        <h2 class="font-oi text-2xl sm:text-3xl md:text-4xl lg:text-5xl uppercase text-clack text-center mb-6 sm:mb-8">
+            Classement Complet
+        </h2>
         
-        <div class="space-y-2 sm:space-y-3">
+        <div class="space-y-3 sm:space-y-4">
         {equipes.map((equipe, index) => {
-            const isPodium = index < 3;
-            const bgCard = isPodium ? podiumBgColors[index] : 'bg-gradient-to-r from-amber-50 to-white';
-            const bgColor = isPodium ? podiumCircleColors[index] : colors[(index - 3) % colors.length];
+            const config = podiumConfigs[Math.min(index, 3)];
             
             return (
-            <div class="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-[0_0_0_2px_black,2px_2px_0px_1px_black] sm:shadow-[0_0_0_2px_black,3px_3px_0px_1px_black] flex items-center justify-between gap-2">
-            <div class="flex items-center gap-2 sm:gap-3 md:gap-4 flex-1 min-w-0">
-                <div class={`w-10 h-10 sm:w-12 sm:h-12 ${bgColor} rounded-full shadow-[0_0_0_2px_black] flex-shrink-0`}>
-                {equipe.logo && (
-                    <img src={equipe.logo} alt={equipe.nom} class="w-full h-full rounded-full object-cover" />
-                )}
+            <div class={`${config.cardBg} rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-[0_0_0_3px_black,4px_4px_0px_2px_black]`}>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+                    <div class={`${config.badge} w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-[0_0_0_3px_black,3px_3px_0px_2px_black] flex-shrink-0`}>
+                        <span class="text-white font-oi text-xl sm:text-2xl">{index + 1}</span>
+                    </div>
+                    
+                    <div class="flex-1 min-w-0">
+                        <h3 class="font-oi text-xl sm:text-2xl md:text-3xl text-black mb-1">
+                            {equipe.nom}
+                        </h3>
+                        {equipe.description && (
+                            <p class="font-nohemi text-xs sm:text-sm text-gray-700 mb-2">
+                                {equipe.description}
+                            </p>
+                        )}
+                        <div class="flex flex-wrap gap-1 sm:gap-2 text-xs sm:text-sm font-nohemi text-gray-600">
+                            {equipe.membres.map((membre, i) => (
+                                <span>
+                                    {membre.prenom} {membre.nom}{i < equipe.membres.length - 1 ? ',' : ''}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col items-center gap-2 sm:gap-3">
+                        <p class={`font-oi text-2xl sm:text-3xl ${config.textColor}`}>
+                            {equipe.points}
+                        </p>
+                        <p class="font-nohemi text-xs text-gray-600">TOTAL</p>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                <h3 class="font-nohemi font-bold text-sm sm:text-base md:text-lg text-black truncate">{equipe.nom}</h3>
-                <p class="font-nohemi text-xs sm:text-sm text-gray-600">{equipe.membres.length} membre{equipe.membres.length > 1 ? 's' : ''}</p>
-                </div>
-            </div>
-            
-            <div class="bg-black text-white px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 rounded-full font-nohemi font-bold text-sm sm:text-base md:text-lg whitespace-nowrap">
-                {equipe.points} pts
-            </div>
             </div>
             );
         })}
         
         {equipes.length === 0 && (
-            <div class="text-center py-6 sm:py-8">
-            <p class="font-nohemi text-sm sm:text-base text-gray-500">Aucune équipe pour le moment</p>
+            <div class="text-center py-8 bg-white/20 rounded-2xl">
+                <p class="font-nohemi text-white">Aucune équipe pour le moment</p>
             </div>
         )}
         </div>
